@@ -6530,4 +6530,7 @@ view {
     -webkit-transform: translateX(var(--move-distance));
   }
 }
-
+page {
+  height: 100vh;
+  background-color: #f0f0f1;
+}

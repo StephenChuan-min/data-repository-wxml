@@ -1,16 +1,19 @@
-import { createApp } from 'vue'
-import { Button, Toast } from '@nutui/nutui-taro';
+import { createApp } from 'vue';
+import {
+  Button, Toast, Pagination, Icon, Tab, InputNumber, Input, Avatar,
+} from '@nutui/nutui-taro';
 
 import '@nutui/nutui-taro/dist/styles/themes/default.scss';
-import './app.scss'
+import './app.scss';
 
 const App = createApp({
-  onShow (options) {
-    console.log(options)
+  onShow(options) {
+    console.log(options);
   },
-  // 入口组件不需要实现 render 方法，即使实现了也会被 taro 所覆盖
-})
+});
 
-App.use(Button).use(Toast)
+const Components = [Button, Toast, Pagination, Icon, Tab, InputNumber, Input, Avatar];
 
-export default App
+Components.forEach((i) => App.use(i));
+
+export default App;

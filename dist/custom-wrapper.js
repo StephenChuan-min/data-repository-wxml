@@ -1,2 +1,2 @@
-(wx["webpackJsonp"] = wx["webpackJsonp"] || []).push([["custom-wrapper"],[],[["./node_modules/@tarojs/mini-runner/dist/template/custom-wrapper.js","runtime","taro","vendors"]]]);
+(wx["webpackJsonp"] = wx["webpackJsonp"] || []).push([["custom-wrapper"],[],[["./node_modules/_@tarojs_mini-runner@3.3.9@@tarojs/mini-runner/dist/template/custom-wrapper.js","runtime","taro","vendors"]]]);
 //# sourceMappingURL=custom-wrapper.js.map

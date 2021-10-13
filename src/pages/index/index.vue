@@ -1,36 +1,25 @@
 <template>
   <view class="index">
-   <nut-button type="primary" >数仓</nut-button>
+   <nut-button type="primary" >{{msg}}</nut-button>
   </view>
 </template>
 
 <script lang="ts">
 import { reactive, toRefs } from 'vue';
+
 export default {
   name: 'Index',
   components: {},
-  setup(){
+  setup() {
     const state = reactive({
-      msg: '欢迎使用 NutUI3.0 开发小程序',
-      msg2: '你成功了～',
-      type: 'text',
-      show: false,
-      cover: false
+      msg: '结构化账号',
     });
-
-    const handleClick = (type: string, msg: string, cover: boolean = false) => {
-      state.show = true;
-      state.msg2 = msg;
-      state.type = type;
-      state.cover = cover;
-    };
 
     return {
       ...toRefs(state),
-      handleClick
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style lang="scss">
