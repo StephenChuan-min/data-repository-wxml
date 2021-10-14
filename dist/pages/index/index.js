@@ -12,8 +12,8 @@
 /* harmony import */ var _index_vue_vue_type_template_id_1badc801_ts_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=1badc801&ts=true */ "./src/pages/index/index.vue?vue&type=template&id=1badc801&ts=true");
 /* harmony import */ var _index_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=ts */ "./src/pages/index/index.vue?vue&type=script&lang=ts");
 /* harmony import */ var _index_vue_vue_type_style_index_0_id_1badc801_lang_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./index.vue?vue&type=style&index=0&id=1badc801&lang=scss */ "./src/pages/index/index.vue?vue&type=style&index=0&id=1badc801&lang=scss");
-/* harmony import */ var E_data_repository_wxml_node_modules_vue_loader_16_8_1_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/_vue-loader@16.8.1@vue-loader/dist/exportHelper.js */ "./node_modules/_vue-loader@16.8.1@vue-loader/dist/exportHelper.js");
-/* harmony import */ var E_data_repository_wxml_node_modules_vue_loader_16_8_1_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(E_data_repository_wxml_node_modules_vue_loader_16_8_1_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_vue_loader_16_8_1_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/_vue-loader@16.8.1@vue-loader/dist/exportHelper.js */ "./node_modules/_vue-loader@16.8.1@vue-loader/dist/exportHelper.js");
+/* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_vue_loader_16_8_1_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(E_wangchuan_work_projects_data_repository_wxml_node_modules_vue_loader_16_8_1_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__);
 
 
 
@@ -21,7 +21,7 @@
 
 
 
-const __exports__ = /*#__PURE__*/E_data_repository_wxml_node_modules_vue_loader_16_8_1_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3___default()(_index_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"], [['render',_index_vue_vue_type_template_id_1badc801_ts_true__WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"]],['__file',"src/pages/index/index.vue"]])
+const __exports__ = /*#__PURE__*/E_wangchuan_work_projects_data_repository_wxml_node_modules_vue_loader_16_8_1_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3___default()(_index_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"], [['render',_index_vue_vue_type_template_id_1badc801_ts_true__WEBPACK_IMPORTED_MODULE_0__[/* render */ "a"]],['__file',"src/pages/index/index.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -39,7 +39,7 @@ if (false) {}
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var E_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/objectSpread2 */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/objectSpread2.js");
+/* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/objectSpread2 */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/objectSpread2.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_reactivity@3.2.20@@vue/reactivity/dist/reactivity.esm-bundler.js");
 
 
@@ -50,7 +50,7 @@ if (false) {}
     var state = Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* reactive */ "k"])({
       msg: '结构化账号'
     });
-    return Object(E_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toRefs */ "q"])(state));
+    return Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toRefs */ "q"])(state));
   }
 });
 

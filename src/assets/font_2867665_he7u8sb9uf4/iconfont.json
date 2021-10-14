@@ -1,0 +1,100 @@
+{
+  "id": "2867665",
+  "name": "数据资产平台",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "pc端+移动端",
+  "glyphs": [
+    {
+      "icon_id": "24936222",
+      "name": "小程序-箭头上",
+      "font_class": "xiaochengxu-jiantoushang",
+      "unicode": "e6af",
+      "unicode_decimal": 59055
+    },
+    {
+      "icon_id": "24936223",
+      "name": "小程序-箭头下",
+      "font_class": "xiaochengxu-jiantouxia",
+      "unicode": "e6b0",
+      "unicode_decimal": 59056
+    },
+    {
+      "icon_id": "24936224",
+      "name": "小程序-账号",
+      "font_class": "xiaochengxu-zhanghao",
+      "unicode": "e6b1",
+      "unicode_decimal": 59057
+    },
+    {
+      "icon_id": "24936225",
+      "name": "小程序-密码",
+      "font_class": "xiaochengxu-mima",
+      "unicode": "e6b2",
+      "unicode_decimal": 59058
+    },
+    {
+      "icon_id": "24936226",
+      "name": "小程序-搜索",
+      "font_class": "xiaochengxu-sousuo",
+      "unicode": "e6b3",
+      "unicode_decimal": 59059
+    },
+    {
+      "icon_id": "24936227",
+      "name": "小程序-选中",
+      "font_class": "xiaochengxu-xuanzhong",
+      "unicode": "e6b4",
+      "unicode_decimal": 59060
+    },
+    {
+      "icon_id": "24936228",
+      "name": "小程序-垃圾箱",
+      "font_class": "xiaochengxu-lajixiang",
+      "unicode": "e6b5",
+      "unicode_decimal": 59061
+    },
+    {
+      "icon_id": "24936229",
+      "name": "小程序-删除",
+      "font_class": "xiaochengxu-shanchu",
+      "unicode": "e6b6",
+      "unicode_decimal": 59062
+    },
+    {
+      "icon_id": "24936230",
+      "name": "小程序-拍卖债券数据",
+      "font_class": "xiaochengxu-paimaizhaiquanshuju",
+      "unicode": "e6b7",
+      "unicode_decimal": 59063
+    },
+    {
+      "icon_id": "24936231",
+      "name": "小程序-验证码",
+      "font_class": "xiaochengxu-yanzhengma",
+      "unicode": "e6b8",
+      "unicode_decimal": 59064
+    },
+    {
+      "icon_id": "24936232",
+      "name": "小程序-招商债权数据",
+      "font_class": "xiaochengxu-zhaoshangzhaiquanshuju",
+      "unicode": "e6b9",
+      "unicode_decimal": 59065
+    },
+    {
+      "icon_id": "24936233",
+      "name": "小程序-资产拍卖",
+      "font_class": "xiaochengxu-zichanpaimai",
+      "unicode": "e6ba",
+      "unicode_decimal": 59066
+    },
+    {
+      "icon_id": "24936234",
+      "name": "小程序-破产重组",
+      "font_class": "xiaochengxu-pochanzhongzu",
+      "unicode": "e6bb",
+      "unicode_decimal": 59067
+    }
+  ]
+}
