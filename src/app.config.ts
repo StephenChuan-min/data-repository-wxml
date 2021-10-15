@@ -9,10 +9,11 @@ export default {
     navigationBarBackgroundColor: '#296dd3',
     navigationBarTitleText: '源诚数据资产平台',
     navigationBarTextStyle: 'white',
+    navigationStyle: 'custom',
   },
   tabBar: {
-    color: '#7D8699',
-    selectedColor: '#296DD3',
+    color: '#B2B8C9',
+    selectedColor: '#397AE7',
     list: [{
       pagePath: 'pages/index/index',
       text: '结构化账号',

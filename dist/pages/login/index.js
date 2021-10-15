@@ -2006,8 +2006,8 @@ PEMEncoder.prototype.encode = function encode(data, options) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_reactivity@3.2.20@@vue/reactivity/dist/reactivity.esm-bundler.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-core@3.2.20@@vue/runtime-core/dist/runtime-core.esm-bundler.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-core@3.2.20@@vue/runtime-core/dist/runtime-core.esm-bundler.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_reactivity@3.2.20@@vue/reactivity/dist/reactivity.esm-bundler.js");
 /* harmony import */ var _server_api_login__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../server/api/login */ "./src/server/api/login.js");
 /* harmony import */ var _utils_encrypt__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/encrypt */ "./src/utils/encrypt.js");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils */ "./src/utils/index.js");
@@ -2021,38 +2021,143 @@ PEMEncoder.prototype.encode = function encode(data, options) {
 /* harmony default export */ __webpack_exports__["a"] = ({
   name: 'Login',
   setup: function setup() {
-    var params = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* reactive */ "k"])({
-      username: '55555555555',
-      password: '555555',
+    var _getCurrentInstance = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* getCurrentInstance */ "o"])(),
+        proxy = _getCurrentInstance.proxy;
+
+    var params = Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* reactive */ "k"])({
+      username: '',
+      password: '',
       imageVerifyCode: ''
     });
-    var state = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* reactive */ "k"])({
+    var state = Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* reactive */ "k"])({
+      loading: false,
       style: {
         marginTop: '',
         lineHeight: ''
       },
-      disabled: !true
+      code: {
+        imgUrl: '',
+        show: false
+      },
+      disabled: !true,
+      errorField: {
+        username: {
+          isError: false,
+          message: '请输入账号'
+        },
+        password: {
+          isError: false,
+          message: '请输入密码'
+        }
+      }
     });
-
-    var validate = function validate() {};
-
-    var handleChange = function handleChange(e) {
-      var value = e.target.value;
-      params.username = value.replace(/\D/g, '');
+    var rules = {
+      username: [{
+        required: true,
+        message: '请输入账号'
+      }, {
+        min: 11,
+        trigger: 'change',
+        message: '账号小于11位'
+      }],
+      password: [{
+        required: true,
+        message: '请输入密码'
+      }]
     };
 
-    var doLogin = function doLogin() {
-      var data = Object(_utils_encrypt__WEBPACK_IMPORTED_MODULE_3__[/* encryptInfo */ "a"])(Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* clearEmpty */ "a"])(params));
-      Object(_server_api_login__WEBPACK_IMPORTED_MODULE_2__[/* login */ "a"])(data).then(function (res) {
-        if (res.code === 200) {
-          _tarojs_taro__WEBPACK_IMPORTED_MODULE_5___default.a.switchTab({
-            url: '/pages/index/index'
-          });
+    var validate = function validate() {
+      var valid = true;
+      Object.keys(rules).forEach(function (key) {
+        rules[key].forEach(function (item) {
+          if (item.required) {
+            state.errorField[key].isError = Boolean(params[key]) !== item.required;
+            state.errorField[key].message = item.message;
+          }
+
+          if (item.min) {
+            state.errorField[key].isError = params[key].length < item.min;
+            if (item.required && state.errorField[key].isError) state.errorField[key].message = item.message;
+          }
+        });
+      });
+      var keys = Object.keys(state.errorField);
+
+      for (var i = 0; i < keys.length; i++) {
+        if (state.errorField[keys[i]].isError) {
+          valid = false;
+          break;
+        }
+      }
+
+      return valid;
+    };
+
+    var handleChange = function handleChange(e, prop) {
+      var value = e.target.value;
+
+      switch (prop) {
+        case 'username':
+          proxy.$refs[prop].value = params[prop] = value.replace(/\D/g, '');
+          break;
+
+        case 'password':
+          proxy.$refs[prop].value = params[prop] = value.replace(/\u4e00-\u9fa5/g, '');
+          break;
+
+        default:
+          break;
+      }
+
+      rules[prop].forEach(function (item) {
+        if (item.required) {
+          state.errorField[prop].isError = Boolean(params[prop]) !== item.required;
+          state.errorField[prop].message = item.message;
+        }
+
+        if (item.min) {
+          state.errorField[prop].isError = params[prop].length < item.min;
+          state.errorField[prop].message = item.message;
         }
       });
     };
 
-    Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* onMounted */ "s"])(function () {
+    var getImgCode = function getImgCode() {
+      Object(_server_api_login__WEBPACK_IMPORTED_MODULE_2__[/* imgCode */ "a"])().then(function (res) {
+        if (res.code === 200) {
+          state.code.imgUrl = res.data;
+        }
+      });
+    };
+
+    var doLogin = function doLogin() {
+      var valid = validate();
+
+      if (valid) {
+        state.loading = true;
+        var data = Object(_utils_encrypt__WEBPACK_IMPORTED_MODULE_3__[/* encryptInfo */ "a"])(Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* clearEmpty */ "a"])(params));
+        Object(_server_api_login__WEBPACK_IMPORTED_MODULE_2__[/* login */ "b"])(data).then(function (res) {
+          if (res.data.errCount === 3) {
+            state.code.show = true;
+            getImgCode();
+          }
+
+          if (res.code === 200) {
+            _tarojs_taro__WEBPACK_IMPORTED_MODULE_5___default.a.switchTab({
+              url: '/pages/index/index'
+            });
+            _tarojs_taro__WEBPACK_IMPORTED_MODULE_5___default.a.showToast({
+              title: '登录成功',
+              icon: 'none'
+            });
+          }
+        }).finally(function () {
+          state.loading = false;
+        });
+      }
+    };
+
+    Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* onMounted */ "t"])(function () {
       var _Taro$getMenuButtonBo = _tarojs_taro__WEBPACK_IMPORTED_MODULE_5___default.a.getMenuButtonBoundingClientRect(),
           height = _Taro$getMenuButtonBo.height,
           top = _Taro$getMenuButtonBo.top;
@@ -2065,6 +2170,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
       state: state,
       validate: validate,
       handleChange: handleChange,
+      getImgCode: getImgCode,
       doLogin: doLogin
     };
   }
@@ -2085,118 +2191,142 @@ PEMEncoder.prototype.encode = function encode(data, options) {
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-core@3.2.20@@vue/runtime-core/dist/runtime-core.esm-bundler.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_shared@3.2.20@@vue/shared/dist/shared.esm-bundler.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-dom@3.2.20@@vue/runtime-dom/dist/runtime-dom.esm-bundler.js");
-/* harmony import */ var _assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../assets/img/sign_logo.png */ "./src/assets/img/sign_logo.png");
-/* harmony import */ var _assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _assets_img_logo_loading1_gif__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../assets/img/logo_loading1.gif */ "./src/assets/img/logo_loading1.gif");
+/* harmony import */ var _assets_img_logo_loading1_gif__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_assets_img_logo_loading1_gif__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../assets/img/sign_logo.png */ "./src/assets/img/sign_logo.png");
+/* harmony import */ var _assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_4__);
+
 
 
 var _hoisted_1 = {
   class: "login-wrapper"
 };
 var _hoisted_2 = {
-  class: "navigationBar"
+  key: 0,
+  class: "loading"
 };
 
-var _hoisted_3 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
-  class: "logo"
-}, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
-  src: _assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_3___default.a
-})], -1
-/* HOISTED */
-);
-
-var _hoisted_4 = {
-  class: "form-content"
-};
-var _hoisted_5 = {
-  class: "form-item"
-};
-
-var _hoisted_6 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
-  class: "iconfont icon-xiaochengxu-zhanghao"
+var _hoisted_3 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
+  src: _assets_img_logo_loading1_gif__WEBPACK_IMPORTED_MODULE_3___default.a
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_7 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
-  class: "is-error-msg"
-}, "请输入账号", -1
+var _hoisted_4 = [_hoisted_3];
+var _hoisted_5 = {
+  class: "navigationBar"
+};
+
+var _hoisted_6 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  class: "logo"
+}, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
+  src: _assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_4___default.a
+})], -1
 /* HOISTED */
 );
 
+var _hoisted_7 = {
+  class: "form-content"
+};
 var _hoisted_8 = {
   class: "form-item"
 };
 
 var _hoisted_9 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
-  class: "iconfont icon-xiaochengxu-mima"
+  class: "iconfont icon-xiaochengxu-zhanghao"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_10 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+var _hoisted_10 = {
+  key: 0,
   class: "is-error-msg"
-}, "请输入密码", -1
-/* HOISTED */
-);
-
+};
 var _hoisted_11 = {
   class: "form-item"
 };
 
 var _hoisted_12 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+  class: "iconfont icon-xiaochengxu-mima"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_13 = {
+  key: 0,
+  class: "is-error-msg"
+};
+var _hoisted_14 = {
+  key: 0,
+  class: "form-item"
+};
+
+var _hoisted_15 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
   class: "iconfont icon-xiaochengxu-yanzhengma"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_13 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
-  class: "suffix"
-}, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
-  src: ""
-})], -1
-/* HOISTED */
-);
-
-var _hoisted_14 = ["disabled"];
+var _hoisted_16 = ["src"];
+var _hoisted_17 = {
+  key: 0,
+  class: "is-error-msg"
+};
+var _hoisted_18 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_2, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [$setup.state.loading ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_2, _hoisted_4)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_5, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
     class: "navigationBar-title",
     style: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeStyle */ "J"])($setup.state.style)
   }, "源诚数据资产平台", 4
   /* STYLE */
-  ), _hoisted_3]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_4, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_5, [_hoisted_6, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* withDirectives */ "H"])(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $setup.params.username = $event;
-    }),
+  ), _hoisted_6]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_7, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_8, [_hoisted_9, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
+    ref: "username",
     placeholder: "请输入11位账号",
     maxlength: "11",
-    class: "is-error",
-    onInput: _cache[1] || (_cache[1] = function () {
-      return $setup.handleChange && $setup.handleChange.apply($setup, arguments);
+    class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])($setup.state.errorField.username.isError ? 'is-error' : ''),
+    onChange: _cache[0] || (_cache[0] = function (e) {
+      return $setup.handleChange(e, 'username');
     })
-  }, null, 544
-  /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_2__[/* vModelText */ "c"], $setup.params.username]]), _hoisted_7]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_8, [_hoisted_9, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* withDirectives */ "H"])(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-      return $setup.params.password = $event;
-    }),
+  }, null, 34
+  /* CLASS, HYDRATE_EVENTS */
+  ), $setup.state.errorField.username.isError ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_10, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.username.message), 1
+  /* TEXT */
+  )) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_11, [_hoisted_12, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
+    ref: "password",
     type: "password",
     placeholder: "请输入密码",
     maxlength: "20",
-    class: "is-error"
-  }, null, 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_2__[/* vModelText */ "c"], $setup.params.password]]), _hoisted_10]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_11, [_hoisted_12, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* withDirectives */ "H"])(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
-    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+    class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])($setup.state.errorField.password.isError ? 'is-error' : ''),
+    onChange: _cache[1] || (_cache[1] = function (e) {
+      return $setup.handleChange(e, 'password');
+    })
+  }, null, 34
+  /* CLASS, HYDRATE_EVENTS */
+  ), $setup.state.errorField.password.isError ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_13, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.password.message), 1
+  /* TEXT */
+  )) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)]), $setup.state.code.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_14, [_hoisted_15, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* withDirectives */ "I"])(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $setup.params.imageVerifyCode = $event;
     }),
     placeholder: "请输入图片验证码",
-    maxlength: "4"
-  }, null, 512
-  /* NEED_PATCH */
+    maxlength: "4",
+    class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])($setup.state.errorField.imageVerifyCode.isError ? 'is-error' : '')
+  }, null, 2
+  /* CLASS */
   ), [[vue__WEBPACK_IMPORTED_MODULE_2__[/* vModelText */ "c"], $setup.params.imageVerifyCode, void 0, {
     trim: true
-  }]]), _hoisted_13]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("button", {
+  }]]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+    class: "suffix",
+    onClick: _cache[3] || (_cache[3] = function () {
+      return $setup.getImgCode && $setup.getImgCode.apply($setup, arguments);
+    })
+  }, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
+    src: $setup.state.code.imgUrl
+  }, null, 8
+  /* PROPS */
+  , _hoisted_16)]), $setup.state.errorField.imageVerifyCode.isError ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_17, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.imageVerifyCode.message), 1
+  /* TEXT */
+  )) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("button", {
     class: "login-btn",
     type: "primary",
     disabled: $setup.state.disabled,
@@ -2205,7 +2335,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, "登录", 8
   /* PROPS */
-  , _hoisted_14)])]);
+  , _hoisted_18)])]);
 }
 
 /***/ }),
@@ -38511,6 +38641,18 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./src/assets/img/logo_loading1.gif":
+/*!******************************************!*\
+  !*** ./src/assets/img/logo_loading1.gif ***!
+  \******************************************/
+/*! no static exports found */
+/*! exports used: default */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "assets/img/logo_loading1.gif";
+
+/***/ }),
+
 /***/ "./src/assets/img/sign_logo.png":
 /*!**************************************!*\
   !*** ./src/assets/img/sign_logo.png ***!
@@ -38597,12 +38739,13 @@ var inst = Page(Object(_tarojs_runtime__WEBPACK_IMPORTED_MODULE_0__["createPageC
 /*!*********************************!*\
   !*** ./src/server/api/login.js ***!
   \*********************************/
-/*! exports provided: login */
-/*! exports used: login */
+/*! exports provided: login, imgCode */
+/*! exports used: imgCode, login */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return login; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return login; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return imgCode; });
 /* harmony import */ var _request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../request */ "./src/server/request.js");
 
 var login = function login(data) {
@@ -38610,6 +38753,12 @@ var login = function login(data) {
     url: '/api/login',
     method: 'post',
     data: data
+  });
+};
+var imgCode = function imgCode() {
+  return Object(_request__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({
+    url: '/api/code/image',
+    method: 'get'
   });
 };
 

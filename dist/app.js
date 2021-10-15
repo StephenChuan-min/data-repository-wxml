@@ -177,18 +177,18 @@ var _hoisted_1 = {
 };
 
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_nut_icon = Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* resolveComponent */ "y"])("nut-icon");
+  var _component_nut_icon = Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* resolveComponent */ "z"])("nut-icon");
 
-  return Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", {
+  return Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", {
     style: Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* normalizeStyle */ "J"])(_ctx.styles),
     class: Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* normalizeClass */ "I"])(_ctx.classes),
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return _ctx.activeAvatar(_ctx.e);
     })
-  }, [Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createVNode */ "l"])(_component_nut_icon, {
+  }, [Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createVNode */ "m"])(_component_nut_icon, {
     class: "icon",
     name: _ctx.iconStyles
-  }, null, 8, ["name"]), _ctx.isShowText ? (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", _hoisted_1, [Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* renderSlot */ "x"])(_ctx.$slots, "default")])) : Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createCommentVNode */ "f"])("", true)], 6);
+  }, null, 8, ["name"]), _ctx.isShowText ? (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", _hoisted_1, [Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* renderSlot */ "y"])(_ctx.$slots, "default")])) : Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createCommentVNode */ "f"])("", true)], 6);
 }
 
 var index_taro = /* @__PURE__ */Object(_plugin_vue_export_helper_js__WEBPACK_IMPORTED_MODULE_5__[/* _ */ "a"])(_sfc_main, [["render", _sfc_render]]);
@@ -330,27 +330,27 @@ var _hoisted_1 = {
 };
 
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_nut_icon = Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* resolveComponent */ "y"])("nut-icon");
+  var _component_nut_icon = Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* resolveComponent */ "z"])("nut-icon");
 
-  return Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", {
+  return Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", {
     class: Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* normalizeClass */ "I"])(_ctx.classes),
     style: Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* normalizeStyle */ "J"])(_ctx.getStyle),
     onClick: _cache[0] || (_cache[0] = function () {
       return _ctx.handleClick && _ctx.handleClick.apply(_ctx, arguments);
     })
-  }, [Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementVNode */ "h"])("view", _hoisted_1, [_ctx.loading ? (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createBlock */ "e"])(_component_nut_icon, {
+  }, [Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementVNode */ "h"])("view", _hoisted_1, [_ctx.loading ? (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createBlock */ "e"])(_component_nut_icon, {
     key: 0,
     class: "nut-icon-loading"
-  })) : Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createCommentVNode */ "f"])("", true), _ctx.icon && !_ctx.loading ? (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createBlock */ "e"])(_component_nut_icon, {
+  })) : Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createCommentVNode */ "f"])("", true), _ctx.icon && !_ctx.loading ? (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createBlock */ "e"])(_component_nut_icon, {
     key: 1,
     class: Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* normalizeClass */ "I"])(_ctx.icon),
     name: _ctx.icon
-  }, null, 8, ["class", "name"])) : Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createCommentVNode */ "f"])("", true), _ctx.$slots.default ? (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", {
+  }, null, 8, ["class", "name"])) : Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createCommentVNode */ "f"])("", true), _ctx.$slots.default ? (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", {
     key: 2,
     class: Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* normalizeClass */ "I"])({
       text: _ctx.icon || _ctx.loading
     })
-  }, [Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* renderSlot */ "x"])(_ctx.$slots, "default")], 2)) : Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createCommentVNode */ "f"])("", true)])], 6);
+  }, [Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* renderSlot */ "y"])(_ctx.$slots, "default")], 2)) : Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createCommentVNode */ "f"])("", true)])], 6);
 }
 
 var Button = /* @__PURE__ */Object(_plugin_vue_export_helper_js__WEBPACK_IMPORTED_MODULE_6__[/* _ */ "a"])(_sfc_main, [["render", _sfc_render]]);
@@ -430,7 +430,7 @@ var _sfc_main = create({
 
       var _isImage = isImage();
 
-      return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* h */ "p"])(_isImage ? "img" : props.tag, {
+      return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* h */ "q"])(_isImage ? "img" : props.tag, {
         class: _isImage ? "".concat(componentName, "__img") : "".concat(props.fontClassName, " ").concat(componentName, " ").concat(props.classPrefix, "-").concat(props.name),
         style: {
           color: props.color,
@@ -642,11 +642,11 @@ var _hoisted_3 = {
 var _hoisted_4 = ["type", "maxlength", "placeholder", "disabled", "readonly", "value"];
 
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_nut_icon = Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* resolveComponent */ "y"])("nut-icon");
+  var _component_nut_icon = Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* resolveComponent */ "z"])("nut-icon");
 
-  return Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", {
+  return Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", {
     class: Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* normalizeClass */ "I"])(_ctx.classes)
-  }, [Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementVNode */ "h"])("view", _hoisted_1, [_ctx.label ? (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", _hoisted_2, Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* toDisplayString */ "L"])(_ctx.label), 1)) : Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createCommentVNode */ "f"])("", true)]), _ctx.readonly ? (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", _hoisted_3, Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* toDisplayString */ "L"])(_ctx.modelValue), 1)) : (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("input", {
+  }, [Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementVNode */ "h"])("view", _hoisted_1, [_ctx.label ? (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", _hoisted_2, Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* toDisplayString */ "L"])(_ctx.label), 1)) : Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createCommentVNode */ "f"])("", true)]), _ctx.readonly ? (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", _hoisted_3, Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* toDisplayString */ "L"])(_ctx.modelValue), 1)) : (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("input", {
     key: 1,
     class: "input-text",
     style: Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* normalizeStyle */ "J"])(_ctx.styles),
@@ -665,13 +665,13 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     onBlur: _cache[2] || (_cache[2] = function () {
       return _ctx.valueBlur && _ctx.valueBlur.apply(_ctx, arguments);
     })
-  }, null, 44, _hoisted_4)), _ctx.clearable && !_ctx.readonly ? Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* withDirectives */ "H"])((Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", {
+  }, null, 44, _hoisted_4)), _ctx.clearable && !_ctx.readonly ? Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* withDirectives */ "I"])((Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", {
     key: 2,
     onClick: _cache[3] || (_cache[3] = function () {
       return _ctx.handleClear && _ctx.handleClear.apply(_ctx, arguments);
     }),
     class: "nut-textinput-clear"
-  }, [Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createVNode */ "l"])(_component_nut_icon, {
+  }, [Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createVNode */ "m"])(_component_nut_icon, {
     name: "close-little",
     size: "12px"
   })], 512)), [[vue__WEBPACK_IMPORTED_MODULE_4__[/* vShow */ "d"], _ctx.active && _ctx.modelValue.length > 0]]) : Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createCommentVNode */ "f"])("", true)], 2);
@@ -860,21 +860,21 @@ var _hoisted_1 = {
 var _hoisted_2 = ["min", "max", "disabled", "readonly", "value"];
 
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_nut_icon = Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* resolveComponent */ "y"])("nut-icon");
+  var _component_nut_icon = Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* resolveComponent */ "z"])("nut-icon");
 
-  return Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", {
+  return Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", {
     class: Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* normalizeClass */ "I"])(_ctx.classes),
     style: Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* normalizeStyle */ "J"])({
       height: _ctx.pxCheck(_ctx.buttonSize)
     })
-  }, [Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createVNode */ "l"])(_component_nut_icon, {
+  }, [Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createVNode */ "m"])(_component_nut_icon, {
     name: "minus",
     class: Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* normalizeClass */ "I"])(["nut-inputnumber__icon", {
       "nut-inputnumber__icon--disabled": !_ctx.reduceAllow()
     }]),
     size: _ctx.buttonSize,
     onClick: _ctx.reduce
-  }, null, 8, ["class", "size", "onClick"]), _ctx.readonly ? (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", _hoisted_1, Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* toDisplayString */ "L"])(_ctx.modelValue), 1)) : (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("input", {
+  }, null, 8, ["class", "size", "onClick"]), _ctx.readonly ? (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("view", _hoisted_1, Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* toDisplayString */ "L"])(_ctx.modelValue), 1)) : (Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createElementBlock */ "g"])("input", {
     key: 1,
     type: "number",
     min: _ctx.min,
@@ -894,7 +894,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     onFocus: _cache[2] || (_cache[2] = function () {
       return _ctx.focus && _ctx.focus.apply(_ctx, arguments);
     })
-  }, null, 44, _hoisted_2)), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createVNode */ "l"])(_component_nut_icon, {
+  }, null, 44, _hoisted_2)), Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* createVNode */ "m"])(_component_nut_icon, {
     name: "plus",
     class: Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* normalizeClass */ "I"])(["nut-inputnumber__icon", {
       "nut-inputnumber__icon--disabled": !_ctx.addAllow()
@@ -1050,7 +1050,7 @@ var _sfc_main = create({
 
       return items;
     });
-    Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* watchEffect */ "E"])(function () {
+    Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* watchEffect */ "F"])(function () {
       select(modelValue.value, false);
     });
     return {
@@ -1081,32 +1081,32 @@ var _hoisted_5 = {
 };
 
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementBlock */ "g"])("view", _hoisted_1, [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementVNode */ "h"])("view", {
+  return Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementBlock */ "g"])("view", _hoisted_1, [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementVNode */ "h"])("view", {
     class: Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* normalizeClass */ "I"])(["nut-pagination-prev", _ctx.mode == "multi" ? "" : "simple-border", _ctx.modelValue == 1 ? "disabled" : ""]),
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return _ctx.select(_ctx.modelValue - 1, true);
     })
-  }, [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* renderSlot */ "x"])(_ctx.$slots, "prev-text", {}, function () {
-    return [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createTextVNode */ "k"])(Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* toDisplayString */ "L"])(_ctx.prevText), 1)];
-  })], 2), _ctx.mode == "multi" ? (Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementBlock */ "g"])("view", _hoisted_2, [(Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "v"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_1__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* renderList */ "w"])(_ctx.pages, function (item, index) {
-    return Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementBlock */ "g"])("view", {
+  }, [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* renderSlot */ "y"])(_ctx.$slots, "prev-text", {}, function () {
+    return [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createTextVNode */ "l"])(Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* toDisplayString */ "L"])(_ctx.prevText), 1)];
+  })], 2), _ctx.mode == "multi" ? (Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementBlock */ "g"])("view", _hoisted_2, [(Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "w"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_1__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* renderList */ "x"])(_ctx.pages, function (item, index) {
+    return Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementBlock */ "g"])("view", {
       key: index + "pagination",
       class: Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* normalizeClass */ "I"])(["nut-pagination-item", item.active ? "active" : ""]),
       onClick: function onClick($event) {
         return _ctx.select(item.number, true);
       }
-    }, [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* renderSlot */ "x"])(_ctx.$slots, "page", {
+    }, [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* renderSlot */ "y"])(_ctx.$slots, "page", {
       item: item
     }, function () {
-      return [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createTextVNode */ "k"])(Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* toDisplayString */ "L"])(item.text), 1)];
+      return [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createTextVNode */ "l"])(Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* toDisplayString */ "L"])(item.text), 1)];
     })], 10, _hoisted_3);
-  }), 128))])) : Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createCommentVNode */ "f"])("", true), _ctx.mode == "simple" ? (Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementBlock */ "g"])("view", _hoisted_4, [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementVNode */ "h"])("view", _hoisted_5, Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* toDisplayString */ "L"])(_ctx.modelValue) + "/" + Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* toDisplayString */ "L"])(_ctx.countRef), 1)])) : Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createCommentVNode */ "f"])("", true), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementVNode */ "h"])("view", {
+  }), 128))])) : Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createCommentVNode */ "f"])("", true), _ctx.mode == "simple" ? (Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementBlock */ "g"])("view", _hoisted_4, [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementVNode */ "h"])("view", _hoisted_5, Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* toDisplayString */ "L"])(_ctx.modelValue) + "/" + Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* toDisplayString */ "L"])(_ctx.countRef), 1)])) : Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createCommentVNode */ "f"])("", true), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementVNode */ "h"])("view", {
     class: Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* normalizeClass */ "I"])(["nut-pagination-next", _ctx.modelValue >= _ctx.countRef ? "disabled" : ""]),
     onClick: _cache[1] || (_cache[1] = function ($event) {
       return _ctx.select(_ctx.modelValue + 1, true);
     })
-  }, [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* renderSlot */ "x"])(_ctx.$slots, "next-text", {}, function () {
-    return [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createTextVNode */ "k"])(Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* toDisplayString */ "L"])(_ctx.nextText), 1)];
+  }, [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* renderSlot */ "y"])(_ctx.$slots, "next-text", {}, function () {
+    return [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createTextVNode */ "l"])(Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* toDisplayString */ "L"])(_ctx.nextText), 1)];
   })], 2)]);
 }
 
@@ -1145,7 +1145,7 @@ var index_taro = /* @__PURE__ */Object(_plugin_vue_export_helper_js__WEBPACK_IMP
 var TabTitle = {
   setup: function setup(props) {
     return function () {
-      return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* h */ "p"])("view", {}, props.slots);
+      return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* h */ "q"])("view", {}, props.slots);
     };
   },
   props: {
@@ -1255,7 +1255,7 @@ var _sfc_main = create({
       }
     }
 
-    Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* onMounted */ "s"])(function () {
+    Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* onMounted */ "t"])(function () {
       initTitle();
       var arrnew = [];
 
@@ -1265,7 +1265,7 @@ var _sfc_main = create({
 
       arr.value = arrnew;
     });
-    Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* watch */ "D"])(function () {
+    Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* watch */ "E"])(function () {
       return ctx.slots.default();
     }, function (val, oldVal) {
       if (val) {
@@ -1273,10 +1273,10 @@ var _sfc_main = create({
         initTitle();
       }
     });
-    Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* watchEffect */ "E"])(function () {
+    Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* watchEffect */ "F"])(function () {
       activeIndex.value = props.defaultIndex;
     });
-    Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* watch */ "D"])(function () {
+    Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* watch */ "E"])(function () {
       return activeIndex.value;
     }, function (val, oldVal) {
       ctx.emit("switch-tab", activeIndex.value);
@@ -1318,13 +1318,13 @@ var _hoisted_5 = {
 };
 
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_TabTitle = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* resolveComponent */ "y"])("TabTitle");
+  var _component_TabTitle = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* resolveComponent */ "z"])("TabTitle");
 
-  var _component_scroll_view = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* resolveComponent */ "y"])("scroll-view");
+  var _component_scroll_view = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* resolveComponent */ "z"])("scroll-view");
 
-  return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
     class: Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* normalizeClass */ "I"])([_ctx.direction === "vertical" ? "vertical-tab" : "horizontal-tab"])
-  }, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createVNode */ "l"])(_component_scroll_view, {
+  }, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createVNode */ "m"])(_component_scroll_view, {
     "scroll-x": !_ctx.scrollYDirection,
     "scroll-y": _ctx.scrollYDirection,
     "scroll-left": _ctx.scrollLeft,
@@ -1332,12 +1332,12 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     class: "tab-title-scroll",
     "scroll-with-animation": true
   }, {
-    default: Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* withCtx */ "G"])(function () {
+    default: Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* withCtx */ "H"])(function () {
       return [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
         class: Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* normalizeClass */ "I"])(["tab-title", _ctx.randomTitleClass, _ctx.iconType]),
         ref: "navlist"
-      }, [(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_0__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* renderList */ "w"])(_ctx.titles, function (item, index) {
-        return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
+      }, [(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_0__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* renderList */ "x"])(_ctx.titles, function (item, index) {
+        return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
           class: Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* normalizeClass */ "I"])(["tab-title-box", _ctx.randomClass, {
             "nut-tab-active": _ctx.activeIndex == index
           }, {
@@ -1347,14 +1347,14 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
           onClick: function onClick($event) {
             return _ctx.switchTitle(index, $event);
           }
-        }, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("span", _hoisted_3, Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* toDisplayString */ "L"])(item.title), 1), item.content ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createBlock */ "e"])(_component_TabTitle, {
+        }, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("span", _hoisted_3, Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* toDisplayString */ "L"])(item.title), 1), item.content ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createBlock */ "e"])(_component_TabTitle, {
           key: 0,
           slots: item.content
         }, null, 8, ["slots"])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("", true)], 10, _hoisted_2);
       }), 128)), _hoisted_4], 2)];
     }),
     _: 1
-  }, 8, ["scroll-x", "scroll-y", "scroll-left", "scroll-top"]), _ctx.titles.length > 0 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_5, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createVNode */ "l"])(_component_TabTitle, {
+  }, 8, ["scroll-x", "scroll-y", "scroll-left", "scroll-top"]), _ctx.titles.length > 0 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_5, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createVNode */ "m"])(_component_TabTitle, {
     slots: _ctx.titles[_ctx.activeIndex].main
   }, null, 8, ["slots"])], 512)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("", true)], 2)]);
 }
@@ -1491,7 +1491,7 @@ var _sfc_main = create({
       }
     };
 
-    Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* watch */ "D"])(function () {
+    Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* watch */ "E"])(function () {
       return props.visible;
     }, function (val) {
       if (val) {
@@ -1553,14 +1553,14 @@ var _hoisted_1 = {
 var _hoisted_2 = ["innerHTML"];
 
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_nut_icon = Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* resolveComponent */ "y"])("nut-icon");
+  var _component_nut_icon = Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* resolveComponent */ "z"])("nut-icon");
 
-  return Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createBlock */ "e"])(vue__WEBPACK_IMPORTED_MODULE_3__[/* Transition */ "a"], {
+  return Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createBlock */ "e"])(vue__WEBPACK_IMPORTED_MODULE_3__[/* Transition */ "a"], {
     name: "toast-fade",
     onAfterLeave: _ctx.onAfterLeave
   }, {
-    default: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* withCtx */ "G"])(function () {
-      return [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* withDirectives */ "H"])(Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementVNode */ "h"])("view", {
+    default: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* withCtx */ "H"])(function () {
+      return [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* withDirectives */ "I"])(Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementVNode */ "h"])("view", {
         class: Object(vue__WEBPACK_IMPORTED_MODULE_4__[/* normalizeClass */ "I"])(_ctx.toastBodyClass),
         style: Object(vue__WEBPACK_IMPORTED_MODULE_4__[/* normalizeStyle */ "J"])({
           bottom: _ctx.center ? "auto" : _ctx.bottom + "px",
@@ -1569,16 +1569,16 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: _cache[0] || (_cache[0] = function () {
           return _ctx.clickCover && _ctx.clickCover.apply(_ctx, arguments);
         })
-      }, [_ctx.$slots.default ? Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* renderSlot */ "x"])(_ctx.$slots, "default", {
+      }, [_ctx.$slots.default ? Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* renderSlot */ "y"])(_ctx.$slots, "default", {
         key: 0
-      }) : (Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementBlock */ "g"])("view", {
+      }) : (Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementBlock */ "g"])("view", {
         key: 1,
         class: "nut-toast-inner",
         style: Object(vue__WEBPACK_IMPORTED_MODULE_4__[/* normalizeStyle */ "J"])({
           "text-align": _ctx.textAlignCenter ? "center" : "left",
           "background-color": _ctx.bgColor
         })
-      }, [_ctx.hasIcon ? (Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementBlock */ "g"])("view", _hoisted_1, [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createVNode */ "l"])(_component_nut_icon, {
+      }, [_ctx.hasIcon ? (Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createElementBlock */ "g"])("view", _hoisted_1, [Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* createVNode */ "m"])(_component_nut_icon, {
         size: "20",
         color: "#ffffff",
         name: _ctx.iconName
@@ -1627,12 +1627,12 @@ function createComponent(name) {
         vue.component(_component.name, _component);
       };
 
-      return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* defineComponent */ "m"])(_component);
+      return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* defineComponent */ "n"])(_component);
     },
     createDemo: function createDemo(_component) {
       _component.baseName = name;
       _component.name = "demo-" + name;
-      return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* defineComponent */ "m"])(_component);
+      return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* defineComponent */ "n"])(_component);
     }
   };
 }
@@ -1803,9 +1803,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var config = {"pages":["pages/login/index","pages/index/index","pages/mine/index"],"window":{"backgroundTextStyle":"light","navigationBarBackgroundColor":"#296dd3","navigationBarTitleText":"源诚数据资产平台","navigationBarTextStyle":"white"},"tabBar":{"color":"#7D8699","selectedColor":"#296DD3","list":[{"pagePath":"pages/index/index","text":"结构化账号","iconPath":"./assets/img/tab-bar/home.png","selectedIconPath":"./assets/img/tab-bar/home-active.png"},{"pagePath":"pages/mine/index","text":"我的","iconPath":"./assets/img/tab-bar/user.png","selectedIconPath":"./assets/img/tab-bar/user-active.png"}]}};
+var config = {"pages":["pages/login/index","pages/index/index","pages/mine/index"],"window":{"backgroundTextStyle":"light","navigationBarBackgroundColor":"#296dd3","navigationBarTitleText":"源诚数据资产平台","navigationBarTextStyle":"white"},"tabBar":{"color":"#B2B8C9","selectedColor":"#397AE7","list":[{"pagePath":"pages/index/index","text":"结构化账号","iconPath":"./assets/img/tab-bar/home.png","selectedIconPath":"./assets/img/tab-bar/home-active.png"},{"pagePath":"pages/mine/index","text":"我的","iconPath":"./assets/img/tab-bar/user.png","selectedIconPath":"./assets/img/tab-bar/user-active.png"}]}};
 _tarojs_runtime__WEBPACK_IMPORTED_MODULE_2__["window"].__taroAppConfig = config
-var inst = App(Object(_tarojs_runtime__WEBPACK_IMPORTED_MODULE_2__["createVue3App"])(_node_modules_babel_loader_8_2_1_babel_loader_lib_index_js_app_ts__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"], vue__WEBPACK_IMPORTED_MODULE_5__[/* h */ "p"], config))
+var inst = App(Object(_tarojs_runtime__WEBPACK_IMPORTED_MODULE_2__["createVue3App"])(_node_modules_babel_loader_8_2_1_babel_loader_lib_index_js_app_ts__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"], vue__WEBPACK_IMPORTED_MODULE_5__[/* h */ "q"], config))
 
 Object(_tarojs_taro__WEBPACK_IMPORTED_MODULE_3__["initPxTransform"])({
   designWidth: 375,

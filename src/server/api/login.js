@@ -5,3 +5,8 @@ export const login = (data) => request({
     method: 'post',
     data,
 });
+
+export const imgCode = () => request({
+    url: '/api/code/image',
+    method: 'get',
+});
