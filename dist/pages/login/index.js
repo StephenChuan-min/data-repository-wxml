@@ -2018,6 +2018,14 @@ PEMEncoder.prototype.encode = function encode(data, options) {
 
 
 
+
+var Toast = function Toast(msg) {
+  _tarojs_taro__WEBPACK_IMPORTED_MODULE_5___default.a.showToast({
+    title: msg,
+    icon: 'none'
+  });
+};
+
 /* harmony default export */ __webpack_exports__["a"] = ({
   name: 'Login',
   setup: function setup() {
@@ -2039,17 +2047,24 @@ PEMEncoder.prototype.encode = function encode(data, options) {
         imgUrl: '',
         show: false
       },
-      disabled: !true,
+      disabled: true,
       errorField: {
         username: {
-          isError: false,
+          show: false,
+          isError: true,
           message: '请输入账号'
         },
         password: {
-          isError: false,
+          show: false,
+          isError: true,
           message: '请输入密码'
         }
       }
+    });
+    state.disabled = Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* computed */ "c"])(function () {
+      return Object.keys(state.errorField).some(function (key) {
+        return state.errorField[key].isError === true;
+      });
     });
     var rules = {
       username: [{
@@ -2063,60 +2078,33 @@ PEMEncoder.prototype.encode = function encode(data, options) {
       password: [{
         required: true,
         message: '请输入密码'
+      }],
+      imageVerifyCode: [{
+        required: true,
+        message: '请输入图片验证码'
       }]
-    };
-
-    var validate = function validate() {
-      var valid = true;
-      Object.keys(rules).forEach(function (key) {
-        rules[key].forEach(function (item) {
-          if (item.required) {
-            state.errorField[key].isError = Boolean(params[key]) !== item.required;
-            state.errorField[key].message = item.message;
-          }
-
-          if (item.min) {
-            state.errorField[key].isError = params[key].length < item.min;
-            if (item.required && state.errorField[key].isError) state.errorField[key].message = item.message;
-          }
-        });
-      });
-      var keys = Object.keys(state.errorField);
-
-      for (var i = 0; i < keys.length; i++) {
-        if (state.errorField[keys[i]].isError) {
-          valid = false;
-          break;
-        }
-      }
-
-      return valid;
     };
 
     var handleChange = function handleChange(e, prop) {
       var value = e.target.value;
-
-      switch (prop) {
-        case 'username':
-          proxy.$refs[prop].value = params[prop] = value.replace(/\D/g, '');
-          break;
-
-        case 'password':
-          proxy.$refs[prop].value = params[prop] = value.replace(/\u4e00-\u9fa5/g, '');
-          break;
-
-        default:
-          break;
-      }
-
+      var reg = {
+        username: /\D/g,
+        password: /\s/g,
+        imageVerifyCode: /\W/g
+      };
+      proxy.$refs[prop].value = params[prop] = value.replace(reg[prop], '');
       rules[prop].forEach(function (item) {
         if (item.required) {
-          state.errorField[prop].isError = Boolean(params[prop]) !== item.required;
-          state.errorField[prop].message = item.message;
+          state.errorField[prop].show = state.errorField[prop].isError = Boolean(params[prop]) !== item.required;
         }
 
         if (item.min) {
-          state.errorField[prop].isError = params[prop].length < item.min;
+          state.errorField[prop].show = state.errorField[prop].isError = params[prop].length < item.min;
+        }
+
+        if (Boolean(params[prop]) === Boolean(item.required)) {
+          state.errorField[prop].message = rules[prop][0].message;
+        } else {
           state.errorField[prop].message = item.message;
         }
       });
@@ -2131,30 +2119,38 @@ PEMEncoder.prototype.encode = function encode(data, options) {
     };
 
     var doLogin = function doLogin() {
-      var valid = validate();
-
-      if (valid) {
-        state.loading = true;
-        var data = Object(_utils_encrypt__WEBPACK_IMPORTED_MODULE_3__[/* encryptInfo */ "a"])(Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* clearEmpty */ "a"])(params));
-        Object(_server_api_login__WEBPACK_IMPORTED_MODULE_2__[/* login */ "b"])(data).then(function (res) {
-          if (res.data.errCount === 3) {
-            state.code.show = true;
-            getImgCode();
+      state.loading = true;
+      var data = Object(_utils_encrypt__WEBPACK_IMPORTED_MODULE_3__[/* encryptInfo */ "a"])(Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* clearEmpty */ "a"])(params));
+      Object(_server_api_login__WEBPACK_IMPORTED_MODULE_2__[/* login */ "b"])(data).then(function (res) {
+        if (res.data.errCount >= 3) {
+          if (!state.errorField.imageVerifyCode) {
+            state.errorField.imageVerifyCode = {
+              isError: true,
+              message: '请输入图片验证码'
+            };
           }
 
-          if (res.code === 200) {
-            _tarojs_taro__WEBPACK_IMPORTED_MODULE_5___default.a.switchTab({
-              url: '/pages/index/index'
-            });
-            _tarojs_taro__WEBPACK_IMPORTED_MODULE_5___default.a.showToast({
-              title: '登录成功',
-              icon: 'none'
-            });
-          }
-        }).finally(function () {
-          state.loading = false;
-        });
-      }
+          state.code.show = true;
+          getImgCode();
+        }
+
+        if (res.code === 200) {
+          _tarojs_taro__WEBPACK_IMPORTED_MODULE_5___default.a.switchTab({
+            url: '/pages/index/index'
+          });
+          Toast('登录成功');
+        }
+
+        if (res.code === 9001) {
+          Toast('账号或密码错误');
+        }
+
+        if (res.code === 9001 && res.message === '验证码输入错误') {
+          Toast('验证码错误');
+        }
+      }).finally(function () {
+        state.loading = false;
+      });
     };
 
     Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* onMounted */ "t"])(function () {
@@ -2168,7 +2164,6 @@ PEMEncoder.prototype.encode = function encode(data, options) {
     return {
       params: params,
       state: state,
-      validate: validate,
       handleChange: handleChange,
       getImgCode: getImgCode,
       doLogin: doLogin
@@ -2190,11 +2185,10 @@ PEMEncoder.prototype.encode = function encode(data, options) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-core@3.2.20@@vue/runtime-core/dist/runtime-core.esm-bundler.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_shared@3.2.20@@vue/shared/dist/shared.esm-bundler.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-dom@3.2.20@@vue/runtime-dom/dist/runtime-dom.esm-bundler.js");
-/* harmony import */ var _assets_img_logo_loading1_gif__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../assets/img/logo_loading1.gif */ "./src/assets/img/logo_loading1.gif");
-/* harmony import */ var _assets_img_logo_loading1_gif__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_assets_img_logo_loading1_gif__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../assets/img/sign_logo.png */ "./src/assets/img/sign_logo.png");
-/* harmony import */ var _assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _assets_img_logo_loading1_gif__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../assets/img/logo_loading1.gif */ "./src/assets/img/logo_loading1.gif");
+/* harmony import */ var _assets_img_logo_loading1_gif__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_assets_img_logo_loading1_gif__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../assets/img/sign_logo.png */ "./src/assets/img/sign_logo.png");
+/* harmony import */ var _assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_3__);
 
 
 
@@ -2207,7 +2201,7 @@ var _hoisted_2 = {
 };
 
 var _hoisted_3 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
-  src: _assets_img_logo_loading1_gif__WEBPACK_IMPORTED_MODULE_3___default.a
+  src: _assets_img_logo_loading1_gif__WEBPACK_IMPORTED_MODULE_2___default.a
 }, null, -1
 /* HOISTED */
 );
@@ -2220,7 +2214,7 @@ var _hoisted_5 = {
 var _hoisted_6 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
   class: "logo"
 }, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
-  src: _assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_4___default.a
+  src: _assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_3___default.a
 })], -1
 /* HOISTED */
 );
@@ -2268,11 +2262,7 @@ var _hoisted_15 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* create
 );
 
 var _hoisted_16 = ["src"];
-var _hoisted_17 = {
-  key: 0,
-  class: "is-error-msg"
-};
-var _hoisted_18 = ["disabled"];
+var _hoisted_17 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [$setup.state.loading ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_2, _hoisted_4)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_5, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
     class: "navigationBar-title",
@@ -2283,39 +2273,37 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     ref: "username",
     placeholder: "请输入11位账号",
     maxlength: "11",
-    class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])($setup.state.errorField.username.isError ? 'is-error' : ''),
+    class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])($setup.state.errorField.username.isError && $setup.state.errorField.username.show ? 'is-error' : ''),
     onChange: _cache[0] || (_cache[0] = function (e) {
       return $setup.handleChange(e, 'username');
     })
   }, null, 34
   /* CLASS, HYDRATE_EVENTS */
-  ), $setup.state.errorField.username.isError ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_10, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.username.message), 1
+  ), $setup.state.errorField.username.isError && $setup.state.errorField.username.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_10, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.username.message), 1
   /* TEXT */
   )) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_11, [_hoisted_12, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
     ref: "password",
     type: "password",
     placeholder: "请输入密码",
     maxlength: "20",
-    class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])($setup.state.errorField.password.isError ? 'is-error' : ''),
+    class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])($setup.state.errorField.password.isError && $setup.state.errorField.password.show ? 'is-error' : ''),
     onChange: _cache[1] || (_cache[1] = function (e) {
       return $setup.handleChange(e, 'password');
     })
   }, null, 34
   /* CLASS, HYDRATE_EVENTS */
-  ), $setup.state.errorField.password.isError ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_13, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.password.message), 1
+  ), $setup.state.errorField.password.isError && $setup.state.errorField.password.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_13, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.password.message), 1
   /* TEXT */
-  )) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)]), $setup.state.code.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_14, [_hoisted_15, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* withDirectives */ "I"])(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-      return $setup.params.imageVerifyCode = $event;
-    }),
+  )) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)]), $setup.state.code.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_14, [_hoisted_15, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
+    ref: "imageVerifyCode",
     placeholder: "请输入图片验证码",
     maxlength: "4",
-    class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])($setup.state.errorField.imageVerifyCode.isError ? 'is-error' : '')
-  }, null, 2
-  /* CLASS */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_2__[/* vModelText */ "c"], $setup.params.imageVerifyCode, void 0, {
-    trim: true
-  }]]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+    onChange: _cache[2] || (_cache[2] = function (e) {
+      return $setup.handleChange(e, 'imageVerifyCode');
+    })
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
     class: "suffix",
     onClick: _cache[3] || (_cache[3] = function () {
       return $setup.getImgCode && $setup.getImgCode.apply($setup, arguments);
@@ -2324,9 +2312,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     src: $setup.state.code.imgUrl
   }, null, 8
   /* PROPS */
-  , _hoisted_16)]), $setup.state.errorField.imageVerifyCode.isError ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_17, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.imageVerifyCode.message), 1
-  /* TEXT */
-  )) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("button", {
+  , _hoisted_16)])])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("button", {
     class: "login-btn",
     type: "primary",
     disabled: $setup.state.disabled,
@@ -2335,7 +2321,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, "登录", 8
   /* PROPS */
-  , _hoisted_18)])]);
+  , _hoisted_17)])]);
 }
 
 /***/ }),
@@ -38774,6 +38760,7 @@ var imgCode = function imgCode() {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return baseUrl; });
+// export const baseUrl = 'https://data.yczcjk.com';
 var baseUrl = 'http://172.18.255.8:38510';
 
 /***/ }),

@@ -12,10 +12,10 @@
             ref="username"
             placeholder="请输入11位账号"
             maxlength="11"
-            :class="state.errorField.username.isError ? 'is-error' : ''"
+            :class="state.errorField.username.isError && state.errorField.username.show ? 'is-error' : ''"
             @change="(e) => handleChange(e, 'username')"
         />
-        <view class="is-error-msg" v-if="state.errorField.username.isError">{{state.errorField.username.message}}</view>
+        <view class="is-error-msg" v-if="state.errorField.username.isError && state.errorField.username.show">{{state.errorField.username.message}}</view>
       </view>
       <view class="form-item">
         <text class="iconfont icon-xiaochengxu-mima"></text>
@@ -24,21 +24,20 @@
             type="password"
             placeholder="请输入密码"
             maxlength="20"
-            :class="state.errorField.password.isError ? 'is-error' : ''"
+            :class="state.errorField.password.isError && state.errorField.password.show ? 'is-error' : ''"
             @change="(e) => handleChange(e, 'password')"
         />
-        <view class="is-error-msg" v-if="state.errorField.password.isError">{{ state.errorField.password.message }}</view>
+        <view class="is-error-msg" v-if="state.errorField.password.isError && state.errorField.password.show">{{ state.errorField.password.message }}</view>
       </view>
       <view class="form-item" v-if="state.code.show">
         <text class="iconfont icon-xiaochengxu-yanzhengma"></text>
         <input
-            v-model.trim="params.imageVerifyCode"
+            ref="imageVerifyCode"
             placeholder="请输入图片验证码"
             maxlength="4"
-            :class="state.errorField.imageVerifyCode.isError ? 'is-error' : ''"
+            @change="(e) => handleChange(e, 'imageVerifyCode')"
         />
         <view class="suffix" @click="getImgCode"><image :src="state.code.imgUrl" /></view>
-        <view class="is-error-msg" v-if="state.errorField.imageVerifyCode.isError">{{ state.errorField.imageVerifyCode.message }}</view>
       </view>
       <button class="login-btn" type="primary" :disabled="state.disabled" @click="doLogin">登录</button>
     </view>
@@ -46,11 +45,17 @@
 </template>
 
 <script>
-import { reactive, onMounted, getCurrentInstance } from 'vue';
+import { reactive, onMounted, computed, getCurrentInstance } from 'vue';
 import { login, imgCode } from '../../server/api/login';
 import { encryptInfo } from '../../utils/encrypt';
 import { clearEmpty } from '../../utils';
 import Taro from '@tarojs/taro';
+const Toast = (msg) => {
+  Taro.showToast({
+    title: msg,
+    icon: 'none',
+  });
+}
 
 export default {
   name: 'Login',
@@ -72,18 +77,21 @@ export default {
         imgUrl: '',
         show: false,
       },
-      disabled: !true,
+      disabled: true,
       errorField: {
         username: {
-          isError: false,
+          show: false,
+          isError: true,
           message: '请输入账号',
         },
         password: {
-          isError: false,
+          show: false,
+          isError: true,
           message: '请输入密码',
         },
       },
     });
+    state.disabled = computed(() => Object.keys(state.errorField).some((key) => state.errorField[key].isError === true));
 
     const rules = {
       username: [
@@ -93,51 +101,25 @@ export default {
       password: [
         { required: true, message: '请输入密码' },
       ],
-    };
-
-    const validate = () => {
-      let valid = true;
-      Object.keys(rules).forEach((key) => {
-        rules[key].forEach((item) => {
-          if (item.required) {
-            state.errorField[key].isError = (Boolean(params[key]) !== item.required);
-            state.errorField[key].message = item.message;
-          }
-          if (item.min) {
-            state.errorField[key].isError = (params[key].length < item.min);
-            if (item.required && state.errorField[key].isError) state.errorField[key].message = item.message;
-          }
-        })
-      });
-      const keys = Object.keys(state.errorField);
-      for (let i = 0; i < keys.length; i++) {
-        if (state.errorField[keys[i]].isError) {
-          valid = false;
-          break;
-        }
-      }
-      return valid;
+      imageVerifyCode: [
+        { required: true, message: '请输入图片验证码' },
+      ]
     };
 
     const handleChange = (e, prop) => {
       const { value } = e.target;
-      switch (prop) {
-        case 'username':
-          proxy.$refs[prop].value = params[prop] = value.replace(/\D/g, '');
-          break;
-        case 'password':
-          proxy.$refs[prop].value = params[prop] = value.replace(/\u4e00-\u9fa5/g, '');
-          break;
-        default:
-          break
-      }
+      const reg = { username: /\D/g, password: /\s/g, imageVerifyCode: /\W/g };
+      proxy.$refs[prop].value = params[prop] = value.replace(reg[prop], '');
       rules[prop].forEach((item) => {
         if (item.required) {
-          state.errorField[prop].isError = (Boolean(params[prop]) !== item.required);
-          state.errorField[prop].message = item.message;
+          state.errorField[prop].show = state.errorField[prop].isError = (Boolean(params[prop]) !== item.required);
         }
         if (item.min) {
-          state.errorField[prop].isError = (params[prop].length < item.min);
+          state.errorField[prop].show = state.errorField[prop].isError = params[prop].length < item.min;
+        }
+        if ((Boolean(params[prop]) === Boolean(item.required))) {
+          state.errorField[prop].message = rules[prop][0].message;
+        } else {
           state.errorField[prop].message = item.message;
         }
       });
@@ -152,28 +134,34 @@ export default {
     };
 
     const doLogin = () => {
-      const valid = validate();
-      if (valid) {
-        state.loading = true;
-        const data = encryptInfo(clearEmpty(params));
-        login(data).then((res) => {
-          if (res.data.errCount === 3) {
-            state.code.show = true;
-            getImgCode();
+      state.loading = true;
+      const data = encryptInfo(clearEmpty(params));
+      login(data).then((res) => {
+        if (res.data.errCount >= 3) {
+          if (!state.errorField.imageVerifyCode) {
+            state.errorField.imageVerifyCode = {
+              isError: true,
+              message: '请输入图片验证码',
+            }
           }
-          if (res.code === 200) {
-            Taro.switchTab({
-              url: '/pages/index/index',
-            });
-            Taro.showToast({
-              title: '登录成功',
-              icon: 'none',
-            });
-          }
-        }).finally(() => {
-          state.loading = false;
-        });
-      }
+          state.code.show = true;
+          getImgCode();
+        }
+        if (res.code === 200) {
+          Taro.switchTab({
+            url: '/pages/index/index',
+          });
+          Toast('登录成功');
+        }
+        if (res.code === 9001) {
+          Toast('账号或密码错误');
+        }
+        if (res.code === 9001 && res.message === '验证码输入错误') {
+          Toast('验证码错误');
+        }
+      }).finally(() => {
+        state.loading = false;
+      });
     };
 
     onMounted(() => {
@@ -181,7 +169,7 @@ export default {
       state.style.marginTop = top + 'px';
       state.style.lineHeight = height + 'px';
     });
-    return { params, state, validate, handleChange, getImgCode, doLogin };
+    return { params, state, handleChange, getImgCode, doLogin };
   }
 };
 </script>

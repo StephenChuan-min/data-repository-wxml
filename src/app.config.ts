@@ -12,7 +12,7 @@ export default {
     navigationStyle: 'custom',
   },
   tabBar: {
-    color: '#B2B8C9',
+    color: '#7D8699',
     selectedColor: '#397AE7',
     list: [{
       pagePath: 'pages/index/index',

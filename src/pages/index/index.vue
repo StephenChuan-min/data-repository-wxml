@@ -8,7 +8,22 @@
         <view class="search-input">
           <text class="iconfont icon-xiaochengxu-sousuo"></text>
           <input placeholder="请输入账号或姓名"/>
-          <view class="suffix">搜索</view>
+          <view class="suffix suffix-search">搜索</view>
+        </view>
+        <view class="tab-block">
+          <view class="tab-content">
+            <view v-for="item in state.tabs" :key="item.key" :class="['tabpane-item', state.params.role === item.key ? 'is-active' : '']" @click="tabClick(item.key)">{{item.label}}</view>
+          </view>
+          <view class=""></view>
+        </view>
+      </view>
+      <view class="block ">
+        <view class="">
+          <view class="name"></view>
+          <view class="">
+            <view class="id"></view>
+            <view class="account"></view>
+          </view>
         </view>
       </view>
     </view>
@@ -27,14 +42,26 @@ export default {
         marginTop: '',
         lineHeight: '',
       },
+      tabs: [
+        { label: '正式', key: 1 },
+        { label: '试用', key: 0 },
+      ],
+      params: {
+        username: '',
+        role: 1,
+      },
     });
+
+    const tabClick = (key) => {
+      state.params.role = key;
+    };
 
     onMounted(() => {
       const { height, top }= Taro.getMenuButtonBoundingClientRect();
       state.style.marginTop = top + 'px';
       state.style.lineHeight = height + 'px';
     });
-    return { state };
+    return { state, tabClick, };
   },
 };
 </script>
@@ -62,6 +89,7 @@ export default {
     }
     .search-block{
       height: 75px;
+      box-shadow: 0px 10px 20px 0px rgba(13, 32, 78, 0.06);
       .search-input{
         transform: translateY(-26px);
         position: relative;
@@ -87,12 +115,49 @@ export default {
           line-height: 42px;
         }
         .suffix{
+          width: 70px;
+          height: 30px;
           position: absolute;
-          right: 0;
-          bottom: 10px;
-          border: 1px solid #C5C7CE;
-          border-radius: 21px;
+          right: 5px;
+          bottom: 5px;
+          border-radius: 20px;
+          text-align: center;
+          line-height: 30px;
           z-index: 9;
+          font-size: 15px;
+          &-search{
+            background-color: #E2EDFF;
+            color: #397AE7;
+          }
+          &-cancel{
+            background-color: #EFF2F7;
+            color: #4E5566;
+          }
+        }
+      }
+      .tab-block{
+        display: flex;
+        //margin-bottom: 13px;
+        .tab-content{
+          display: flex;
+          .tabpane-item{
+            font-size: 16px;
+            color: #4E5566;
+            margin-right: 40px;
+            &.is-active{
+              font-size: 20px;
+              font-weight: bold;
+              color: #20242E;
+              &::after{
+                content:'';
+                display: block;
+                width: 40px;
+                height: 5px;
+                background: linear-gradient(90deg, #27CAFF 0%, #2F7AF9 100%);
+                margin-top: -5px;
+              }
+            }
+          }
         }
       }
     }
