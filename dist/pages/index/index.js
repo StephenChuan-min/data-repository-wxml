@@ -66,6 +66,12 @@ if (false) {}
       }
     });
 
+    var handleFocus = function handleFocus() {
+      _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.navigateTo({
+        url: '/pages/search/index'
+      });
+    };
+
     var tabClick = function tabClick(key) {
       state.params.role = key;
     };
@@ -80,7 +86,8 @@ if (false) {}
     });
     return {
       state: state,
-      tabClick: tabClick
+      tabClick: tabClick,
+      handleFocus: handleFocus
     };
   }
 });
@@ -112,34 +119,37 @@ var _hoisted_3 = {
 var _hoisted_4 = {
   class: "block search-block"
 };
-
-var _hoisted_5 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+var _hoisted_5 = {
   class: "search-input"
-}, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+};
+
+var _hoisted_6 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
   class: "iconfont icon-xiaochengxu-sousuo"
-}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
-  placeholder: "请输入账号或姓名"
-}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
-  class: "suffix suffix-search"
-}, "搜索")], -1
+}, null, -1
 /* HOISTED */
 );
 
-var _hoisted_6 = {
+var _hoisted_7 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  class: "suffix suffix-search"
+}, "搜索", -1
+/* HOISTED */
+);
+
+var _hoisted_8 = {
   class: "tab-block"
 };
-var _hoisted_7 = {
+var _hoisted_9 = {
   class: "tab-content"
 };
-var _hoisted_8 = ["onClick"];
+var _hoisted_10 = ["onClick"];
 
-var _hoisted_9 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+var _hoisted_11 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
   class: ""
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_10 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createStaticVNode */ "k"])("<view class=\"block\"><view class=\"\"><view class=\"name\"></view><view class=\"\"><view class=\"id\"></view><view class=\"account\"></view></view></view></view>", 1);
+var _hoisted_12 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createStaticVNode */ "k"])("<view class=\"block\"><view class=\"\"><view class=\"name\"></view><view class=\"\"><view class=\"id\"></view><view class=\"account\"></view></view></view></view>", 1);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_2, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
@@ -147,7 +157,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     style: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeStyle */ "J"])($setup.state.style)
   }, "源诚数据资产平台", 4
   /* STYLE */
-  )]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_3, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_4, [_hoisted_5, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_6, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_7, [(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_0__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* renderList */ "x"])($setup.state.tabs, function (item) {
+  )]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_3, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_4, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_5, [_hoisted_6, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
+    placeholder: "请输入账号或姓名",
+    onFocus: _cache[0] || (_cache[0] = function () {
+      return $setup.handleFocus && $setup.handleFocus.apply($setup, arguments);
+    })
+  }, null, 32
+  /* HYDRATE_EVENTS */
+  ), _hoisted_7]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_8, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_9, [(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_0__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* renderList */ "x"])($setup.state.tabs, function (item) {
     return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
       key: item.key,
       class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])(['tabpane-item', $setup.state.params.role === item.key ? 'is-active' : '']),
@@ -156,10 +173,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.label), 11
     /* TEXT, CLASS, PROPS */
-    , _hoisted_8);
+    , _hoisted_10);
   }), 128
   /* KEYED_FRAGMENT */
-  ))]), _hoisted_9])]), _hoisted_10])]);
+  ))]), _hoisted_11])]), _hoisted_12])]);
 }
 
 /***/ }),

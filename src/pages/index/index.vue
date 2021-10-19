@@ -7,7 +7,7 @@
       <view class="block search-block">
         <view class="search-input">
           <text class="iconfont icon-xiaochengxu-sousuo"></text>
-          <input placeholder="请输入账号或姓名"/>
+          <input placeholder="请输入账号或姓名" @focus="handleFocus"/>
           <view class="suffix suffix-search">搜索</view>
         </view>
         <view class="tab-block">
@@ -52,6 +52,12 @@ export default {
       },
     });
 
+    const handleFocus = () => {
+      Taro.navigateTo({
+        url: '/pages/search/index',
+      });
+    };
+
     const tabClick = (key) => {
       state.params.role = key;
     };
@@ -61,7 +67,7 @@ export default {
       state.style.marginTop = top + 'px';
       state.style.lineHeight = height + 'px';
     });
-    return { state, tabClick, };
+    return { state, tabClick, handleFocus };
   },
 };
 </script>

@@ -3,6 +3,7 @@ export default {
     'pages/login/index',
     'pages/index/index',
     'pages/mine/index',
+    'pages/search/index',
   ],
   window: {
     backgroundTextStyle: 'light',
