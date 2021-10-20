@@ -94,14 +94,14 @@ var _hoisted_8 = {
   class: "mine-container-btm"
 };
 
-var _hoisted_9 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])("退出登录");
+var _hoisted_9 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "l"])("退出登录");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_nut_avatar = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* resolveComponent */ "y"])("nut-avatar");
+  var _component_nut_avatar = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* resolveComponent */ "z"])("nut-avatar");
 
-  var _component_nut_button = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* resolveComponent */ "y"])("nut-button");
+  var _component_nut_button = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* resolveComponent */ "z"])("nut-button");
 
-  return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_2, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_3, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_4, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createVNode */ "l"])(_component_nut_avatar, {
+  return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_2, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_3, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_4, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createVNode */ "m"])(_component_nut_avatar, {
     icon: "my",
     "bg-color": "#296dd3",
     size: "large"
@@ -109,12 +109,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_7, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(_ctx.phone), 1
   /* TEXT */
-  )])])]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_8, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createVNode */ "l"])(_component_nut_button, {
+  )])])]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_8, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createVNode */ "m"])(_component_nut_button, {
     block: "",
     type: "default",
     shape: "square"
   }, {
-    default: Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* withCtx */ "G"])(function () {
+    default: Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* withCtx */ "H"])(function () {
       return [_hoisted_9];
     }),
     _: 1

@@ -14,12 +14,12 @@ const request = (options) => {
                 // 'content-type': 'application/x-www-form-urlencoded', // from data
             },
             success: (res) => {
-                if (res.data.code === 401) {
+                if (res.code === 401) {
                     Taro.reLaunch({
-                        url: 'pages/login/index',
+                        url: '/pages/login/index',
                     });
                 }
-                if(res.data.success == false){
+                if(res.success == false){
                     Taro.showToast({
                         icon:"none",
                         title:res.data.message
@@ -28,10 +28,6 @@ const request = (options) => {
                 resolve(res.data);
             },
         }
-        // const token = Taro.getStorageSync("token");
-        // if(token){
-        //     setting.header.token = '' + token;
-        // }
         if (options.header) {
             setting.header = Object.assign(setting.header, options.header);
         }

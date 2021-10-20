@@ -41,13 +41,13 @@ var request = function request(options) {
       timeout: 1000 * 30,
       header: Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, options.header),
       success: function success(res) {
-        if (res.data.code === 401) {
+        if (res.code === 401) {
           _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.reLaunch({
-            url: 'pages/login/index'
+            url: '/pages/login/index'
           });
         }
 
-        if (res.data.success == false) {
+        if (res.success == false) {
           _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.showToast({
             icon: "none",
             title: res.data.message
@@ -56,10 +56,7 @@ var request = function request(options) {
 
         resolve(res.data);
       }
-    }; // const token = Taro.getStorageSync("token");
-    // if(token){
-    //     setting.header.token = '' + token;
-    // }
+    };
 
     if (options.header) {
       setting.header = Object.assign(setting.header, options.header);
@@ -70,6 +67,43 @@ var request = function request(options) {
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (request);
+
+/***/ }),
+
+/***/ "./src/utils/index.js":
+/*!****************************!*\
+  !*** ./src/utils/index.js ***!
+  \****************************/
+/*! exports provided: clearEmpty */
+/*! exports used: clearEmpty */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return clearEmpty; });
+/* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/objectSpread2 */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/objectSpread2.js");
+/* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/typeof */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/typeof.js");
+
+
+
+/**
+ * 去除对象中空值
+ * @param obj
+ * @returns {*}
+ */
+var clearEmpty = function clearEmpty(obj) {
+  if (Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(obj) === 'object') {
+    var l = Object.keys(obj);
+
+    var _obj = Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, obj);
+
+    l.forEach(function (item) {
+      if (_obj[item] === '' || _obj[item] === undefined || _obj[item] === null) delete _obj[item];else if (typeof _obj[item] === 'string') _obj[item] = _obj[item].replace(/^\s+|\s+$/g, '');
+    });
+    return _obj;
+  }
+
+  return obj;
+};
 
 /***/ })
 

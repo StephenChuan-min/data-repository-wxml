@@ -2029,7 +2029,7 @@ var Toast = function Toast(msg) {
 /* harmony default export */ __webpack_exports__["a"] = ({
   name: 'Login',
   setup: function setup() {
-    var _getCurrentInstance = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* getCurrentInstance */ "n"])(),
+    var _getCurrentInstance = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* getCurrentInstance */ "o"])(),
         proxy = _getCurrentInstance.proxy;
 
     var params = Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* reactive */ "k"])({
@@ -2153,7 +2153,7 @@ var Toast = function Toast(msg) {
       });
     };
 
-    Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* onMounted */ "s"])(function () {
+    Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* onMounted */ "t"])(function () {
       var _Taro$getMenuButtonBo = _tarojs_taro__WEBPACK_IMPORTED_MODULE_5___default.a.getMenuButtonBoundingClientRect(),
           height = _Taro$getMenuButtonBo.height,
           top = _Taro$getMenuButtonBo.top;
@@ -2264,7 +2264,7 @@ var _hoisted_15 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* create
 var _hoisted_16 = ["src"];
 var _hoisted_17 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [$setup.state.loading ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_2, _hoisted_4)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_5, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [$setup.state.loading ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_2, _hoisted_4)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_5, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
     class: "navigationBar-title",
     style: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeStyle */ "J"])($setup.state.style)
   }, "源诚数据资产平台", 4
@@ -2279,7 +2279,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 34
   /* CLASS, HYDRATE_EVENTS */
-  ), $setup.state.errorField.username.isError && $setup.state.errorField.username.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_10, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.username.message), 1
+  ), $setup.state.errorField.username.isError && $setup.state.errorField.username.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_10, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.username.message), 1
   /* TEXT */
   )) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_11, [_hoisted_12, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
     ref: "password",
@@ -2292,9 +2292,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 34
   /* CLASS, HYDRATE_EVENTS */
-  ), $setup.state.errorField.password.isError && $setup.state.errorField.password.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_13, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.password.message), 1
+  ), $setup.state.errorField.password.isError && $setup.state.errorField.password.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_13, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.password.message), 1
   /* TEXT */
-  )) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)]), $setup.state.code.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_14, [_hoisted_15, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
+  )) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)]), $setup.state.code.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_14, [_hoisted_15, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
     ref: "imageVerifyCode",
     placeholder: "请输入图片验证码",
     maxlength: "4",
@@ -38750,79 +38750,6 @@ var imgCode = function imgCode() {
 
 /***/ }),
 
-/***/ "./src/server/base.js":
-/*!****************************!*\
-  !*** ./src/server/base.js ***!
-  \****************************/
-/*! exports provided: baseUrl */
-/*! exports used: baseUrl */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return baseUrl; });
-// export const baseUrl = 'https://data.yczcjk.com';
-var baseUrl = 'http://172.18.255.8:38510';
-
-/***/ }),
-
-/***/ "./src/server/request.js":
-/*!*******************************!*\
-  !*** ./src/server/request.js ***!
-  \*******************************/
-/*! exports provided: default */
-/*! exports used: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/objectSpread2 */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/objectSpread2.js");
-/* harmony import */ var _base__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./base */ "./src/server/base.js");
-/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @tarojs/taro */ "./node_modules/_@tarojs_taro@3.3.9@@tarojs/taro/index.js");
-/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_tarojs_taro__WEBPACK_IMPORTED_MODULE_2__);
-
-
-
-
-var request = function request(options) {
-  return new Promise(function (resolve, reject) {
-    var setting = {
-      url: _base__WEBPACK_IMPORTED_MODULE_1__[/* baseUrl */ "a"] + options.url,
-      data: options.data,
-      method: options.method.toUpperCase() || 'GET',
-      timeout: 1000 * 30,
-      header: Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, options.header),
-      success: function success(res) {
-        if (res.data.code === 401) {
-          _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.reLaunch({
-            url: 'pages/login/index'
-          });
-        }
-
-        if (res.data.success == false) {
-          _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.showToast({
-            icon: "none",
-            title: res.data.message
-          });
-        }
-
-        resolve(res.data);
-      }
-    }; // const token = Taro.getStorageSync("token");
-    // if(token){
-    //     setting.header.token = '' + token;
-    // }
-
-    if (options.header) {
-      setting.header = Object.assign(setting.header, options.header);
-    }
-
-    _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.request(setting);
-  });
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (request);
-
-/***/ }),
-
 /***/ "./src/utils/encrypt.js":
 /*!******************************!*\
   !*** ./src/utils/encrypt.js ***!
@@ -38864,44 +38791,7 @@ var encryptInfo = function encryptInfo() {
   });
 };
 
-/***/ }),
-
-/***/ "./src/utils/index.js":
-/*!****************************!*\
-  !*** ./src/utils/index.js ***!
-  \****************************/
-/*! exports provided: clearEmpty */
-/*! exports used: clearEmpty */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return clearEmpty; });
-/* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/objectSpread2 */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/objectSpread2.js");
-/* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/typeof */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/typeof.js");
-
-
-
-/**
- * 去除对象中空值
- * @param obj
- * @returns {*}
- */
-var clearEmpty = function clearEmpty(obj) {
-  if (Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(obj) === 'object') {
-    var l = Object.keys(obj);
-
-    var _obj = Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, obj);
-
-    l.forEach(function (item) {
-      if (_obj[item] === '' || _obj[item] === undefined || _obj[item] === null) delete _obj[item];else if (typeof _obj[item] === 'string') _obj[item] = _obj[item].replace(/^\s+|\s+$/g, '');
-    });
-    return _obj;
-  }
-
-  return obj;
-};
-
 /***/ })
 
-},[["./src/pages/login/index.vue","runtime","taro","vendors"]]]);
+},[["./src/pages/login/index.vue","runtime","taro","vendors","common"]]]);
 //# sourceMappingURL=index.js.map
