@@ -1,3 +1,5 @@
+import Taro from '@tarojs/taro';
+
 /**
  * 去除对象中空值
  * @param obj
@@ -17,3 +19,16 @@ export const clearEmpty = (obj) => {
     }
     return obj;
 };
+
+export const storageSession = {
+    getItem: () => Taro.getStorageSync('session'),
+    removeItem: () => Taro.removeStorageSync('session'),
+    setItem: (session) => Taro.setStorageSync('session', session),
+}
+
+export const toast = (msg) => {
+    Taro.showToast({
+        title: msg,
+        icon: 'none',
+    })
+}

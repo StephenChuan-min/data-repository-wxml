@@ -1,31 +1,32 @@
 import { baseUrl } from './base';
+import { storageSession } from '../utils';
 import Taro from '@tarojs/taro';
 
 const request = (options) => {
     return new Promise((resolve, reject) => {
-
+        const session = storageSession.getItem('session') || '';
         const setting = {
             url: baseUrl + options.url,
             data: options.data,
             method: options.method.toUpperCase() || 'GET',
             timeout: 1000 * 30,
             header: {
+                Cookie: session,
                 ...options.header
-                // 'content-type': 'application/x-www-form-urlencoded', // from data
             },
             success: (res) => {
-                if (res.code === 401) {
+                if (res.data.code === 401) {
                     Taro.reLaunch({
                         url: '/pages/login/index',
                     });
                 }
-                if(res.success == false){
+                if(res.data.success == false){
                     Taro.showToast({
                         icon:"none",
                         title:res.data.message
                     })
                 }
-                resolve(res.data);
+                resolve(res);
             },
         }
         if (options.header) {

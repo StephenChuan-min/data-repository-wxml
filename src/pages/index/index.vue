@@ -15,9 +15,15 @@
     </view >
     <view class="index-wrapper-picker" data-id="index-wrapper-picker" v-if="state.pickerVisible" @click="close">
       <view class="picker-content">
-        <view class="picker-option pickered">普通数据</view>
-        <view class="picker-option">相似数据</view>
-        <view class="picker-option">非初标数据</view>
+        <view
+            v-for="item in state.pickerOptions"
+            :key="item.key"
+            :class="['picker-option', item.key === state.userEditParams.userEdit.auctionDataType
+            || item.key === state.userEditParams.userEdit.creditorDataType ? 'pickered' : '']"
+            @click="handlePicker(item.key)"
+        >
+          {{item.label}}
+        </view>
       </view>
     </view>
     <view class="fixed">
@@ -34,56 +40,91 @@
           <view class="tab-content">
             <view v-for="item in state.tabs" :key="item.key" :class="['tabpane-item', state.params.role === item.key ? 'is-active' : '']" @click="tabClick(item.key)">{{item.label}}</view>
           </view>
-          <view :class="['select-structured', state.visible ? 'is-active' : '']" @click="state.visible = !state.visible">全部</view>
+          <view :class="['select-structured', state.visible ? 'is-active' : '']" @click="state.visible = !state.visible">
+            {{ structuredType }}</view>
         </view>
       </view>
     </view>
-    <view class="index-wrapper-content">
-      <view class="empty" v-if="state.userList.length === 0">
-        <image src="../../assets/img/empty.png" />
-        <view style="color: rgba(0, 0, 0, 0.87);font-size: 14px">暂无数据</view>
+    <view class="loading" v-if="state.loading"><image src="../../assets/img/logo_loading2.gif" /></view>
+    <scroll-view
+        scroll-y
+        :refresher-enabled="true"
+        refresher-background="#F6F7F9"
+        refresher-default-style="none"
+        :refresher-threshold="10"
+        :refresher-triggered="state.refreshPull.triggered"
+        @refresherpulling="refresherPulling"
+        @refresherrefresh="refresherRefresh"
+    >
+      <view slot="refresher" class="refresh-container" v-if="state.refreshPull.refreshLoading">
+        <image src="../../assets/img/logo_loading2.gif" />
+        <view style="color: #7D8699;font-size: 13px">{{state.refreshPull.label}}</view>
       </view>
-      <view class="user-list-container" v-for="item in state.userList" :key="item.id">
-        <view class="block">
-          <view class="name">{{item.name}}</view>
-          <view class="info">
-            <view class="id">ID：{{item.id}}</view>
-            <view class="username">账号：{{item.username}}</view>
-          </view>
-          <view class="operate-block">
-            <view class="operate-card" @click="openMask">
-              <view class="title"><text class="iconfont icon-xiaochengxu-zichanpaimai" />资产拍卖数据</view>
-              <view class="select">非初标数据</view>
+      <view class="index-wrapper-content" v-if="!state.loading">
+        <view class="empty" v-if="!state.loading && state.userList.length === 0">
+          <image src="../../assets/img/empty.png" />
+          <view style="color: rgba(0, 0, 0, 0.87);font-size: 14px">暂无数据</view>
+        </view>
+        <view class="user-list-container" v-for="item in state.userList" :key="item.id">
+          <view class="block">
+            <view class="name">{{item.name || '-'}}</view>
+            <view class="info">
+              <view class="id">ID：{{item.id || '-'}}</view>
+              <view class="username">账号：{{item.username || '-'}}</view>
             </view>
-            <view class="operate-card">
-              <view class="title"><text class="iconfont icon-xiaochengxu-pochanzhongzu" />破产重组数据</view>
-              <view class="select">-</view>
-            </view>
-            <view class="operate-card">
-              <view class="title"><text class="iconfont icon-xiaochengxu-paimaizhaiquanshuju" />拍卖债权数据</view>
-              <view class="select">非初标数据</view>
-            </view>
-            <view class="operate-card">
-              <view class="title"><text class="iconfont icon-xiaochengxu-zhaoshangzhaiquanshuju" />招商债权数据</view>
-              <view class="select">-</view>
+            <view class="operate-block">
+              <view v-if="item.auctionDataType !== -1" class="operate-card" @click="openMask('auctionDataType', item)">
+                <view class="title"><text class="iconfont icon-xiaochengxu-zichanpaimai" />资产拍卖数据</view>
+                <view class="select">{{ state.auctionDataType[item.auctionDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
+              </view>
+              <view v-if="item.structuredObject.match(new RegExp('破产重组数据', 'g'))" class="operate-card">
+                <view class="title"><text class="iconfont icon-xiaochengxu-pochanzhongzu" />破产重组数据</view>
+                <view class="select">-</view>
+              </view>
+              <view v-if="item.creditorDataType !== -1" class="operate-card" @click="openMask('creditorDataType', item)">
+                <view class="title"><text class="iconfont icon-xiaochengxu-paimaizhaiquanshuju" />拍卖债权数据</view>
+                <view class="select">{{ state.creditorDataType[item.creditorDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
+              </view>
+              <view v-if="item.structuredObject.match(new RegExp('招商债权数据', 'g'))" class="operate-card">
+                <view class="title"><text class="iconfont icon-xiaochengxu-zhaoshangzhaiquanshuju" />招商债权数据</view>
+                <view class="select">-</view>
+              </view>
             </view>
           </view>
         </view>
       </view>
-    </view>
+    </scroll-view>
   </view>
 </template>
 
 <script>
-import { onMounted, reactive, watch } from 'vue';
+import { onMounted, reactive, watch, computed } from 'vue';
 import Taro from "@tarojs/taro";
-import { clearEmpty } from "../../utils";
-import { userView } from '../../server/api/index';
+import { clearEmpty, toast  } from "../../utils";
+import { userView, userEdit } from '../../server/api/index';
+const auctionDataType = {
+  '0': '普通数据',
+  '1': '普通数据',
+  '2': '相似数据',
+  '3': '非初标数据'
+}
+const creditorDataType = {
+  '0': '普通数据',
+  '1': '非初标数据',
+}
 
 export default {
   name: 'Index',
   setup() {
     const state = reactive({
+      auctionDataType,
+      creditorDataType,
+      loading: false,
+      refreshPull: {
+        triggered: false,
+        refreshLoading: false,
+        label: '松开刷新',
+      },
       visible: false,
       pickerVisible: false,
       style: {
@@ -99,40 +140,48 @@ export default {
         role: 1,
         functions: '',
       },
+      userEditParams: {
+        id: '',
+        userEdit: {
+          auctionDataType: 0,
+          creditorDataType: 0,
+          functionId: [],
+          name: "DoyuTu",
+          roleId: 1
+        },
+      },
       structuredObject: [
         { label: '全部', key: '' },
         { label: '资产拍卖数据', key: 8 },
         { label: '破产重组数据', key: 11 },
         { label: '拍卖债权数据', key: 26 },
-        { label: '招商债权数据', key: 29 }
+        { label: '招商债权数据', key: 29 },
       ],
-      userList: [
-        {
-          auctionDataType: 0,
-          creditorDataType: 0,
-          id: 1,
-          name: "DoyuTu",
-          role: "正式",
-          structuredObject: "资产结构化",
-          username: "12345678901",
-          wrongNum: 0,
-        },
-        {
-          auctionDataType: 0,
-          creditorDataType: 0,
-          id: 1,
-          name: "DoyuTu",
-          role: "正式",
-          structuredObject: "资产结构化",
-          username: "12345678901",
-          wrongNum: 0,
-        }
+      userList: [],
+      pickerOptions: [
+        { label: '普通数据', key: 0 },
+        { label: '相似数据', key: 2 },
+        { label: '非初标数据', key: 3 },
       ],
     });
 
     watch(() => state.pickerVisible, (newVal) => {
       if (!newVal) Taro.showTabBar();
     });
+
+    const structuredType = computed(() => state.structuredObject.find((item) => item.key === state.params.functions).label);
+
+    const getList = () => {
+      state.loading = true;
+      userView(clearEmpty(state.params)).then((res) => {
+        const { data } = res;
+        if (data.code === 200) {
+          state.userList = data.data || [];
+        }
+      }).finally(() => {
+        state.loading = false;
+      });
+    };
 
     const doSearch = () => {
       Taro.navigateTo({
@@ -141,18 +190,48 @@ export default {
     };
 
     const tabClick = (key) => {
+      if (state.params.role === key) return;
       state.params.role = key;
+      state.params.functions = '';
       state.visible = false;
+      getList();
     };
 
     const handleSelect = (key) => {
+      state.visible = false;
+      if (state.params.functions === key) return;
       state.params.functions = key;
+      getList();
     };
 
-    const openMask = () => {
+    const openMask = (which, item) => {
       Taro.hideTabBar({
         success: () => {
+          state.userEditParams.id = item.id;
+          state.userEditParams.userEdit.name = item.name;
+          state.userEditParams.userEdit.roleId = state.params.role;
+          state.userEditParams.userEdit.creditorDataType = item.creditorDataType === -1 ? '' : item.creditorDataType;
+          state.userEditParams.userEdit.auctionDataType = [0 , 1].includes(item.auctionDataType)
+              ? 0 : item.auctionDataType === -1 ? '' : item.auctionDataType;
+          state.userEditParams.userEdit.functionId = state.params.functions ? [state.params.functions] : [8, 11, 26, 29];
           state.pickerVisible = true;
+          switch (which) {
+            case 'auctionDataType':
+              state.pickerOptions = [
+                { label: '普通数据', key: 0 },
+                { label: '相似数据', key: 2 },
+                { label: '非初标数据', key: 3 },
+              ];
+              break;
+            case 'creditorDataType':
+              state.pickerOptions = [
+                { label: '普通数据', key: 0 },
+                { label: '非初标数据', key: 1 },
+              ];
+              break;
+            default:
+              break;
+          }
         },
       });
     };
@@ -171,24 +250,91 @@ export default {
       }
     };
 
+    const refresherPulling = () => {
+      state.refreshPull.label = '松开刷新';
+      state.refreshPull.refreshLoading = true;
+    };
+
+    const refresherRefresh = () => {
+      state.refreshPull.triggered = true;
+      state.refreshPull.label = '刷新中';
+      state.params = {
+        username: '',
+        role: 1,
+        functions: '',
+      };
+      userView(clearEmpty(state.params)).then((res) => {
+        const { data } = res;
+        if (data.code === 200) {
+          state.userList = data.data || [];
+        }
+      }).finally(() => {
+        state.refreshPull.refreshLoading = false;
+        state.refreshPull.triggered = false;
+      });
+    };
+
+    const handlePicker = (key) => {
+      const { id, userEdit: data } = state.userEditParams;
+      if (state.pickerOptions.length === 3) {
+        state.userEditParams.userEdit.auctionDataType = key;
+      } else {
+        state.userEditParams.userEdit.creditorDataType = key;
+      }
+      state.pickerVisible = false;
+      userEdit(id, clearEmpty(data)).then((res) => {
+        const { data } = res;
+        getList();
+        if (data.code === 200) {
+          toast('操作成功');
+        } else {
+          toast('操作失败, 请重试');
+        }
+      });
+    };
+
     onMounted(() => {
       const { height, top }= Taro.getMenuButtonBoundingClientRect();
       state.style.marginTop = top + 'px';
       state.style.lineHeight = height + 'px';
-      userView(clearEmpty(state.params)).then((res) => {
-        console.log(res);
-      });
+      getList();
     });
-    return { state, tabClick, doSearch, handleSelect, openMask, close };
+    return {
+      state,
+      structuredType,
+      tabClick,
+      doSearch,
+      handleSelect,
+      openMask,
+      close,
+      refresherPulling,
+      refresherRefresh,
+      handlePicker,
+    };
   },
 };
 </script>
 
 <style lang="scss">
 .index-wrapper{
+  box-sizing: border-box;
   padding-top: 199px;
   position: relative;
   background-color: #F6F7F9;
+  min-height: 100vh;
+  .loading{
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    border-radius: 16px;
+    image{
+      width: 80px;
+      height: 80px;
+    }
+  }
   .block{
     background-color: #fff;
     padding: 0 15px;
@@ -287,12 +433,11 @@ export default {
         }
         .select-structured{
           box-sizing: border-box;
-          width: 61px;
+          padding: 0 25px 0 10px;
           height: 39px;
           position: relative;
           font-size: 14px;
           color: #7D8699;
-          padding-left: 10px;
           line-height: 30px;
           &::after{
             position: absolute;
@@ -365,6 +510,11 @@ export default {
               color: #7D8699;
               margin-top: 5px;
               margin-left: 22px;
+              .iconfont{
+                font-size: 5px;
+                margin-left: 6px;
+                vertical-align: 3px;
+              }
             }
           }
         }
@@ -418,9 +568,17 @@ export default {
       }
     }
   }
+  .refresh-container{
+    padding: 10px;
+    text-align: center;
+    image{
+      width: 40px;
+      height: 40px;
+    }
+  }
 }
 .empty{
-  height: 111px;
+  height: 200px;
   text-align: center;
   margin-top: 99px;
   image{

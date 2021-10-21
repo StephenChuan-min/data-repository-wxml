@@ -49,10 +49,28 @@ if (false) {}
 
 
 
+var auctionDataType = {
+  '0': '普通数据',
+  '1': '普通数据',
+  '2': '相似数据',
+  '3': '非初标数据'
+};
+var creditorDataType = {
+  '0': '普通数据',
+  '1': '非初标数据'
+};
 /* harmony default export */ __webpack_exports__["a"] = ({
   name: 'Index',
   setup: function setup() {
     var state = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* reactive */ "k"])({
+      auctionDataType: auctionDataType,
+      creditorDataType: creditorDataType,
+      loading: false,
+      refreshPull: {
+        triggered: false,
+        refreshLoading: false,
+        label: '松开刷新'
+      },
       visible: false,
       pickerVisible: false,
       style: {
@@ -71,6 +89,16 @@ if (false) {}
         role: 1,
         functions: ''
       },
+      userEditParams: {
+        id: '',
+        userEdit: {
+          auctionDataType: 0,
+          creditorDataType: 0,
+          functionId: [],
+          name: "DoyuTu",
+          roleId: 1
+        }
+      },
       structuredObject: [{
         label: '全部',
         key: ''
@@ -87,24 +115,16 @@ if (false) {}
         label: '招商债权数据',
         key: 29
       }],
-      userList: [{
-        auctionDataType: 0,
-        creditorDataType: 0,
-        id: 1,
-        name: "DoyuTu",
-        role: "正式",
-        structuredObject: "资产结构化",
-        username: "12345678901",
-        wrongNum: 0
+      userList: [],
+      pickerOptions: [{
+        label: '普通数据',
+        key: 0
       }, {
-        auctionDataType: 0,
-        creditorDataType: 0,
-        id: 1,
-        name: "DoyuTu",
-        role: "正式",
-        structuredObject: "资产结构化",
-        username: "12345678901",
-        wrongNum: 0
+        label: '相似数据',
+        key: 2
+      }, {
+        label: '非初标数据',
+        key: 3
       }]
     });
     Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* watch */ "E"])(function () {
@@ -112,6 +132,24 @@ if (false) {}
     }, function (newVal) {
       if (!newVal) _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.showTabBar();
     });
+    var structuredType = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* computed */ "c"])(function () {
+      return state.structuredObject.find(function (item) {
+        return item.key === state.params.functions;
+      }).label;
+    });
+
+    var getList = function getList() {
+      state.loading = true;
+      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_4__[/* userView */ "b"])(Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* clearEmpty */ "a"])(state.params)).then(function (res) {
+        var data = res.data;
+
+        if (data.code === 200) {
+          state.userList = data.data || [];
+        }
+      }).finally(function () {
+        state.loading = false;
+      });
+    };
 
     var doSearch = function doSearch() {
       _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.navigateTo({
@@ -120,18 +158,58 @@ if (false) {}
     };
 
     var tabClick = function tabClick(key) {
+      if (state.params.role === key) return;
       state.params.role = key;
+      state.params.functions = '';
       state.visible = false;
+      getList();
     };
 
     var handleSelect = function handleSelect(key) {
+      state.visible = false;
+      if (state.params.functions === key) return;
       state.params.functions = key;
+      getList();
     };
 
-    var openMask = function openMask() {
+    var openMask = function openMask(which, item) {
       _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.hideTabBar({
         success: function success() {
+          state.userEditParams.id = item.id;
+          state.userEditParams.userEdit.name = item.name;
+          state.userEditParams.userEdit.roleId = state.params.role;
+          state.userEditParams.userEdit.creditorDataType = item.creditorDataType === -1 ? '' : item.creditorDataType;
+          state.userEditParams.userEdit.auctionDataType = [0, 1].includes(item.auctionDataType) ? 0 : item.auctionDataType === -1 ? '' : item.auctionDataType;
+          state.userEditParams.userEdit.functionId = state.params.functions ? [state.params.functions] : [8, 11, 26, 29];
           state.pickerVisible = true;
+
+          switch (which) {
+            case 'auctionDataType':
+              state.pickerOptions = [{
+                label: '普通数据',
+                key: 0
+              }, {
+                label: '相似数据',
+                key: 2
+              }, {
+                label: '非初标数据',
+                key: 3
+              }];
+              break;
+
+            case 'creditorDataType':
+              state.pickerOptions = [{
+                label: '普通数据',
+                key: 0
+              }, {
+                label: '非初标数据',
+                key: 1
+              }];
+              break;
+
+            default:
+              break;
+          }
         }
       });
     };
@@ -153,6 +231,55 @@ if (false) {}
       }
     };
 
+    var refresherPulling = function refresherPulling() {
+      state.refreshPull.label = '松开刷新';
+      state.refreshPull.refreshLoading = true;
+    };
+
+    var refresherRefresh = function refresherRefresh() {
+      state.refreshPull.triggered = true;
+      state.refreshPull.label = '刷新中';
+      state.params = {
+        username: '',
+        role: 1,
+        functions: ''
+      };
+      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_4__[/* userView */ "b"])(Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* clearEmpty */ "a"])(state.params)).then(function (res) {
+        var data = res.data;
+
+        if (data.code === 200) {
+          state.userList = data.data || [];
+        }
+      }).finally(function () {
+        state.refreshPull.refreshLoading = false;
+        state.refreshPull.triggered = false;
+      });
+    };
+
+    var handlePicker = function handlePicker(key) {
+      var _state$userEditParams = state.userEditParams,
+          id = _state$userEditParams.id,
+          data = _state$userEditParams.userEdit;
+
+      if (state.pickerOptions.length === 3) {
+        state.userEditParams.userEdit.auctionDataType = key;
+      } else {
+        state.userEditParams.userEdit.creditorDataType = key;
+      }
+
+      state.pickerVisible = false;
+      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_4__[/* userEdit */ "a"])(id, Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* clearEmpty */ "a"])(data)).then(function (res) {
+        var data = res.data;
+        getList();
+
+        if (data.code === 200) {
+          Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* toast */ "c"])('操作成功');
+        } else {
+          Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* toast */ "c"])('操作失败, 请重试');
+        }
+      });
+    };
+
     Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* onMounted */ "t"])(function () {
       var _Taro$getMenuButtonBo = _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.getMenuButtonBoundingClientRect(),
           height = _Taro$getMenuButtonBo.height,
@@ -160,17 +287,19 @@ if (false) {}
 
       state.style.marginTop = top + 'px';
       state.style.lineHeight = height + 'px';
-      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_4__[/* userView */ "a"])(Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* clearEmpty */ "a"])(state.params)).then(function (res) {
-        console.log(res);
-      });
+      getList();
     });
     return {
       state: state,
+      structuredType: structuredType,
       tabClick: tabClick,
       doSearch: doSearch,
       handleSelect: handleSelect,
       openMask: openMask,
-      close: close
+      close: close,
+      refresherPulling: refresherPulling,
+      refresherRefresh: refresherRefresh,
+      handlePicker: handlePicker
     };
   }
 });
@@ -189,8 +318,11 @@ if (false) {}
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-core@3.2.20@@vue/runtime-core/dist/runtime-core.esm-bundler.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_shared@3.2.20@@vue/shared/dist/shared.esm-bundler.js");
-/* harmony import */ var _assets_img_empty_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../assets/img/empty.png */ "./src/assets/img/empty.png");
-/* harmony import */ var _assets_img_empty_png__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_assets_img_empty_png__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _assets_img_logo_loading2_gif__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../assets/img/logo_loading2.gif */ "./src/assets/img/logo_loading2.gif");
+/* harmony import */ var _assets_img_logo_loading2_gif__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_assets_img_logo_loading2_gif__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _assets_img_empty_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../assets/img/empty.png */ "./src/assets/img/empty.png");
+/* harmony import */ var _assets_img_empty_png__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_assets_img_empty_png__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 var _hoisted_1 = {
@@ -211,20 +343,10 @@ var _hoisted_5 = {
     "color": "transparent"
   }
 };
-
-var _hoisted_6 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+var _hoisted_6 = {
   class: "picker-content"
-}, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
-  class: "picker-option pickered"
-}, "普通数据"), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
-  class: "picker-option"
-}, "相似数据"), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
-  class: "picker-option"
-}, "非初标数据")], -1
-/* HOISTED */
-);
-
-var _hoisted_7 = [_hoisted_6];
+};
+var _hoisted_7 = ["onClick"];
 var _hoisted_8 = {
   class: "fixed"
 };
@@ -252,20 +374,52 @@ var _hoisted_14 = {
 };
 var _hoisted_15 = ["onClick"];
 var _hoisted_16 = {
-  class: "index-wrapper-content"
-};
-var _hoisted_17 = {
-  key: 0,
-  class: "empty"
+  key: 2,
+  class: "loading"
 };
 
-var _hoisted_18 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
-  src: _assets_img_empty_png__WEBPACK_IMPORTED_MODULE_2___default.a
+var _hoisted_17 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
+  src: _assets_img_logo_loading2_gif__WEBPACK_IMPORTED_MODULE_2___default.a
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_19 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+var _hoisted_18 = [_hoisted_17];
+var _hoisted_19 = ["refresher-triggered"];
+var _hoisted_20 = {
+  key: 0,
+  slot: "refresher",
+  class: "refresh-container"
+};
+
+var _hoisted_21 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
+  src: _assets_img_logo_loading2_gif__WEBPACK_IMPORTED_MODULE_2___default.a
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_22 = {
+  style: {
+    "color": "#7D8699",
+    "font-size": "13px"
+  }
+};
+var _hoisted_23 = {
+  key: 1,
+  class: "index-wrapper-content"
+};
+var _hoisted_24 = {
+  key: 0,
+  class: "empty"
+};
+
+var _hoisted_25 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
+  src: _assets_img_empty_png__WEBPACK_IMPORTED_MODULE_3___default.a
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_26 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
   style: {
     "color": "rgba(0, 0, 0, 0.87)",
     "font-size": "14px"
@@ -274,27 +428,28 @@ var _hoisted_19 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* create
 /* HOISTED */
 );
 
-var _hoisted_20 = [_hoisted_18, _hoisted_19];
-var _hoisted_21 = {
+var _hoisted_27 = [_hoisted_25, _hoisted_26];
+var _hoisted_28 = {
   class: "block"
 };
-var _hoisted_22 = {
+var _hoisted_29 = {
   class: "name"
 };
-var _hoisted_23 = {
+var _hoisted_30 = {
   class: "info"
 };
-var _hoisted_24 = {
+var _hoisted_31 = {
   class: "id"
 };
-var _hoisted_25 = {
+var _hoisted_32 = {
   class: "username"
 };
-var _hoisted_26 = {
+var _hoisted_33 = {
   class: "operate-block"
 };
+var _hoisted_34 = ["onClick"];
 
-var _hoisted_27 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+var _hoisted_35 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
   class: "title"
 }, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
   class: "iconfont icon-xiaochengxu-zichanpaimai"
@@ -302,16 +457,76 @@ var _hoisted_27 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* create
 /* HOISTED */
 );
 
-var _hoisted_28 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+var _hoisted_36 = {
   class: "select"
-}, "非初标数据", -1
+};
+
+var _hoisted_37 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+  class: "iconfont icon-xiaochengxu-jiantouxia"
+}, null, -1
 /* HOISTED */
 );
 
-var _hoisted_29 = [_hoisted_27, _hoisted_28];
+var _hoisted_38 = {
+  key: 1,
+  class: "operate-card"
+};
 
-var _hoisted_30 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createStaticVNode */ "k"])("<view class=\"operate-card\"><view class=\"title\"><text class=\"iconfont icon-xiaochengxu-pochanzhongzu\"></text>破产重组数据</view><view class=\"select\">-</view></view><view class=\"operate-card\"><view class=\"title\"><text class=\"iconfont icon-xiaochengxu-paimaizhaiquanshuju\"></text>拍卖债权数据</view><view class=\"select\">非初标数据</view></view><view class=\"operate-card\"><view class=\"title\"><text class=\"iconfont icon-xiaochengxu-zhaoshangzhaiquanshuju\"></text>招商债权数据</view><view class=\"select\">-</view></view>", 3);
+var _hoisted_39 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  class: "title"
+}, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+  class: "iconfont icon-xiaochengxu-pochanzhongzu"
+}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "l"])("破产重组数据")], -1
+/* HOISTED */
+);
 
+var _hoisted_40 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  class: "select"
+}, "-", -1
+/* HOISTED */
+);
+
+var _hoisted_41 = [_hoisted_39, _hoisted_40];
+var _hoisted_42 = ["onClick"];
+
+var _hoisted_43 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  class: "title"
+}, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+  class: "iconfont icon-xiaochengxu-paimaizhaiquanshuju"
+}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "l"])("拍卖债权数据")], -1
+/* HOISTED */
+);
+
+var _hoisted_44 = {
+  class: "select"
+};
+
+var _hoisted_45 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+  class: "iconfont icon-xiaochengxu-jiantouxia"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_46 = {
+  key: 3,
+  class: "operate-card"
+};
+
+var _hoisted_47 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  class: "title"
+}, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+  class: "iconfont icon-xiaochengxu-zhaoshangzhaiquanshuju"
+}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "l"])("招商债权数据")], -1
+/* HOISTED */
+);
+
+var _hoisted_48 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  class: "select"
+}, "-", -1
+/* HOISTED */
+);
+
+var _hoisted_49 = [_hoisted_47, _hoisted_48];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [$setup.state.visible ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
     key: 0,
@@ -341,7 +556,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[1] || (_cache[1] = function () {
       return $setup.close && $setup.close.apply($setup, arguments);
     })
-  }, _hoisted_7)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_8, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_9, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  }, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_6, [(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_0__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* renderList */ "x"])($setup.state.pickerOptions, function (item) {
+    return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
+      key: item.key,
+      class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])(['picker-option', item.key === $setup.state.userEditParams.userEdit.auctionDataType || item.key === $setup.state.userEditParams.userEdit.creditorDataType ? 'pickered' : '']),
+      onClick: function onClick($event) {
+        return $setup.handlePicker(item.key);
+      }
+    }, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.label), 11
+    /* TEXT, CLASS, PROPS */
+    , _hoisted_7);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_8, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_9, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
     class: "navigationBar-title",
     style: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeStyle */ "J"])($setup.state.style)
   }, "源诚数据资产平台", 4
@@ -375,27 +602,59 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[4] || (_cache[4] = function ($event) {
       return $setup.state.visible = !$setup.state.visible;
     })
-  }, "全部", 2
-  /* CLASS */
-  )])])]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_16, [$setup.state.userList.length === 0 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_17, _hoisted_20)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_0__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* renderList */ "x"])($setup.state.userList, function (item) {
+  }, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.structuredType), 3
+  /* TEXT, CLASS */
+  )])])]), $setup.state.loading ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_16, _hoisted_18)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("scroll-view", {
+    "scroll-y": "",
+    "refresher-enabled": true,
+    "refresher-background": "#F6F7F9",
+    "refresher-default-style": "none",
+    "refresher-threshold": 10,
+    "refresher-triggered": $setup.state.refreshPull.triggered,
+    onRefresherpulling: _cache[5] || (_cache[5] = function () {
+      return $setup.refresherPulling && $setup.refresherPulling.apply($setup, arguments);
+    }),
+    onRefresherrefresh: _cache[6] || (_cache[6] = function () {
+      return $setup.refresherRefresh && $setup.refresherRefresh.apply($setup, arguments);
+    })
+  }, [$setup.state.refreshPull.refreshLoading ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_20, [_hoisted_21, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_22, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.refreshPull.label), 1
+  /* TEXT */
+  )])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), !$setup.state.loading ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_23, [!$setup.state.loading && $setup.state.userList.length === 0 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_24, _hoisted_27)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_0__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* renderList */ "x"])($setup.state.userList, function (item) {
     return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
       class: "user-list-container",
       key: item.id
-    }, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_21, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_22, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.name), 1
+    }, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_28, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_29, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.name || '-'), 1
     /* TEXT */
-    ), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_23, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_24, "ID：" + Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.id), 1
+    ), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_30, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_31, "ID：" + Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.id || '-'), 1
     /* TEXT */
-    ), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_25, "账号：" + Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.username), 1
+    ), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_32, "账号：" + Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.username || '-'), 1
     /* TEXT */
-    )]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_26, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+    )]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_33, [item.auctionDataType !== -1 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
+      key: 0,
       class: "operate-card",
-      onClick: _cache[5] || (_cache[5] = function () {
-        return $setup.openMask && $setup.openMask.apply($setup, arguments);
-      })
-    }, _hoisted_29), _hoisted_30])])]);
+      onClick: function onClick($event) {
+        return $setup.openMask('auctionDataType', item);
+      }
+    }, [_hoisted_35, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_36, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "l"])(Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.auctionDataType[item.auctionDataType]), 1
+    /* TEXT */
+    ), _hoisted_37])], 8
+    /* PROPS */
+    , _hoisted_34)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), item.structuredObject.match(new RegExp('破产重组数据', 'g')) ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_38, _hoisted_41)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), item.creditorDataType !== -1 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
+      key: 2,
+      class: "operate-card",
+      onClick: function onClick($event) {
+        return $setup.openMask('creditorDataType', item);
+      }
+    }, [_hoisted_43, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_44, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "l"])(Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.creditorDataType[item.creditorDataType]), 1
+    /* TEXT */
+    ), _hoisted_45])], 8
+    /* PROPS */
+    , _hoisted_42)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), item.structuredObject.match(new RegExp('招商债权数据', 'g')) ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_46, _hoisted_49)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])]);
+  ))])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)], 40
+  /* PROPS, HYDRATE_EVENTS */
+  , _hoisted_19)]);
 }
 
 /***/ }),
@@ -420,6 +679,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "assets/img/empty.png";
+
+/***/ }),
+
+/***/ "./src/assets/img/logo_loading2.gif":
+/*!******************************************!*\
+  !*** ./src/assets/img/logo_loading2.gif ***!
+  \******************************************/
+/*! no static exports found */
+/*! exports used: default */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "assets/img/logo_loading2.gif";
 
 /***/ }),
 
@@ -490,34 +761,6 @@ var inst = Page(Object(_tarojs_runtime__WEBPACK_IMPORTED_MODULE_0__["createPageC
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _node_modules_babel_loader_8_2_1_babel_loader_lib_index_js_node_modules_vue_loader_16_8_1_vue_loader_dist_templateLoader_js_ref_6_node_modules_vue_loader_16_8_1_vue_loader_dist_index_js_ref_10_0_index_vue_vue_type_template_id_1badc801__WEBPACK_IMPORTED_MODULE_0__["a"]; });
 
 
-
-/***/ }),
-
-/***/ "./src/server/api/index.js":
-/*!*********************************!*\
-  !*** ./src/server/api/index.js ***!
-  \*********************************/
-/*! exports provided: userView */
-/*! exports used: userView */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return userView; });
-/* harmony import */ var _request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../request */ "./src/server/request.js");
-
-var userView = function userView(data) {
-  var urlPlus = '';
-
-  for (var key in data) {
-    urlPlus = "".concat(urlPlus + key, "=").concat(data[key], "&");
-  }
-
-  urlPlus = urlPlus.substring(0, urlPlus.length - 1);
-  return Object(_request__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({
-    url: "/api/asset/admin/userView?".concat(urlPlus),
-    method: 'get'
-  });
-};
 
 /***/ })
 

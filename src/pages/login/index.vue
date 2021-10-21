@@ -48,14 +48,8 @@
 import { reactive, onMounted, computed, getCurrentInstance } from 'vue';
 import { login, imgCode } from '../../server/api/login';
 import { encryptInfo } from '../../utils/encrypt';
-import { clearEmpty } from '../../utils';
+import { clearEmpty, storageSession, toast } from '../../utils';
 import Taro from '@tarojs/taro';
-const Toast = (msg) => {
-  Taro.showToast({
-    title: msg,
-    icon: 'none',
-  });
-}
 
 export default {
   name: 'Login',
@@ -96,10 +90,11 @@ export default {
     const rules = {
       username: [
         { required: true, message: '请输入账号' },
-        { min: 11, trigger: 'change', message: '账号小于11位' }
+        { min: 11, message: '账号小于11位' },
       ],
       password: [
         { required: true, message: '请输入密码' },
+        { min: 6, message: '密码小于6位' },
       ],
       imageVerifyCode: [
         { required: true, message: '请输入图片验证码' },
@@ -137,7 +132,8 @@ export default {
       state.loading = true;
       const data = encryptInfo(clearEmpty(params));
       login(data).then((res) => {
-        if (res.data.errCount >= 3) {
+        const { data } = res;
+        if (data.data.errCount >= 3) {
           if (!state.errorField.imageVerifyCode) {
             state.errorField.imageVerifyCode = {
               isError: true,
@@ -147,17 +143,23 @@ export default {
           state.code.show = true;
           getImgCode();
         }
-        if (res.code === 200) {
-          Taro.switchTab({
-            url: '/pages/index/index',
-          });
-          Toast('登录成功');
+        if (data.code === 200) {
+          if (data.data.ROLE === '管理员') {
+            const session = res.header['Set-Cookie'].split(',')[2].split(';')[0];
+            storageSession.setItem(session);
+            Taro.switchTab({
+              url: '/pages/index/index',
+            });
+            toast('登录成功');
+          } else {
+            toast('请登录管理员账号');
+          }
         }
-        if (res.code === 9001) {
-          Toast('账号或密码错误');
+        if (data.code === 9001) {
+          toast('账号或密码错误');
         }
-        if (res.code === 9001 && res.message === '验证码输入错误') {
-          Toast('验证码错误');
+        if (data.code === 9001 && res.message === '验证码输入错误') {
+          toast('验证码错误');
         }
       }).finally(() => {
         state.loading = false;

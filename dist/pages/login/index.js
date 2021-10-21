@@ -2018,14 +2018,6 @@ PEMEncoder.prototype.encode = function encode(data, options) {
 
 
 
-
-var Toast = function Toast(msg) {
-  _tarojs_taro__WEBPACK_IMPORTED_MODULE_5___default.a.showToast({
-    title: msg,
-    icon: 'none'
-  });
-};
-
 /* harmony default export */ __webpack_exports__["a"] = ({
   name: 'Login',
   setup: function setup() {
@@ -2072,12 +2064,14 @@ var Toast = function Toast(msg) {
         message: '请输入账号'
       }, {
         min: 11,
-        trigger: 'change',
         message: '账号小于11位'
       }],
       password: [{
         required: true,
         message: '请输入密码'
+      }, {
+        min: 6,
+        message: '密码小于6位'
       }],
       imageVerifyCode: [{
         required: true,
@@ -2122,7 +2116,9 @@ var Toast = function Toast(msg) {
       state.loading = true;
       var data = Object(_utils_encrypt__WEBPACK_IMPORTED_MODULE_3__[/* encryptInfo */ "a"])(Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* clearEmpty */ "a"])(params));
       Object(_server_api_login__WEBPACK_IMPORTED_MODULE_2__[/* login */ "b"])(data).then(function (res) {
-        if (res.data.errCount >= 3) {
+        var data = res.data;
+
+        if (data.data.errCount >= 3) {
           if (!state.errorField.imageVerifyCode) {
             state.errorField.imageVerifyCode = {
               isError: true,
@@ -2134,19 +2130,25 @@ var Toast = function Toast(msg) {
           getImgCode();
         }
 
-        if (res.code === 200) {
-          _tarojs_taro__WEBPACK_IMPORTED_MODULE_5___default.a.switchTab({
-            url: '/pages/index/index'
-          });
-          Toast('登录成功');
+        if (data.code === 200) {
+          if (data.data.ROLE === '管理员') {
+            var session = res.header['Set-Cookie'].split(',')[2].split(';')[0];
+            _utils__WEBPACK_IMPORTED_MODULE_4__[/* storageSession */ "b"].setItem(session);
+            _tarojs_taro__WEBPACK_IMPORTED_MODULE_5___default.a.switchTab({
+              url: '/pages/index/index'
+            });
+            Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "c"])('登录成功');
+          } else {
+            Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "c"])('请登录管理员账号');
+          }
         }
 
-        if (res.code === 9001) {
-          Toast('账号或密码错误');
+        if (data.code === 9001) {
+          Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "c"])('账号或密码错误');
         }
 
-        if (res.code === 9001 && res.message === '验证码输入错误') {
-          Toast('验证码错误');
+        if (data.code === 9001 && res.message === '验证码输入错误') {
+          Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "c"])('验证码错误');
         }
       }).finally(function () {
         state.loading = false;

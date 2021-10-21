@@ -14,7 +14,7 @@
       <view class="block search-block">
         <view class="search-input">
           <text class="iconfont icon-xiaochengxu-sousuo"></text>
-          <input placeholder="请输入账号或姓名" :focus="true" />
+          <input placeholder="请输入账号或姓名" @change="handleChange" v-model="state.params.username" :focus="true" />
           <view class="suffix suffix-search" @click="doSearch">搜索</view>
         </view>
       </view>
@@ -22,7 +22,7 @@
     <view class="index-wrapper-content">
       <view class="empty" v-if="state.userList.length === 0">
         <image src="../../assets/img/search-empty.png" />
-        <view style="color: rgba(0, 0, 0, 0.87);font-size: 14px">暂无数据</view>
+        <view style="color: rgba(0, 0, 0, 0.87);font-size: 14px">搜索无内容</view>
       </view>
       <view class="user-list-container" v-for="item in state.userList" :key="item.id">
         <view class="block">
@@ -58,6 +58,7 @@
 <script>
 import { onMounted, reactive } from 'vue';
 import Taro from "@tarojs/taro";
+import { clearEmpty } from "../../utils";
 import { userView } from '../../server/api/index';
 
 export default {
@@ -80,29 +81,14 @@ export default {
         { label: '拍卖债权数据', key: 26 },
         { label: '招商债权数据', key: 29 }
       ],
-      userList: [
-        {
-          auctionDataType: 0,
-          creditorDataType: 0,
-          id: 1,
-          name: "DoyuTu",
-          role: "正式",
-          structuredObject: "资产结构化",
-          username: "12345678901",
-          wrongNum: 0,
-        },
-        {
-          auctionDataType: 0,
-          creditorDataType: 0,
-          id: 1,
-          name: "DoyuTu",
-          role: "正式",
-          structuredObject: "资产结构化",
-          username: "12345678901",
-          wrongNum: 0,
-        }
-      ],
+      userList: [],
     });
+
+    const handleChange = () => {
+      userView(clearEmpty(state.params)).then((res) => {
+        console.log(res.data.data);
+      });
+    };
 
     const doSearch = () => {
       // Taro.navigateTo({
@@ -136,13 +122,15 @@ export default {
       //   console.log(res);
       // });
     });
-    return { state, doSearch, openMask, close };
+    return { state, doSearch, openMask, close, handleChange };
   },
 };
 </script>
 
 <style lang="scss">
 .index-wrapper{
+  box-sizing: border-box;
+  min-height: 100vh;
   padding-top: 138px;
   position: relative;
   background-color: #F6F7F9;
@@ -291,12 +279,14 @@ export default {
   }
 }
 .empty{
-  height: 111px;
+  height: calc(100vh - 138px);
   text-align: center;
-  margin-top: 99px;
+  //margin-top: 99px;
+  background-color: #fff;
   image{
-    width: 160px;
-    height: 100px;
+    margin-top: 99px;
+    width: 144px;
+    height: 120px;
   }
 }
 </style>

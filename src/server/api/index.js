@@ -11,3 +11,11 @@ export const userView = (data) => {
         method: 'get',
     });
 }
+
+export const userEdit = (id,data) => {
+    return request({
+        url: `/api/asset/admin/${id}/userEdit`,
+        method: 'post',
+        data,
+    });
+}

@@ -1,5 +1,41 @@
 (wx["webpackJsonp"] = wx["webpackJsonp"] || []).push([["common"],{
 
+/***/ "./src/server/api/index.js":
+/*!*********************************!*\
+  !*** ./src/server/api/index.js ***!
+  \*********************************/
+/*! exports provided: userView, userEdit */
+/*! exports used: userEdit, userView */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return userView; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return userEdit; });
+/* harmony import */ var _request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../request */ "./src/server/request.js");
+
+var userView = function userView(data) {
+  var urlPlus = '';
+
+  for (var key in data) {
+    urlPlus = "".concat(urlPlus + key, "=").concat(data[key], "&");
+  }
+
+  urlPlus = urlPlus.substring(0, urlPlus.length - 1);
+  return Object(_request__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({
+    url: "/api/asset/admin/userView?".concat(urlPlus),
+    method: 'get'
+  });
+};
+var userEdit = function userEdit(id, data) {
+  return Object(_request__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({
+    url: "/api/asset/admin/".concat(id, "/userEdit"),
+    method: 'post',
+    data: data
+  });
+};
+
+/***/ }),
+
 /***/ "./src/server/base.js":
 /*!****************************!*\
   !*** ./src/server/base.js ***!
@@ -26,35 +62,40 @@ var baseUrl = 'http://172.18.255.8:38510';
 "use strict";
 /* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/objectSpread2 */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/objectSpread2.js");
 /* harmony import */ var _base__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./base */ "./src/server/base.js");
-/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @tarojs/taro */ "./node_modules/_@tarojs_taro@3.3.9@@tarojs/taro/index.js");
-/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_tarojs_taro__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils/index.js");
+/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @tarojs/taro */ "./node_modules/_@tarojs_taro@3.3.9@@tarojs/taro/index.js");
+/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_tarojs_taro__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
 
 var request = function request(options) {
   return new Promise(function (resolve, reject) {
+    var session = _utils__WEBPACK_IMPORTED_MODULE_2__[/* storageSession */ "b"].getItem('session') || '';
     var setting = {
       url: _base__WEBPACK_IMPORTED_MODULE_1__[/* baseUrl */ "a"] + options.url,
       data: options.data,
       method: options.method.toUpperCase() || 'GET',
       timeout: 1000 * 30,
-      header: Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, options.header),
+      header: Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({
+        Cookie: session
+      }, options.header),
       success: function success(res) {
-        if (res.code === 401) {
-          _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.reLaunch({
+        if (res.data.code === 401) {
+          _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default.a.reLaunch({
             url: '/pages/login/index'
           });
         }
 
-        if (res.success == false) {
-          _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.showToast({
+        if (res.data.success == false) {
+          _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default.a.showToast({
             icon: "none",
             title: res.data.message
           });
         }
 
-        resolve(res.data);
+        resolve(res);
       }
     };
 
@@ -62,7 +103,7 @@ var request = function request(options) {
       setting.header = Object.assign(setting.header, options.header);
     }
 
-    _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.request(setting);
+    _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default.a.request(setting);
   });
 };
 
@@ -74,14 +115,18 @@ var request = function request(options) {
 /*!****************************!*\
   !*** ./src/utils/index.js ***!
   \****************************/
-/*! exports provided: clearEmpty */
-/*! exports used: clearEmpty */
+/*! exports provided: clearEmpty, storageSession, toast */
+/*! exports used: clearEmpty, storageSession, toast */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return clearEmpty; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return storageSession; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return toast; });
 /* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/objectSpread2 */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/objectSpread2.js");
 /* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/typeof */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/typeof.js");
+/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @tarojs/taro */ "./node_modules/_@tarojs_taro@3.3.9@@tarojs/taro/index.js");
+/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_tarojs_taro__WEBPACK_IMPORTED_MODULE_2__);
 
 
 
@@ -90,6 +135,7 @@ var request = function request(options) {
  * @param obj
  * @returns {*}
  */
+
 var clearEmpty = function clearEmpty(obj) {
   if (Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(obj) === 'object') {
     var l = Object.keys(obj);
@@ -103,6 +149,23 @@ var clearEmpty = function clearEmpty(obj) {
   }
 
   return obj;
+};
+var storageSession = {
+  getItem: function getItem() {
+    return _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.getStorageSync('session');
+  },
+  removeItem: function removeItem() {
+    return _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.removeStorageSync('session');
+  },
+  setItem: function setItem(session) {
+    return _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.setStorageSync('session', session);
+  }
+};
+var toast = function toast(msg) {
+  _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.showToast({
+    title: msg,
+    icon: 'none'
+  });
 };
 
 /***/ })
