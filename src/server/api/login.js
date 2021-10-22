@@ -6,7 +6,7 @@ export const login = (data) => request({
     data,
 });
 
-export const imgCode = () => request({
-    url: '/api/code/image',
+export const imgCode = (username) => request({
+    url: `/api/code/image?username=${username}`,
     method: 'get',
 });

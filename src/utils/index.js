@@ -20,15 +20,33 @@ export const clearEmpty = (obj) => {
     return obj;
 };
 
-export const storageSession = {
-    getItem: () => Taro.getStorageSync('session'),
-    removeItem: () => Taro.removeStorageSync('session'),
-    setItem: (session) => Taro.setStorageSync('session', session),
+export const storage = {
+    getItem: (name) => Taro.getStorageSync(name),
+    removeItem: (name) => Taro.removeStorageSync(name),
+    setItem: (name, data) => Taro.setStorageSync(name, data),
 }
 
-export const toast = (msg) => {
+export const toast = (msg, icon = 'none') => {
     Taro.showToast({
         title: msg,
-        icon: 'none',
+        icon,
     })
+}
+
+
+/**
+ * 函数防抖 created by wchuan  date:2021-10-22
+ * @param func
+ * @param wait
+ * @returns {function(): void}
+ */
+export const debounce = (func, wait) => {
+    let timer;
+    return function() {
+        let args = arguments;
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+            func.apply(this, args)
+        }, wait)
+    }
 }

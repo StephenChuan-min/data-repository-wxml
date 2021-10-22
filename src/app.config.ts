@@ -2,8 +2,8 @@ export default {
   pages: [
     'pages/login/index',
     'pages/index/index',
-    'pages/mine/index',
     'pages/search/index',
+    'pages/mine/index',
   ],
   window: {
     backgroundTextStyle: 'light',

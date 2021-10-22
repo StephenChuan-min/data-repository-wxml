@@ -1,10 +1,10 @@
 import { baseUrl } from './base';
-import { storageSession } from '../utils';
+import { storage } from '../utils';
 import Taro from '@tarojs/taro';
 
 const request = (options) => {
     return new Promise((resolve, reject) => {
-        const session = storageSession.getItem('session') || '';
+        const session = storage.getItem('session') || '';
         const setting = {
             url: baseUrl + options.url,
             data: options.data,

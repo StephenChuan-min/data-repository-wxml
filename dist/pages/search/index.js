@@ -39,22 +39,30 @@ if (false) {}
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_reactivity@3.2.20@@vue/reactivity/dist/reactivity.esm-bundler.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-core@3.2.20@@vue/runtime-core/dist/runtime-core.esm-bundler.js");
-/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @tarojs/taro */ "./node_modules/_@tarojs_taro@3.3.9@@tarojs/taro/index.js");
-/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_tarojs_taro__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils */ "./src/utils/index.js");
-/* harmony import */ var _server_api_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../server/api/index */ "./src/server/api/index.js");
+/* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/toConsumableArray */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/toConsumableArray.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_reactivity@3.2.20@@vue/reactivity/dist/reactivity.esm-bundler.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-core@3.2.20@@vue/runtime-core/dist/runtime-core.esm-bundler.js");
+/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @tarojs/taro */ "./node_modules/_@tarojs_taro@3.3.9@@tarojs/taro/index.js");
+/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_tarojs_taro__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils */ "./src/utils/index.js");
+/* harmony import */ var _server_api_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../server/api/index */ "./src/server/api/index.js");
+/* harmony import */ var _index_source__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../index/source */ "./src/pages/index/source.js");
+
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-  name: 'Index',
+  name: 'Search',
   setup: function setup() {
-    var state = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* reactive */ "k"])({
-      visible: false,
+    var state = Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* reactive */ "k"])({
+      auctionDataType: _index_source__WEBPACK_IMPORTED_MODULE_6__[/* auctionDataType */ "a"],
+      creditorDataType: _index_source__WEBPACK_IMPORTED_MODULE_6__[/* creditorDataType */ "b"],
+      loading: false,
       pickerVisible: false,
+      modalVisible: false,
+      records: [],
       style: {
         marginTop: '',
         lineHeight: ''
@@ -78,22 +86,152 @@ if (false) {}
         label: '招商债权数据',
         key: 29
       }],
-      userList: []
+      userList: [],
+      usernameList: [],
+      userEditParams: {
+        id: '',
+        userEdit: {
+          auctionDataType: 0,
+          creditorDataType: 0,
+          functionId: [8, 11, 26, 29],
+          name: "",
+          roleId: ''
+        }
+      },
+      pickerOptions: [{
+        label: '普通数据',
+        key: 0
+      }, {
+        label: '相似数据',
+        key: 2
+      }, {
+        label: '非初标数据',
+        key: 3
+      }],
+      flag: false
     });
 
-    var handleChange = function handleChange() {
-      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_4__[/* userView */ "b"])(Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* clearEmpty */ "a"])(state.params)).then(function (res) {
-        console.log(res.data.data);
+    var getList = function getList() {
+      state.loading = true;
+      state.flag = true;
+      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_5__[/* userView */ "b"])(state.params).then(function (res) {
+        var data = res.data;
+
+        if (data.code === 200) {
+          state.userList = data.data || [];
+        }
+      }).finally(function () {
+        state.loading = false;
       });
     };
 
-    var doSearch = function doSearch() {// Taro.navigateTo({
-      //   url: '/pages/search/index',
-      // });
+    var clear = function clear() {
+      state.params.username = '';
+      state.usernameList = [];
     };
 
-    var openMask = function openMask() {
+    var handleChange = Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* debounce */ "b"])(function () {
+      var username = state.params.username.replace(/\s/g, '');
+
+      if (username) {
+        state.flag = false;
+        Object(_server_api_index__WEBPACK_IMPORTED_MODULE_5__[/* userView */ "b"])({
+          username: username
+        }).then(function (res) {
+          var data = res.data;
+
+          if (data.code === 200) {
+            (data.data || []).forEach(function (item) {
+              state.usernameList.push(item.name);
+            });
+          }
+        });
+      } else {
+        state.usernameList = [];
+      }
+    }, 300);
+
+    var delRecords = function delRecords() {
+      _utils__WEBPACK_IMPORTED_MODULE_4__[/* storage */ "c"].removeItem('records');
+      state.records = [];
+      state.modalVisible = false;
+    };
+
+    var doSearch = function doSearch(item) {
+      if (state.flag) {
+        _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default.a.navigateBack({
+          delta: 1
+        });
+      } else {
+        if (item) state.params.username = item;
+        var username = state.params.username = state.params.username.replace(/\s/g, '');
+        if (!username) return Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('请输入用户名或账号');
+        state.records.unshift(state.params.username);
+
+        var records = state.records = Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(new Set(state.records)).splice(0, 10);
+
+        _utils__WEBPACK_IMPORTED_MODULE_4__[/* storage */ "c"].setItem('records', records);
+        getList();
+      }
+    };
+
+    var openMask = function openMask(which, item) {
+      state.userEditParams.id = item.id;
+      state.userEditParams.userEdit.name = item.name;
+      state.userEditParams.userEdit.roleId = item.role === '正式' ? 1 : 0;
+      state.userEditParams.userEdit.creditorDataType = item.creditorDataType === -1 ? '' : item.creditorDataType;
+      state.userEditParams.userEdit.auctionDataType = [0, 1].includes(item.auctionDataType) ? 0 : item.auctionDataType === -1 ? '' : item.auctionDataType;
       state.pickerVisible = true;
+
+      switch (which) {
+        case 'auctionDataType':
+          state.pickerOptions = [{
+            label: '普通数据',
+            key: 0
+          }, {
+            label: '相似数据',
+            key: 2
+          }, {
+            label: '非初标数据',
+            key: 3
+          }];
+          break;
+
+        case 'creditorDataType':
+          state.pickerOptions = [{
+            label: '普通数据',
+            key: 0
+          }, {
+            label: '非初标数据',
+            key: 1
+          }];
+          break;
+
+        default:
+          break;
+      }
+    };
+
+    var handlePicker = function handlePicker(key) {
+      var _state$userEditParams = state.userEditParams,
+          id = _state$userEditParams.id,
+          data = _state$userEditParams.userEdit;
+
+      if (state.pickerOptions.length === 3) {
+        state.userEditParams.userEdit.auctionDataType = key;
+      } else {
+        state.userEditParams.userEdit.creditorDataType = key;
+      }
+
+      state.pickerVisible = false;
+      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_5__[/* userEdit */ "a"])(id, Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* clearEmpty */ "a"])(data)).then(function (res) {
+        // const { data } = res;
+        getList(); // if (data.code === 200) {
+        //   toast('操作成功');
+        // } else {
+        //   toast('操作失败, 请重试');
+        // }
+      });
     };
 
     var close = function close(e) {
@@ -113,22 +251,24 @@ if (false) {}
       }
     };
 
-    Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* onMounted */ "t"])(function () {
-      var _Taro$getMenuButtonBo = _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.getMenuButtonBoundingClientRect(),
+    Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* onMounted */ "t"])(function () {
+      var _Taro$getMenuButtonBo = _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default.a.getMenuButtonBoundingClientRect(),
           height = _Taro$getMenuButtonBo.height,
           top = _Taro$getMenuButtonBo.top;
 
       state.style.marginTop = top + 'px';
-      state.style.lineHeight = height + 'px'; // userView(clearEmpty(state.params)).then((res) => {
-      //   console.log(res);
-      // });
+      state.style.lineHeight = height + 'px';
+      state.records = _utils__WEBPACK_IMPORTED_MODULE_4__[/* storage */ "c"].getItem('records') || [];
     });
     return {
       state: state,
       doSearch: doSearch,
       openMask: openMask,
       close: close,
-      handleChange: handleChange
+      handleChange: handleChange,
+      delRecords: delRecords,
+      clear: clear,
+      handlePicker: handlePicker
     };
   }
 });
@@ -148,61 +288,123 @@ if (false) {}
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-core@3.2.20@@vue/runtime-core/dist/runtime-core.esm-bundler.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_shared@3.2.20@@vue/shared/dist/shared.esm-bundler.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-dom@3.2.20@@vue/runtime-dom/dist/runtime-dom.esm-bundler.js");
-/* harmony import */ var _assets_img_search_empty_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../assets/img/search-empty.png */ "./src/assets/img/search-empty.png");
-/* harmony import */ var _assets_img_search_empty_png__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_assets_img_search_empty_png__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _assets_img_logo_loading2_gif__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../assets/img/logo_loading2.gif */ "./src/assets/img/logo_loading2.gif");
+/* harmony import */ var _assets_img_logo_loading2_gif__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_assets_img_logo_loading2_gif__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _assets_img_search_empty_png__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../assets/img/search-empty.png */ "./src/assets/img/search-empty.png");
+/* harmony import */ var _assets_img_search_empty_png__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_assets_img_search_empty_png__WEBPACK_IMPORTED_MODULE_4__);
+
 
 
 var _hoisted_1 = {
   class: "index-wrapper"
 };
+var _hoisted_2 = {
+  key: 0,
+  class: "index-wrapper-modal"
+};
+var _hoisted_3 = {
+  class: "modal-content"
+};
 
-var _hoisted_2 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
-  class: "picker-content"
-}, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
-  class: "picker-option pickered"
-}, "普通数据"), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
-  class: "picker-option"
-}, "相似数据"), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
-  class: "picker-option"
-}, "非初标数据")], -1
+var _hoisted_4 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  class: "body"
+}, "确认删除全部历史记录？", -1
 /* HOISTED */
 );
 
-var _hoisted_3 = [_hoisted_2];
-var _hoisted_4 = {
-  class: "fixed"
-};
 var _hoisted_5 = {
-  class: "navigationBar"
+  class: "footer"
 };
 var _hoisted_6 = {
+  class: "picker-content"
+};
+var _hoisted_7 = ["onClick"];
+var _hoisted_8 = {
+  class: "fixed"
+};
+var _hoisted_9 = {
+  class: "navigationBar"
+};
+var _hoisted_10 = {
   class: "block search-block"
 };
-var _hoisted_7 = {
+var _hoisted_11 = {
   class: "search-input"
 };
 
-var _hoisted_8 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+var _hoisted_12 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
   class: "iconfont icon-xiaochengxu-sousuo"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_9 = {
-  class: "index-wrapper-content"
-};
-var _hoisted_10 = {
-  key: 0,
-  class: "empty"
-};
-
-var _hoisted_11 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
-  src: _assets_img_search_empty_png__WEBPACK_IMPORTED_MODULE_3___default.a
+var _hoisted_13 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+  class: "iconfont icon-xiaochengxu-shanchu"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_12 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+var _hoisted_14 = [_hoisted_13];
+var _hoisted_15 = {
+  key: 2,
+  class: "loading"
+};
+
+var _hoisted_16 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
+  src: _assets_img_logo_loading2_gif__WEBPACK_IMPORTED_MODULE_3___default.a
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_17 = [_hoisted_16];
+var _hoisted_18 = {
+  key: 3,
+  class: "search-record"
+};
+var _hoisted_19 = {
+  key: 0
+};
+var _hoisted_20 = {
+  class: "record-head"
+};
+
+var _hoisted_21 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  class: "title"
+}, "搜索记录", -1
+/* HOISTED */
+);
+
+var _hoisted_22 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+  class: "iconfont icon-xiaochengxu-lajixiang"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_23 = [_hoisted_22];
+var _hoisted_24 = {
+  class: "record-content"
+};
+var _hoisted_25 = ["onClick"];
+var _hoisted_26 = {
+  class: "username-list"
+};
+var _hoisted_27 = ["onClick"];
+var _hoisted_28 = {
+  key: 4,
+  class: "index-wrapper-content"
+};
+var _hoisted_29 = {
+  key: 0,
+  class: "empty"
+};
+
+var _hoisted_30 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
+  src: _assets_img_search_empty_png__WEBPACK_IMPORTED_MODULE_4___default.a
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_31 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
   style: {
     "color": "rgba(0, 0, 0, 0.87)",
     "font-size": "14px"
@@ -211,92 +413,226 @@ var _hoisted_12 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* create
 /* HOISTED */
 );
 
-var _hoisted_13 = [_hoisted_11, _hoisted_12];
-var _hoisted_14 = {
+var _hoisted_32 = [_hoisted_30, _hoisted_31];
+var _hoisted_33 = {
   class: "block"
 };
-var _hoisted_15 = {
-  class: "name"
-};
-var _hoisted_16 = {
+var _hoisted_34 = {
   class: "info"
 };
-var _hoisted_17 = {
+var _hoisted_35 = {
   class: "id"
 };
-var _hoisted_18 = {
+var _hoisted_36 = {
   class: "username"
 };
-var _hoisted_19 = {
+var _hoisted_37 = {
   class: "operate-block"
 };
+var _hoisted_38 = ["onClick"];
 
-var _hoisted_20 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+var _hoisted_39 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
   class: "title"
 }, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
   class: "iconfont icon-xiaochengxu-zichanpaimai"
-}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "l"])("资产拍卖数据")], -1
+}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])("资产拍卖数据")], -1
 /* HOISTED */
 );
 
-var _hoisted_21 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+var _hoisted_40 = {
   class: "select"
-}, "非初标数据", -1
+};
+
+var _hoisted_41 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+  class: "iconfont icon-xiaochengxu-jiantouxia"
+}, null, -1
 /* HOISTED */
 );
 
-var _hoisted_22 = [_hoisted_20, _hoisted_21];
+var _hoisted_42 = {
+  key: 1,
+  class: "operate-card"
+};
 
-var _hoisted_23 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createStaticVNode */ "k"])("<view class=\"operate-card\"><view class=\"title\"><text class=\"iconfont icon-xiaochengxu-pochanzhongzu\"></text>破产重组数据</view><view class=\"select\">-</view></view><view class=\"operate-card\"><view class=\"title\"><text class=\"iconfont icon-xiaochengxu-paimaizhaiquanshuju\"></text>拍卖债权数据</view><view class=\"select\">非初标数据</view></view><view class=\"operate-card\"><view class=\"title\"><text class=\"iconfont icon-xiaochengxu-zhaoshangzhaiquanshuju\"></text>招商债权数据</view><view class=\"select\">-</view></view>", 3);
+var _hoisted_43 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  class: "title"
+}, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+  class: "iconfont icon-xiaochengxu-pochanzhongzu"
+}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])("破产重组数据")], -1
+/* HOISTED */
+);
 
+var _hoisted_44 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  class: "select"
+}, "-", -1
+/* HOISTED */
+);
+
+var _hoisted_45 = [_hoisted_43, _hoisted_44];
+var _hoisted_46 = ["onClick"];
+
+var _hoisted_47 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  class: "title"
+}, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+  class: "iconfont icon-xiaochengxu-paimaizhaiquanshuju"
+}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])("拍卖债权数据")], -1
+/* HOISTED */
+);
+
+var _hoisted_48 = {
+  class: "select"
+};
+
+var _hoisted_49 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+  class: "iconfont icon-xiaochengxu-jiantouxia"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_50 = {
+  key: 3,
+  class: "operate-card"
+};
+
+var _hoisted_51 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  class: "title"
+}, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+  class: "iconfont icon-xiaochengxu-zhaoshangzhaiquanshuju"
+}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])("招商债权数据")], -1
+/* HOISTED */
+);
+
+var _hoisted_52 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  class: "select"
+}, "-", -1
+/* HOISTED */
+);
+
+var _hoisted_53 = [_hoisted_51, _hoisted_52];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [$setup.state.pickerVisible ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
-    key: 0,
+  return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [$setup.state.modalVisible ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_2, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_3, [_hoisted_4, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_5, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+    class: "cancel",
+    onClick: _cache[0] || (_cache[0] = function ($event) {
+      return $setup.state.modalVisible = false;
+    })
+  }, "取消"), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+    class: "confirm",
+    onClick: _cache[1] || (_cache[1] = function () {
+      return $setup.delRecords && $setup.delRecords.apply($setup, arguments);
+    })
+  }, "确定")])])])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), $setup.state.pickerVisible ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
+    key: 1,
     class: "index-wrapper-picker",
     "data-id": "index-wrapper-picker",
-    onClick: _cache[0] || (_cache[0] = function () {
+    onClick: _cache[2] || (_cache[2] = function () {
       return $setup.close && $setup.close.apply($setup, arguments);
     })
-  }, _hoisted_3)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_4, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_5, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  }, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_6, [(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_0__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* renderList */ "x"])($setup.state.pickerOptions, function (item) {
+    return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
+      key: item.key,
+      class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])(['picker-option', $setup.state.pickerOptions.length === 3 ? item.key === $setup.state.userEditParams.userEdit.auctionDataType ? 'pickered' : '' : item.key === $setup.state.userEditParams.userEdit.creditorDataType ? 'pickered' : '']),
+      onClick: function onClick($event) {
+        return $setup.handlePicker(item.key);
+      }
+    }, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.label), 11
+    /* TEXT, CLASS, PROPS */
+    , _hoisted_7);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_8, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_9, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
     class: "navigationBar-title",
     style: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeStyle */ "J"])($setup.state.style)
   }, "源诚数据资产平台", 4
   /* STYLE */
-  )]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_6, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_7, [_hoisted_8, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* withDirectives */ "I"])(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
-    placeholder: "请输入账号或姓名",
-    onChange: _cache[1] || (_cache[1] = function () {
-      return $setup.handleChange && $setup.handleChange.apply($setup, arguments);
-    }),
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+  )]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_10, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_11, [_hoisted_12, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* withDirectives */ "J"])(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* mergeProps */ "r"])({
+    placeholder: "请输入账号或姓名"
+  }, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* toHandlers */ "C"])({
+    confirm: function confirm() {
+      return $setup.doSearch();
+    },
+    change: $setup.handleChange
+  }), {
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $setup.state.params.username = $event;
     }),
     focus: true
-  }, null, 544
-  /* HYDRATE_EVENTS, NEED_PATCH */
+  }), null, 16
+  /* FULL_PROPS */
   ), [[vue__WEBPACK_IMPORTED_MODULE_2__[/* vModelText */ "c"], $setup.state.params.username]]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
-    class: "suffix suffix-search",
-    onClick: _cache[3] || (_cache[3] = function () {
-      return $setup.doSearch && $setup.doSearch.apply($setup, arguments);
+    class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])(['suffix', $setup.state.flag ? 'suffix-cancel' : 'suffix-search']),
+    onClick: _cache[4] || (_cache[4] = function () {
+      return $setup.doSearch();
     })
-  }, "搜索")])])]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_9, [$setup.state.userList.length === 0 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_10, _hoisted_13)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_0__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* renderList */ "x"])($setup.state.userList, function (item) {
+  }, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.flag ? '取消' : '搜索'), 3
+  /* TEXT, CLASS */
+  ), $setup.state.params.username ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
+    key: 0,
+    onClick: _cache[5] || (_cache[5] = function () {
+      return $setup.clear && $setup.clear.apply($setup, arguments);
+    }),
+    class: "suffix suffix-iconfont"
+  }, _hoisted_14)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)])])]), $setup.state.loading ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_15, _hoisted_17)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), !$setup.state.loading && !$setup.state.flag ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_18, [$setup.state.records.length !== 0 && $setup.state.usernameList.length === 0 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_19, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_20, [_hoisted_21, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+    onClick: _cache[6] || (_cache[6] = function ($event) {
+      return $setup.state.modalVisible = true;
+    })
+  }, _hoisted_23)]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_24, [(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_0__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* renderList */ "x"])($setup.state.records, function (item) {
+    return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
+      class: "record-content-item",
+      onClick: function onClick($event) {
+        return $setup.doSearch(item);
+      }
+    }, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item), 9
+    /* TEXT, PROPS */
+    , _hoisted_25);
+  }), 256
+  /* UNKEYED_FRAGMENT */
+  ))])])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_26, [(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_0__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* renderList */ "x"])($setup.state.usernameList, function (item) {
+    return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
+      class: "username-list-item",
+      onClick: function onClick($event) {
+        return $setup.doSearch(item);
+      }
+    }, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item), 9
+    /* TEXT, PROPS */
+    , _hoisted_27);
+  }), 256
+  /* UNKEYED_FRAGMENT */
+  ))])])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), !$setup.state.loading && $setup.state.flag ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_28, [$setup.state.userList.length === 0 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_29, _hoisted_32)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_0__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* renderList */ "x"])($setup.state.userList, function (item) {
     return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
       class: "user-list-container",
       key: item.id
-    }, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_14, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_15, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.name), 1
+    }, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_33, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+      class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])(['name', item.role === '正式' ? 'formal' : 'try'])
+    }, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.name || '-'), 3
+    /* TEXT, CLASS */
+    ), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_34, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_35, "ID：" + Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.id || '-'), 1
     /* TEXT */
-    ), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_16, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_17, "ID：" + Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.id), 1
+    ), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_36, "账号：" + Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.username || '-'), 1
     /* TEXT */
-    ), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_18, "账号：" + Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.username), 1
-    /* TEXT */
-    )]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_19, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+    )]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_37, [item.auctionDataType !== -1 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
+      key: 0,
       class: "operate-card",
-      onClick: _cache[4] || (_cache[4] = function () {
-        return $setup.openMask && $setup.openMask.apply($setup, arguments);
-      })
-    }, _hoisted_22), _hoisted_23])])]);
+      onClick: function onClick($event) {
+        return $setup.openMask('auctionDataType', item);
+      }
+    }, [_hoisted_39, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_40, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])(Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.auctionDataType[item.auctionDataType]), 1
+    /* TEXT */
+    ), _hoisted_41])], 8
+    /* PROPS */
+    , _hoisted_38)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), item.structuredObject.match(new RegExp('破产重组数据', 'g')) ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_42, _hoisted_45)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), item.creditorDataType !== -1 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
+      key: 2,
+      class: "operate-card",
+      onClick: function onClick($event) {
+        return $setup.openMask('creditorDataType', item);
+      }
+    }, [_hoisted_47, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_48, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])(Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.creditorDataType[item.creditorDataType]), 1
+    /* TEXT */
+    ), _hoisted_49])], 8
+    /* PROPS */
+    , _hoisted_46)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), item.structuredObject.match(new RegExp('招商债权数据', 'g')) ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_50, _hoisted_53)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])]);
+  ))])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)]);
 }
 
 /***/ }),

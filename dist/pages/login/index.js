@@ -2021,7 +2021,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
 /* harmony default export */ __webpack_exports__["a"] = ({
   name: 'Login',
   setup: function setup() {
-    var _getCurrentInstance = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* getCurrentInstance */ "o"])(),
+    var _getCurrentInstance = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* getCurrentInstance */ "n"])(),
         proxy = _getCurrentInstance.proxy;
 
     var params = Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* reactive */ "k"])({
@@ -2105,9 +2105,11 @@ PEMEncoder.prototype.encode = function encode(data, options) {
     };
 
     var getImgCode = function getImgCode() {
-      Object(_server_api_login__WEBPACK_IMPORTED_MODULE_2__[/* imgCode */ "a"])().then(function (res) {
-        if (res.code === 200) {
-          state.code.imgUrl = res.data;
+      Object(_server_api_login__WEBPACK_IMPORTED_MODULE_2__[/* imgCode */ "a"])(params.username).then(function (res) {
+        var data = res.data;
+
+        if (data.code === 200) {
+          state.code.imgUrl = data.data;
         }
       });
     };
@@ -2133,22 +2135,22 @@ PEMEncoder.prototype.encode = function encode(data, options) {
         if (data.code === 200) {
           if (data.data.ROLE === '管理员') {
             var session = res.header['Set-Cookie'].split(',')[2].split(';')[0];
-            _utils__WEBPACK_IMPORTED_MODULE_4__[/* storageSession */ "b"].setItem(session);
+            _utils__WEBPACK_IMPORTED_MODULE_4__[/* storage */ "c"].setItem('session', session);
             _tarojs_taro__WEBPACK_IMPORTED_MODULE_5___default.a.switchTab({
               url: '/pages/index/index'
             });
-            Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "c"])('登录成功');
+            Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('登录成功');
           } else {
-            Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "c"])('请登录管理员账号');
+            Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('请登录管理员账号');
           }
         }
 
         if (data.code === 9001) {
-          Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "c"])('账号或密码错误');
+          Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('账号或密码错误');
         }
 
         if (data.code === 9001 && res.message === '验证码输入错误') {
-          Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "c"])('验证码错误');
+          Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('验证码错误');
         }
       }).finally(function () {
         state.loading = false;
@@ -38743,9 +38745,9 @@ var login = function login(data) {
     data: data
   });
 };
-var imgCode = function imgCode() {
+var imgCode = function imgCode(username) {
   return Object(_request__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({
-    url: '/api/code/image',
+    url: "/api/code/image?username=".concat(username),
     method: 'get'
   });
 };

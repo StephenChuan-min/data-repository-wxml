@@ -48,7 +48,7 @@
 import { reactive, onMounted, computed, getCurrentInstance } from 'vue';
 import { login, imgCode } from '../../server/api/login';
 import { encryptInfo } from '../../utils/encrypt';
-import { clearEmpty, storageSession, toast } from '../../utils';
+import { clearEmpty, storage, toast } from '../../utils';
 import Taro from '@tarojs/taro';
 
 export default {
@@ -121,9 +121,10 @@ export default {
     };
 
     const getImgCode = () => {
-      imgCode().then((res) => {
-        if (res.code === 200) {
-          state.code.imgUrl = res.data;
+      imgCode(params.username).then((res) => {
+        const { data } = res;
+        if (data.code === 200) {
+          state.code.imgUrl = data.data;
         }
       });
     };
@@ -146,7 +147,7 @@ export default {
         if (data.code === 200) {
           if (data.data.ROLE === '管理员') {
             const session = res.header['Set-Cookie'].split(',')[2].split(';')[0];
-            storageSession.setItem(session);
+            storage.setItem('session', session);
             Taro.switchTab({
               url: '/pages/index/index',
             });
@@ -271,11 +272,10 @@ export default {
     }
     .suffix{
       width: 109px;
-      height: 40px;
+      height: 42px;
       position: absolute;
       right: 0;
       bottom: 82px;
-      border: 1px solid #C5C7CE;
       border-radius: 21px;
       z-index: 9;
       image{

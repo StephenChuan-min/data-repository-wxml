@@ -1,66 +1,135 @@
 <template>
-  <view class="mine-container">
-    <view class="mine-container-main">
-      <view class="mine-container-main-card">
-        <view class="avatar">
-          <nut-avatar icon="my" bg-color="#296dd3" size="large" />
-        </view>
-        <view class="main">
-          <view class="main-name">{{name}}</view>
-          <view class="main-phone">{{phone}}</view>
+  <view class="index-wrapper">
+    <view class="index-wrapper-modal" v-if="state.modalVisible">
+      <view class="modal-content">
+        <view class="body">确认退出登录？</view>
+        <view class="footer">
+          <view class="cancel" @click="state.modalVisible = false">取消</view>
+          <view class="confirm" @click="doLogout">确定</view>
         </view>
       </view>
     </view>
-    <view class="mine-container-btm">
-      <nut-button block type="default" shape="square">退出登录</nut-button>
+    <view class="navigationBar">
+      <view class="navigationBar-title" :style="state.style">源诚数据资产平台</view>
     </view>
+    <view class="info-card">
+      <view class="avatar"></view>
+    </view>
+    <view @click="state.modalVisible = true" class="logout-button">退出登录</view>
   </view>
 </template>
 
-<script lang="ts">
-import { reactive, toRefs } from 'vue';
+<script>
+import { onMounted, reactive } from 'vue';
+import Taro from "@tarojs/taro";
+import { storage } from "../../utils";
+import { logout } from '../../server/api/logout';
 
 export default {
   name: 'Mine',
   setup() {
     const state = reactive({
-      name: '李雷雷',
-      phone: '15239129378',
+      modalVisible: false,
+      style: {
+        marginTop: '',
+        lineHeight: '',
+      },
     });
-    return {
-      ...toRefs(state),
+
+    const doLogout = () => {
+      Taro.reLaunch({
+        url: '/pages/login/index',
+        success: () => {
+          storage.removeItem('session');
+        }
+      });
+      logout().then();
     };
+
+    onMounted(() => {
+      const { height, top }= Taro.getMenuButtonBoundingClientRect();
+      state.style.marginTop = top + 'px';
+      state.style.lineHeight = height + 'px';
+    });
+    return { state, doLogout };
   },
 };
 </script>
 
 <style lang="scss">
-  .mine-container {
-    height: 100%;
-    &-main{
-      height: 100px;
-      background: #296dd3;
-      margin-bottom: 100px;
-      position: relative;
-      &-card{
-        position: absolute;
-        background:#fff;
-        width: 80%;
-        left: 10%;
-        height: 100px;
-        top: 50px;
-        border-radius: 8px;
-        text-align: center;
-        .avatar{
-          display: inline-block;
-          margin-top: -30px;
-          height: 60px;
-          width: 60px;
-          border-radius: 50%;
-          background: #fff;
-          border: 3px solid #eeeeee;
+.index-wrapper{
+  box-sizing: border-box;
+  min-height: 100vh;
+  background-color: #F6F7F9;
+  .navigationBar{
+    height: 190px;
+    overflow: hidden;
+    background: no-repeat url('../../assets/img/page-bg.png');
+    background-size: cover;
+    &-title{
+      font-size: 17px;
+      font-weight: bold;
+      color: #FFFFFF;
+      text-align: center;
+    }
+  }
+  .info-card{
+    margin: 0 auto;
+    transform: translateY(-45px);
+    width: 345px;
+    height: 116px;
+    background: #FFF;
+    box-shadow: 0px 2px 12px 0px rgba(0, 54, 85, 0.11);
+    border-radius: 8px;
+  }
+  .logout-button{
+    background: #FFF;
+    font-size: 18px;
+    color: #20242E;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+  }
+  &-modal{
+    position: fixed;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    z-index: 999;
+    height: 100vh;
+    .modal-content{
+      width: 315px;
+      height: 140px;
+      background: #fff;
+      border-radius: 8px;
+      margin: 50vh 0 0 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      .body{
+        height: 95px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        line-height: 95px;
+      }
+      .footer{
+        height: 45px;
+        border-top: 1px #D7D9DF solid;
+        display: flex;
+        view{
+          width: 50%;
+          font-size: 16px;
+          line-height: 44px;
+          &.cancel{
+            color: #7D8699;
+            border-right: 1px #D7D9DF solid;
+          }
+          &.confirm{
+            color: #397AE7;
+          }
         }
       }
     }
   }
+}
 </style>

@@ -1,5 +1,41 @@
 (wx["webpackJsonp"] = wx["webpackJsonp"] || []).push([["common"],{
 
+/***/ "./src/assets/img/logo_loading2.gif":
+/*!******************************************!*\
+  !*** ./src/assets/img/logo_loading2.gif ***!
+  \******************************************/
+/*! no static exports found */
+/*! exports used: default */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "assets/img/logo_loading2.gif";
+
+/***/ }),
+
+/***/ "./src/pages/index/source.js":
+/*!***********************************!*\
+  !*** ./src/pages/index/source.js ***!
+  \***********************************/
+/*! exports provided: auctionDataType, creditorDataType */
+/*! exports used: auctionDataType, creditorDataType */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return auctionDataType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return creditorDataType; });
+var auctionDataType = {
+  '0': '普通数据',
+  '1': '普通数据',
+  '2': '相似数据',
+  '3': '非初标数据'
+};
+var creditorDataType = {
+  '0': '普通数据',
+  '1': '非初标数据'
+};
+
+/***/ }),
+
 /***/ "./src/server/api/index.js":
 /*!*********************************!*\
   !*** ./src/server/api/index.js ***!
@@ -72,7 +108,7 @@ var baseUrl = 'http://172.18.255.8:38510';
 
 var request = function request(options) {
   return new Promise(function (resolve, reject) {
-    var session = _utils__WEBPACK_IMPORTED_MODULE_2__[/* storageSession */ "b"].getItem('session') || '';
+    var session = _utils__WEBPACK_IMPORTED_MODULE_2__[/* storage */ "c"].getItem('session') || '';
     var setting = {
       url: _base__WEBPACK_IMPORTED_MODULE_1__[/* baseUrl */ "a"] + options.url,
       data: options.data,
@@ -115,14 +151,15 @@ var request = function request(options) {
 /*!****************************!*\
   !*** ./src/utils/index.js ***!
   \****************************/
-/*! exports provided: clearEmpty, storageSession, toast */
-/*! exports used: clearEmpty, storageSession, toast */
+/*! exports provided: clearEmpty, storage, toast, debounce */
+/*! exports used: clearEmpty, debounce, storage, toast */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return clearEmpty; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return storageSession; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return toast; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return storage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return toast; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return debounce; });
 /* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/objectSpread2 */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/objectSpread2.js");
 /* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/typeof */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/typeof.js");
 /* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @tarojs/taro */ "./node_modules/_@tarojs_taro@3.3.9@@tarojs/taro/index.js");
@@ -150,22 +187,42 @@ var clearEmpty = function clearEmpty(obj) {
 
   return obj;
 };
-var storageSession = {
-  getItem: function getItem() {
-    return _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.getStorageSync('session');
+var storage = {
+  getItem: function getItem(name) {
+    return _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.getStorageSync(name);
   },
-  removeItem: function removeItem() {
-    return _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.removeStorageSync('session');
+  removeItem: function removeItem(name) {
+    return _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.removeStorageSync(name);
   },
-  setItem: function setItem(session) {
-    return _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.setStorageSync('session', session);
+  setItem: function setItem(name, data) {
+    return _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.setStorageSync(name, data);
   }
 };
 var toast = function toast(msg) {
+  var icon = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'none';
   _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.showToast({
     title: msg,
-    icon: 'none'
+    icon: icon
   });
+};
+/**
+ * 函数防抖 created by wchuan  date:2021-10-22
+ * @param func
+ * @param wait
+ * @returns {function(): void}
+ */
+
+var debounce = function debounce(func, wait) {
+  var timer;
+  return function () {
+    var _this = this;
+
+    var args = arguments;
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(function () {
+      func.apply(_this, args);
+    }, wait);
+  };
 };
 
 /***/ })

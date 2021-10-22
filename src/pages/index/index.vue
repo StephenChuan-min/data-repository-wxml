@@ -18,8 +18,9 @@
         <view
             v-for="item in state.pickerOptions"
             :key="item.key"
-            :class="['picker-option', item.key === state.userEditParams.userEdit.auctionDataType
-            || item.key === state.userEditParams.userEdit.creditorDataType ? 'pickered' : '']"
+            :class="['picker-option', state.pickerOptions.length === 3 ?
+            (item.key === state.userEditParams.userEdit.auctionDataType ? 'pickered' : '') :
+            (item.key === state.userEditParams.userEdit.creditorDataType ? 'pickered' : '')]"
             @click="handlePicker(item.key)"
         >
           {{item.label}}
@@ -33,7 +34,7 @@
       <view class="block search-block">
         <view class="search-input">
           <text class="iconfont icon-xiaochengxu-sousuo"></text>
-          <input placeholder="请输入账号或姓名" @focus="doSearch"/>
+          <input placeholder="请输入账号或姓名" @focus="doSearch" />
           <view class="suffix suffix-search" @click="doSearch">搜索</view>
         </view>
         <view class="tab-block">
@@ -56,7 +57,7 @@
         @refresherpulling="refresherPulling"
         @refresherrefresh="refresherRefresh"
     >
-      <view slot="refresher" class="refresh-container" v-if="state.refreshPull.refreshLoading">
+      <view class="refresh-container" v-if="state.refreshPull.refreshLoading">
         <image src="../../assets/img/logo_loading2.gif" />
         <view style="color: #7D8699;font-size: 13px">{{state.refreshPull.label}}</view>
       </view>
@@ -102,16 +103,7 @@ import { onMounted, reactive, watch, computed } from 'vue';
 import Taro from "@tarojs/taro";
 import { clearEmpty, toast  } from "../../utils";
 import { userView, userEdit } from '../../server/api/index';
-const auctionDataType = {
-  '0': '普通数据',
-  '1': '普通数据',
-  '2': '相似数据',
-  '3': '非初标数据'
-}
-const creditorDataType = {
-  '0': '普通数据',
-  '1': '非初标数据',
-}
+import { auctionDataType, creditorDataType } from './source';
 
 export default {
   name: 'Index',
@@ -146,8 +138,8 @@ export default {
           auctionDataType: 0,
           creditorDataType: 0,
           functionId: [],
-          name: "DoyuTu",
-          roleId: 1
+          name: '',
+          roleId: '',
         },
       },
       structuredObject: [

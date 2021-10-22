@@ -45,26 +45,18 @@ if (false) {}
 /* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_tarojs_taro__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils */ "./src/utils/index.js");
 /* harmony import */ var _server_api_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../server/api/index */ "./src/server/api/index.js");
+/* harmony import */ var _source__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./source */ "./src/pages/index/source.js");
 
 
 
 
-var auctionDataType = {
-  '0': '普通数据',
-  '1': '普通数据',
-  '2': '相似数据',
-  '3': '非初标数据'
-};
-var creditorDataType = {
-  '0': '普通数据',
-  '1': '非初标数据'
-};
+
 /* harmony default export */ __webpack_exports__["a"] = ({
   name: 'Index',
   setup: function setup() {
     var state = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* reactive */ "k"])({
-      auctionDataType: auctionDataType,
-      creditorDataType: creditorDataType,
+      auctionDataType: _source__WEBPACK_IMPORTED_MODULE_5__[/* auctionDataType */ "a"],
+      creditorDataType: _source__WEBPACK_IMPORTED_MODULE_5__[/* creditorDataType */ "b"],
       loading: false,
       refreshPull: {
         triggered: false,
@@ -95,8 +87,8 @@ var creditorDataType = {
           auctionDataType: 0,
           creditorDataType: 0,
           functionId: [],
-          name: "DoyuTu",
-          roleId: 1
+          name: '',
+          roleId: ''
         }
       },
       structuredObject: [{
@@ -127,7 +119,7 @@ var creditorDataType = {
         key: 3
       }]
     });
-    Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* watch */ "E"])(function () {
+    Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* watch */ "F"])(function () {
       return state.pickerVisible;
     }, function (newVal) {
       if (!newVal) _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.showTabBar();
@@ -273,9 +265,9 @@ var creditorDataType = {
         getList();
 
         if (data.code === 200) {
-          Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* toast */ "c"])('操作成功');
+          Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* toast */ "d"])('操作成功');
         } else {
-          Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* toast */ "c"])('操作失败, 请重试');
+          Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* toast */ "d"])('操作失败, 请重试');
         }
       });
     };
@@ -388,7 +380,6 @@ var _hoisted_18 = [_hoisted_17];
 var _hoisted_19 = ["refresher-triggered"];
 var _hoisted_20 = {
   key: 0,
-  slot: "refresher",
   class: "refresh-container"
 };
 
@@ -453,7 +444,7 @@ var _hoisted_35 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* create
   class: "title"
 }, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
   class: "iconfont icon-xiaochengxu-zichanpaimai"
-}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "l"])("资产拍卖数据")], -1
+}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])("资产拍卖数据")], -1
 /* HOISTED */
 );
 
@@ -476,7 +467,7 @@ var _hoisted_39 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* create
   class: "title"
 }, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
   class: "iconfont icon-xiaochengxu-pochanzhongzu"
-}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "l"])("破产重组数据")], -1
+}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])("破产重组数据")], -1
 /* HOISTED */
 );
 
@@ -493,7 +484,7 @@ var _hoisted_43 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* create
   class: "title"
 }, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
   class: "iconfont icon-xiaochengxu-paimaizhaiquanshuju"
-}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "l"])("拍卖债权数据")], -1
+}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])("拍卖债权数据")], -1
 /* HOISTED */
 );
 
@@ -516,7 +507,7 @@ var _hoisted_47 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* create
   class: "title"
 }, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
   class: "iconfont icon-xiaochengxu-zhaoshangzhaiquanshuju"
-}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "l"])("招商债权数据")], -1
+}), /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])("招商债权数据")], -1
 /* HOISTED */
 );
 
@@ -542,7 +533,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $setup.handleSelect(item.key);
       }
-    }, [item.key === $setup.state.params.functions ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("text", _hoisted_4)) : (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("text", _hoisted_5)), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "l"])(" " + Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.label), 1
+    }, [item.key === $setup.state.params.functions ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("text", _hoisted_4)) : (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("text", _hoisted_5)), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])(" " + Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])(item.label), 1
     /* TEXT */
     )], 10
     /* CLASS, PROPS */
@@ -559,7 +550,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_6, [(Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_0__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* renderList */ "x"])($setup.state.pickerOptions, function (item) {
     return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
       key: item.key,
-      class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])(['picker-option', item.key === $setup.state.userEditParams.userEdit.auctionDataType || item.key === $setup.state.userEditParams.userEdit.creditorDataType ? 'pickered' : '']),
+      class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])(['picker-option', $setup.state.pickerOptions.length === 3 ? item.key === $setup.state.userEditParams.userEdit.auctionDataType ? 'pickered' : '' : item.key === $setup.state.userEditParams.userEdit.creditorDataType ? 'pickered' : '']),
       onClick: function onClick($event) {
         return $setup.handlePicker(item.key);
       }
@@ -635,7 +626,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $setup.openMask('auctionDataType', item);
       }
-    }, [_hoisted_35, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_36, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "l"])(Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.auctionDataType[item.auctionDataType]), 1
+    }, [_hoisted_35, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_36, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])(Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.auctionDataType[item.auctionDataType]), 1
     /* TEXT */
     ), _hoisted_37])], 8
     /* PROPS */
@@ -645,7 +636,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $setup.openMask('creditorDataType', item);
       }
-    }, [_hoisted_43, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_44, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "l"])(Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.creditorDataType[item.creditorDataType]), 1
+    }, [_hoisted_43, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_44, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])(Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.creditorDataType[item.creditorDataType]), 1
     /* TEXT */
     ), _hoisted_45])], 8
     /* PROPS */
@@ -679,18 +670,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "assets/img/empty.png";
-
-/***/ }),
-
-/***/ "./src/assets/img/logo_loading2.gif":
-/*!******************************************!*\
-  !*** ./src/assets/img/logo_loading2.gif ***!
-  \******************************************/
-/*! no static exports found */
-/*! exports used: default */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "assets/img/logo_loading2.gif";
 
 /***/ }),
 
