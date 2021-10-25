@@ -23,6 +23,7 @@
             ref="password"
             type="password"
             placeholder="请输入密码"
+            style="padding-right: 10px"
             maxlength="20"
             :class="state.errorField.password.isError && state.errorField.password.show ? 'is-error' : ''"
             @change="(e) => handleChange(e, 'password')"
@@ -158,7 +159,7 @@ export default {
           }
         }
         if (data.code === 9001) {
-          if (res.message === '验证码输入错误') {
+          if (data.message === '验证码输入错误') {
             toast('验证码错误');
           } else {
             toast('账号或密码错误');
