@@ -2083,7 +2083,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
       var value = e.target.value;
       var reg = {
         username: /\D/g,
-        password: /\s/g,
+        password: /\W/g,
         imageVerifyCode: /\W/g
       };
       proxy.$refs[prop].value = params[prop] = value.replace(reg[prop], '');
@@ -2136,6 +2136,10 @@ PEMEncoder.prototype.encode = function encode(data, options) {
           if (data.data.ROLE === '管理员') {
             var session = res.header['Set-Cookie'].split(',')[2].split(';')[0];
             _utils__WEBPACK_IMPORTED_MODULE_4__[/* storage */ "c"].setItem('session', session);
+            _utils__WEBPACK_IMPORTED_MODULE_4__[/* storage */ "c"].setItem('userInfo', {
+              username: params.username,
+              name: data.data.NAME
+            });
             _tarojs_taro__WEBPACK_IMPORTED_MODULE_5___default.a.switchTab({
               url: '/pages/index/index'
             });
@@ -2146,11 +2150,11 @@ PEMEncoder.prototype.encode = function encode(data, options) {
         }
 
         if (data.code === 9001) {
-          Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('账号或密码错误');
-        }
-
-        if (data.code === 9001 && res.message === '验证码输入错误') {
-          Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('验证码错误');
+          if (res.message === '验证码输入错误') {
+            Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('验证码错误');
+          } else {
+            Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('账号或密码错误');
+          }
         }
       }).finally(function () {
         state.loading = false;

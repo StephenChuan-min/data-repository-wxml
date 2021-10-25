@@ -82,8 +82,8 @@ var userEdit = function userEdit(id, data) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return baseUrl; });
-// export const baseUrl = 'https://data.yczcjk.com';
-var baseUrl = 'http://172.18.255.8:38510';
+// export const baseUrl = 'https://wechat-data.yczcjk.com';
+var baseUrl = 'http://172.18.255.8:38510'; // export const baseUrl = 'https://wechat-test.yczcjk.com'; // 测试环境
 
 /***/ }),
 
@@ -119,6 +119,7 @@ var request = function request(options) {
       }, options.header),
       success: function success(res) {
         if (res.data.code === 401) {
+          _utils__WEBPACK_IMPORTED_MODULE_2__[/* storage */ "c"].removeItem('session');
           _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default.a.reLaunch({
             url: '/pages/login/index'
           });

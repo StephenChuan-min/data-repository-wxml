@@ -6,6 +6,13 @@
   "description": "pc端+移动端",
   "glyphs": [
     {
+      "icon_id": "25148022",
+      "name": "小程序-返回",
+      "font_class": "xiaochengxu-fanhui",
+      "unicode": "e6bc",
+      "unicode_decimal": 59068
+    },
+    {
       "icon_id": "24936222",
       "name": "小程序-箭头上",
       "font_class": "xiaochengxu-jiantoushang",

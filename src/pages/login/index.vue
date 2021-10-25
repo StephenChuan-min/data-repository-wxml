@@ -103,7 +103,7 @@ export default {
 
     const handleChange = (e, prop) => {
       const { value } = e.target;
-      const reg = { username: /\D/g, password: /\s/g, imageVerifyCode: /\W/g };
+      const reg = { username: /\D/g, password: /\W/g, imageVerifyCode: /\W/g };
       proxy.$refs[prop].value = params[prop] = value.replace(reg[prop], '');
       rules[prop].forEach((item) => {
         if (item.required) {
@@ -148,6 +148,7 @@ export default {
           if (data.data.ROLE === '管理员') {
             const session = res.header['Set-Cookie'].split(',')[2].split(';')[0];
             storage.setItem('session', session);
+            storage.setItem('userInfo', {username: params.username, name: data.data.NAME});
             Taro.switchTab({
               url: '/pages/index/index',
             });
@@ -157,10 +158,11 @@ export default {
           }
         }
         if (data.code === 9001) {
-          toast('账号或密码错误');
-        }
-        if (data.code === 9001 && res.message === '验证码输入错误') {
-          toast('验证码错误');
+          if (res.message === '验证码输入错误') {
+            toast('验证码错误');
+          } else {
+            toast('账号或密码错误');
+          }
         }
       }).finally(() => {
         state.loading = false;

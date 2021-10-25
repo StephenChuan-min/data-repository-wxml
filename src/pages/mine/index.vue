@@ -13,7 +13,9 @@
       <view class="navigationBar-title" :style="state.style">源诚数据资产平台</view>
     </view>
     <view class="info-card">
-      <view class="avatar"></view>
+      <view class="avatar"><image src="../../assets/img/head.png"></image></view>
+      <view class="name">{{state.userInfo.name}}</view>
+      <view class="username">{{state.userInfo.username}}</view>
     </view>
     <view @click="state.modalVisible = true" class="logout-button">退出登录</view>
   </view>
@@ -29,6 +31,7 @@ export default {
   name: 'Mine',
   setup() {
     const state = reactive({
+      userInfo: {},
       modalVisible: false,
       style: {
         marginTop: '',
@@ -37,11 +40,9 @@ export default {
     });
 
     const doLogout = () => {
+      storage.removeItem('session');
       Taro.reLaunch({
         url: '/pages/login/index',
-        success: () => {
-          storage.removeItem('session');
-        }
       });
       logout().then();
     };
@@ -50,6 +51,7 @@ export default {
       const { height, top }= Taro.getMenuButtonBoundingClientRect();
       state.style.marginTop = top + 'px';
       state.style.lineHeight = height + 'px';
+      state.userInfo = storage.getItem('userInfo');
     });
     return { state, doLogout };
   },
@@ -74,6 +76,7 @@ export default {
     }
   }
   .info-card{
+    border-top: 0.1px solid transparent;
     margin: 0 auto;
     transform: translateY(-45px);
     width: 345px;
@@ -81,6 +84,24 @@ export default {
     background: #FFF;
     box-shadow: 0px 2px 12px 0px rgba(0, 54, 85, 0.11);
     border-radius: 8px;
+    text-align: center;
+    .avatar{
+      margin-top: -45px;
+      image{
+        width: 90px;
+        height: 90px;
+      }
+    }
+    .name{
+      font-size: 18px;
+      font-weight: bold;
+      color: #20242E;
+    }
+    .username{
+      margin-top: 6px;
+      font-size: 14px;
+      color: #4E5566;
+    }
   }
   .logout-button{
     background: #FFF;

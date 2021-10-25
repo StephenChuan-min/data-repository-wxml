@@ -39,10 +39,15 @@
   background-size: cover;
 }
 .index-wrapper .fixed .navigationBar-title {
+  position: relative;
   font-size: 34rpx;
   font-weight: bold;
   color: #FFFFFF;
   text-align: center;
+}
+.index-wrapper .fixed .navigationBar-title view {
+  position: absolute;
+  left: 30rpx;
 }
 .index-wrapper .fixed .search-block {
   height: 28rpx;

@@ -25,7 +25,7 @@
     </view>
     <view class="fixed">
       <view class="navigationBar">
-        <view class="navigationBar-title" :style="state.style">源诚数据资产平台</view>
+        <view class="navigationBar-title" :style="state.style"><view @click="goBack"><text class="iconfont icon-xiaochengxu-fanhui" /></view>源诚数据资产平台</view>
       </view>
       <view class="block search-block">
         <view class="search-input">
@@ -153,6 +153,12 @@ export default {
       });
     };
 
+    const goBack = () => {
+      Taro.navigateBack({
+        delta: 1,
+      });
+    };
+
     const clear = () => {
       state.params.username = '';
       state.usernameList = [];
@@ -183,9 +189,7 @@ export default {
 
     const doSearch = (item) => {
       if (state.flag) {
-        Taro.navigateBack({
-          delta: 1,
-        })
+        goBack();
       } else {
         if (item) state.params.username = item;
         const username = state.params.username = state.params.username.replace(/\s/g, '');
@@ -263,7 +267,7 @@ export default {
       state.style.lineHeight = height + 'px';
       state.records = storage.getItem('records') || [];
     });
-    return { state, doSearch, openMask, close, handleChange, delRecords, clear, handlePicker };
+    return { state, doSearch, openMask, close, handleChange, delRecords, clear, handlePicker, goBack };
   },
 };
 </script>
@@ -303,10 +307,15 @@ export default {
       background: no-repeat url('../../assets/img/page-bg.png');
       background-size: cover;
       &-title{
+        position: relative;
         font-size: 17px;
         font-weight: bold;
         color: #FFFFFF;
         text-align: center;
+        view{
+          position: absolute;
+          left: 15px;
+        }
       }
     }
     .search-block{

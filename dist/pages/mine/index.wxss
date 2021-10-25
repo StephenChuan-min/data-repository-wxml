@@ -17,6 +17,7 @@
   text-align: center;
 }
 .index-wrapper .info-card {
+  border-top: 0.2rpx solid transparent;
   margin: 0 auto;
   -webkit-transform: translateY(-90rpx);
       -ms-transform: translateY(-90rpx);
@@ -27,6 +28,24 @@
   -webkit-box-shadow: 0 4rpx 24rpx 0 rgba(0, 54, 85, 0.11);
           box-shadow: 0 4rpx 24rpx 0 rgba(0, 54, 85, 0.11);
   border-radius: 16rpx;
+  text-align: center;
+}
+.index-wrapper .info-card .avatar {
+  margin-top: -90rpx;
+}
+.index-wrapper .info-card .avatar image {
+  width: 180rpx;
+  height: 180rpx;
+}
+.index-wrapper .info-card .name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #20242E;
+}
+.index-wrapper .info-card .username {
+  margin-top: 12rpx;
+  font-size: 28rpx;
+  color: #4E5566;
 }
 .index-wrapper .logout-button {
   background: #FFF;

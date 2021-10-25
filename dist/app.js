@@ -1804,7 +1804,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var config = {"pages":["pages/index/index","pages/login/index","pages/search/index","pages/mine/index"],"window":{"backgroundTextStyle":"light","navigationBarBackgroundColor":"#296dd3","navigationBarTitleText":"源诚数据资产平台","navigationBarTextStyle":"white","navigationStyle":"custom"},"tabBar":{"color":"#7D8699","selectedColor":"#397AE7","list":[{"pagePath":"pages/index/index","text":"结构化账号","iconPath":"./assets/img/tab-bar/home.png","selectedIconPath":"./assets/img/tab-bar/home-active.png"},{"pagePath":"pages/mine/index","text":"我的","iconPath":"./assets/img/tab-bar/user.png","selectedIconPath":"./assets/img/tab-bar/user-active.png"}]}};
+var config = {"pages":["pages/login/index","pages/index/index","pages/search/index","pages/mine/index"],"window":{"backgroundTextStyle":"light","navigationBarBackgroundColor":"#296dd3","navigationBarTitleText":"源诚数据资产平台","navigationBarTextStyle":"white","navigationStyle":"custom"},"tabBar":{"color":"#7D8699","selectedColor":"#397AE7","list":[{"pagePath":"pages/index/index","text":"结构化账号","iconPath":"./assets/img/tab-bar/home.png","selectedIconPath":"./assets/img/tab-bar/home-active.png"},{"pagePath":"pages/mine/index","text":"我的","iconPath":"./assets/img/tab-bar/user.png","selectedIconPath":"./assets/img/tab-bar/user-active.png"}]}};
 _tarojs_runtime__WEBPACK_IMPORTED_MODULE_2__["window"].__taroAppConfig = config
 var inst = App(Object(_tarojs_runtime__WEBPACK_IMPORTED_MODULE_2__["createVue3App"])(_node_modules_babel_loader_8_2_1_babel_loader_lib_index_js_app_ts__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"], vue__WEBPACK_IMPORTED_MODULE_5__[/* h */ "p"], config))
 

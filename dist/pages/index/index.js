@@ -248,6 +248,10 @@ if (false) {}
       });
     };
 
+    var refresherAbort = function refresherAbort() {
+      state.refreshPull.refreshLoading = false;
+    };
+
     var handlePicker = function handlePicker(key) {
       var _state$userEditParams = state.userEditParams,
           id = _state$userEditParams.id,
@@ -264,8 +268,7 @@ if (false) {}
         var data = res.data;
         getList();
 
-        if (data.code === 200) {
-          Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* toast */ "d"])('操作成功');
+        if (data.code === 200) {// toast('操作成功');
         } else {
           Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* toast */ "d"])('操作失败, 请重试');
         }
@@ -291,6 +294,7 @@ if (false) {}
       close: close,
       refresherPulling: refresherPulling,
       refresherRefresh: refresherRefresh,
+      refresherAbort: refresherAbort,
       handlePicker: handlePicker
     };
   }
@@ -380,6 +384,7 @@ var _hoisted_18 = [_hoisted_17];
 var _hoisted_19 = ["refresher-triggered"];
 var _hoisted_20 = {
   key: 0,
+  slot: "refresher",
   class: "refresh-container"
 };
 
@@ -596,17 +601,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.structuredType), 3
   /* TEXT, CLASS */
   )])])]), $setup.state.loading ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_16, _hoisted_18)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("scroll-view", {
-    "scroll-y": "",
+    style: {
+      "height": "calc(100vh - 199px)"
+    },
+    "scroll-y": true,
     "refresher-enabled": true,
     "refresher-background": "#F6F7F9",
     "refresher-default-style": "none",
-    "refresher-threshold": 10,
+    "refresher-threshold": 20,
     "refresher-triggered": $setup.state.refreshPull.triggered,
     onRefresherpulling: _cache[5] || (_cache[5] = function () {
       return $setup.refresherPulling && $setup.refresherPulling.apply($setup, arguments);
     }),
     onRefresherrefresh: _cache[6] || (_cache[6] = function () {
       return $setup.refresherRefresh && $setup.refresherRefresh.apply($setup, arguments);
+    }),
+    onRefresherabort: _cache[7] || (_cache[7] = function () {
+      return $setup.refresherAbort && $setup.refresherAbort.apply($setup, arguments);
     })
   }, [$setup.state.refreshPull.refreshLoading ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_20, [_hoisted_21, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_22, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.refreshPull.label), 1
   /* TEXT */

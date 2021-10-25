@@ -53,6 +53,7 @@ if (false) {}
   name: 'Mine',
   setup: function setup() {
     var state = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* reactive */ "k"])({
+      userInfo: {},
       modalVisible: false,
       style: {
         marginTop: '',
@@ -61,11 +62,9 @@ if (false) {}
     });
 
     var doLogout = function doLogout() {
+      _utils__WEBPACK_IMPORTED_MODULE_3__[/* storage */ "c"].removeItem('session');
       _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.reLaunch({
-        url: '/pages/login/index',
-        success: function success() {
-          _utils__WEBPACK_IMPORTED_MODULE_3__[/* storage */ "c"].removeItem('session');
-        }
+        url: '/pages/login/index'
       });
       Object(_server_api_logout__WEBPACK_IMPORTED_MODULE_4__[/* logout */ "a"])().then();
     };
@@ -77,6 +76,7 @@ if (false) {}
 
       state.style.marginTop = top + 'px';
       state.style.lineHeight = height + 'px';
+      state.userInfo = _utils__WEBPACK_IMPORTED_MODULE_3__[/* storage */ "c"].getItem('userInfo');
     });
     return {
       state: state,
@@ -99,6 +99,9 @@ if (false) {}
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-core@3.2.20@@vue/runtime-core/dist/runtime-core.esm-bundler.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_shared@3.2.20@@vue/shared/dist/shared.esm-bundler.js");
+/* harmony import */ var _assets_img_head_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../assets/img/head.png */ "./src/assets/img/head.png");
+/* harmony import */ var _assets_img_head_png__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_assets_img_head_png__WEBPACK_IMPORTED_MODULE_2__);
+
 
 var _hoisted_1 = {
   class: "index-wrapper"
@@ -123,15 +126,24 @@ var _hoisted_5 = {
 var _hoisted_6 = {
   class: "navigationBar"
 };
-
-var _hoisted_7 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+var _hoisted_7 = {
   class: "info-card"
-}, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+};
+
+var _hoisted_8 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
   class: "avatar"
+}, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
+  src: _assets_img_head_png__WEBPACK_IMPORTED_MODULE_2___default.a
 })], -1
 /* HOISTED */
 );
 
+var _hoisted_9 = {
+  class: "name"
+};
+var _hoisted_10 = {
+  class: "username"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [$setup.state.modalVisible ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_2, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_3, [_hoisted_4, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_5, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
     class: "cancel",
@@ -148,7 +160,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     style: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeStyle */ "J"])($setup.state.style)
   }, "源诚数据资产平台", 4
   /* STYLE */
-  )]), _hoisted_7, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  )]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_7, [_hoisted_8, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_9, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.userInfo.name), 1
+  /* TEXT */
+  ), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_10, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.userInfo.username), 1
+  /* TEXT */
+  )]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
     onClick: _cache[2] || (_cache[2] = function ($event) {
       return $setup.state.modalVisible = true;
     }),
@@ -166,6 +182,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "./src/assets/img/head.png":
+/*!*********************************!*\
+  !*** ./src/assets/img/head.png ***!
+  \*********************************/
+/*! no static exports found */
+/*! exports used: default */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "assets/img/head.png";
 
 /***/ }),
 
@@ -243,17 +271,24 @@ var inst = Page(Object(_tarojs_runtime__WEBPACK_IMPORTED_MODULE_0__["createPageC
 /*!**********************************!*\
   !*** ./src/server/api/logout.js ***!
   \**********************************/
-/*! exports provided: logout */
+/*! exports provided: logout, userToken */
 /*! exports used: logout */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return logout; });
+/* unused harmony export userToken */
 /* harmony import */ var _request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../request */ "./src/server/request.js");
 
 var logout = function logout() {
   return Object(_request__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({
     url: '/api/logout',
+    method: 'get'
+  });
+};
+var userToken = function userToken() {
+  return Object(_request__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({
+    url: '/api/userToken',
     method: 'get'
   });
 };

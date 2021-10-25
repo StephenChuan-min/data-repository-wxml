@@ -48,16 +48,18 @@
     </view>
     <view class="loading" v-if="state.loading"><image src="../../assets/img/logo_loading2.gif" /></view>
     <scroll-view
-        scroll-y
+        style="height: calc(100vh - 199px)"
+        :scroll-y="true"
         :refresher-enabled="true"
         refresher-background="#F6F7F9"
         refresher-default-style="none"
-        :refresher-threshold="10"
+        :refresher-threshold="20"
         :refresher-triggered="state.refreshPull.triggered"
         @refresherpulling="refresherPulling"
         @refresherrefresh="refresherRefresh"
+        @refresherabort="refresherAbort"
     >
-      <view class="refresh-container" v-if="state.refreshPull.refreshLoading">
+      <view slot="refresher" class="refresh-container" v-if="state.refreshPull.refreshLoading">
         <image src="../../assets/img/logo_loading2.gif" />
         <view style="color: #7D8699;font-size: 13px">{{state.refreshPull.label}}</view>
       </view>
@@ -266,6 +268,10 @@ export default {
       });
     };
 
+    const refresherAbort = () => {
+      state.refreshPull.refreshLoading = false;
+    };
+
     const handlePicker = (key) => {
       const { id, userEdit: data } = state.userEditParams;
       if (state.pickerOptions.length === 3) {
@@ -278,7 +284,7 @@ export default {
         const { data } = res;
         getList();
         if (data.code === 200) {
-          toast('操作成功');
+          // toast('操作成功');
         } else {
           toast('操作失败, 请重试');
         }
@@ -301,6 +307,7 @@ export default {
       close,
       refresherPulling,
       refresherRefresh,
+      refresherAbort,
       handlePicker,
     };
   },
@@ -570,10 +577,11 @@ export default {
   }
 }
 .empty{
-  height: 200px;
+  height: calc(100vh - 199px);
   text-align: center;
-  margin-top: 99px;
+  background-color: #fff;
   image{
+    margin-top: 99px;
     width: 160px;
     height: 100px;
   }
