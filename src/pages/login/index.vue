@@ -147,7 +147,7 @@ export default {
         }
         if (data.code === 200) {
           if (data.data.ROLE === '管理员') {
-            const session = res.header['Set-Cookie'].split(',')[2].split(';')[0];
+            const session = res.cookies[res.cookies.length - 1].split(';')[0];
             storage.setItem('session', session);
             storage.setItem('userInfo', {username: params.username, name: data.data.NAME});
             Taro.switchTab({

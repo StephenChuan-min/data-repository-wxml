@@ -1,9 +1,10 @@
 export default {
   pages: [
-    'pages/index/index',
     'pages/login/index',
+    'pages/index/index',
     'pages/search/index',
     'pages/mine/index',
+    'pages/default/index',
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -27,4 +28,5 @@ export default {
       selectedIconPath: './assets/img/tab-bar/user-active.png',
     }],
   },
+  entryPagePath: 'pages/default/index', // 指定小程序的默认启动路径
 };
