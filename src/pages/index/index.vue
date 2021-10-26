@@ -183,6 +183,9 @@ export default {
     const doSearch = () => {
       Taro.navigateTo({
         url: '/pages/search/index',
+        success: () => {
+          state.visible = false;
+        },
       });
     };
 

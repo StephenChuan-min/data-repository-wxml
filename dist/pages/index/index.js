@@ -147,7 +147,10 @@ if (false) {}
 
     var doSearch = function doSearch() {
       _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.navigateTo({
-        url: '/pages/search/index'
+        url: '/pages/search/index',
+        success: function success() {
+          state.visible = false;
+        }
       });
     };
 
