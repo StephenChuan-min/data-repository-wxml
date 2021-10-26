@@ -3441,10 +3441,15 @@ const initDirectivesForSSR = () => {
 /* harmony import */ var _nutui_nutui_taro_dist_packages_es_Toast__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @nutui/nutui-taro/dist/packages/_es/Toast */ "./node_modules/_@nutui_nutui-taro@3.1.8@@nutui/nutui-taro/dist/packages/_es/Toast.js");
 /* harmony import */ var _nutui_nutui_taro_dist_packages_es_Button__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @nutui/nutui-taro/dist/packages/_es/Button */ "./node_modules/_@nutui_nutui-taro@3.1.8@@nutui/nutui-taro/dist/packages/_es/Button.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-dom@3.2.20@@vue/runtime-dom/dist/runtime-dom.esm-bundler.js");
-/* harmony import */ var _nutui_nutui_taro_dist_styles_themes_default_scss__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @nutui/nutui-taro/dist/styles/themes/default.scss */ "./node_modules/_@nutui_nutui-taro@3.1.8@@nutui/nutui-taro/dist/styles/themes/default.scss");
-/* harmony import */ var _nutui_nutui_taro_dist_styles_themes_default_scss__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_nutui_nutui_taro_dist_styles_themes_default_scss__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var _app_scss__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./app.scss */ "./src/app.scss");
-/* harmony import */ var _app_scss__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_app_scss__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./utils */ "./src/utils/index.js");
+/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @tarojs/taro */ "./node_modules/_@tarojs_taro@3.3.9@@tarojs/taro/index.js");
+/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_tarojs_taro__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _nutui_nutui_taro_dist_styles_themes_default_scss__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @nutui/nutui-taro/dist/styles/themes/default.scss */ "./node_modules/_@nutui_nutui-taro@3.1.8@@nutui/nutui-taro/dist/styles/themes/default.scss");
+/* harmony import */ var _nutui_nutui_taro_dist_styles_themes_default_scss__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_nutui_nutui_taro_dist_styles_themes_default_scss__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var _app_scss__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./app.scss */ "./src/app.scss");
+/* harmony import */ var _app_scss__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_app_scss__WEBPACK_IMPORTED_MODULE_12__);
+
+
 
 
 
@@ -3459,6 +3464,15 @@ const initDirectivesForSSR = () => {
 var App = Object(vue__WEBPACK_IMPORTED_MODULE_8__[/* createApp */ "b"])({
   onShow: function onShow(options) {
     console.log(options);
+    var session = _utils__WEBPACK_IMPORTED_MODULE_9__[/* storage */ "c"].getItem('session');
+
+    if (!session) {
+      _tarojs_taro__WEBPACK_IMPORTED_MODULE_10___default.a.reLaunch({
+        url: '/pages/login/index'
+      });
+    }
+
+    ;
   }
 });
 var Components = [_nutui_nutui_taro_dist_packages_es_Button__WEBPACK_IMPORTED_MODULE_7__[/* default */ "a"], _nutui_nutui_taro_dist_packages_es_Toast__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"], _nutui_nutui_taro_dist_packages_es_Pagination__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"], _nutui_nutui_taro_dist_packages_es_Icon__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"], _nutui_nutui_taro_dist_packages_es_Tab__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"], _nutui_nutui_taro_dist_packages_es_InputNumber__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"], _nutui_nutui_taro_dist_packages_es_Input__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"], _nutui_nutui_taro_dist_packages_es_Avatar__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]];
@@ -3518,5 +3532,5 @@ Object(_tarojs_taro__WEBPACK_IMPORTED_MODULE_3__["initPxTransform"])({
 
 /***/ })
 
-},[["./src/app.ts","runtime","taro","vendors"]]]);;
+},[["./src/app.ts","runtime","taro","vendors","common"]]]);;
 //# sourceMappingURL=app.js.map
