@@ -3463,7 +3463,6 @@ const initDirectivesForSSR = () => {
 
 var App = Object(vue__WEBPACK_IMPORTED_MODULE_8__[/* createApp */ "b"])({
   onShow: function onShow(options) {
-    console.log(options);
     var session = _utils__WEBPACK_IMPORTED_MODULE_9__[/* storage */ "c"].getItem('session');
 
     if (!session) {

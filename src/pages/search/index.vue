@@ -30,7 +30,7 @@
       <view class="block search-block">
         <view class="search-input">
           <text class="iconfont icon-xiaochengxu-sousuo"></text>
-          <native-input @change="handleChange" @confirm="({detail}) => doSearch(detail)" :value="state.params.username" :auto-focus="true" />
+          <native-input @change="handleChange" @confirm="({detail}) => doSearch(detail)" :value="state.params.username" :auto-focus="!state.flag" />
           <view :class="['suffix', state.flag ? 'suffix-cancel' : 'suffix-search']" @click="() => doSearch()">{{ state.flag ? '取消' : '搜索' }}</view>
           <view v-if="state.params.username" @click="clear" class="suffix suffix-iconfont">
             <text class="iconfont icon-xiaochengxu-shanchu" />

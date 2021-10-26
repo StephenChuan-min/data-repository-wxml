@@ -58,6 +58,7 @@
         @refresherpulling="refresherPulling"
         @refresherrefresh="refresherRefresh"
         @refresherabort="refresherAbort"
+        @scrolltolower="scrollToLower"
     >
       <view slot="refresher" class="refresh-container" v-if="state.refreshPull.refreshLoading">
         <image src="../../assets/img/logo_loading2.gif" />
@@ -134,6 +135,7 @@ export default {
         role: 1,
         functions: '',
         isEnabledUser: true,
+        page: 1,
       },
       userEditParams: {
         id: '',
@@ -166,7 +168,7 @@ export default {
 
     const structuredType = computed(() => state.structuredObject.find((item) => item.key === state.params.functions).label);
 
-    const getList = () => {
+    const getList = (toLower) => {
       state.loading = true;
       userView(clearEmpty(state.params)).then((res) => {
         const { data } = res;
@@ -187,6 +189,7 @@ export default {
     const tabClick = (key) => {
       if (state.params.role === key) return;
       state.params.role = key;
+      state.params.page = 1;
       state.params.functions = '';
       state.visible = false;
       getList();
@@ -196,6 +199,7 @@ export default {
       state.visible = false;
       if (state.params.functions === key) return;
       state.params.functions = key;
+      state.params.page = 1;
       getList();
     };
 
@@ -273,14 +277,22 @@ export default {
       state.refreshPull.refreshLoading = false;
     };
 
+    const scrollToLower = () => {
+      console.log('到底啦.....');
+      // state.params.page++;
+      // getList(true);
+    };
+
     const handlePicker = (key) => {
       const { id, userEdit: data } = state.userEditParams;
+      state.pickerVisible = false;
       if (state.pickerOptions.length === 3) {
+        if (state.userEditParams.userEdit.auctionDataType === key) return;
         state.userEditParams.userEdit.auctionDataType = key;
       } else {
+        if (state.userEditParams.userEdit.creditorDataType === key) return;
         state.userEditParams.userEdit.creditorDataType = key;
       }
-      state.pickerVisible = false;
       userEdit(id, clearEmpty(data)).then((res) => {
         const { data } = res;
         getList();
@@ -309,6 +321,7 @@ export default {
       refresherPulling,
       refresherRefresh,
       refresherAbort,
+      scrollToLower,
       handlePicker,
     };
   },

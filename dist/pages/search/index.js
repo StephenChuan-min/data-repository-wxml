@@ -581,10 +581,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $setup.doSearch(detail);
     }),
     value: $setup.state.params.username,
-    "auto-focus": true
+    "auto-focus": !$setup.state.flag
   }, null, 8
   /* PROPS */
-  , ["onChange", "value"]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  , ["onChange", "value", "auto-focus"]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
     class: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeClass */ "I"])(['suffix', $setup.state.flag ? 'suffix-cancel' : 'suffix-search']),
     onClick: _cache[5] || (_cache[5] = function () {
       return $setup.doSearch();

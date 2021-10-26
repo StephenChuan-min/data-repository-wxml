@@ -9,10 +9,9 @@ import './app.scss';
 
 const App = createApp({
   onShow(options) {
-    console.log(options);
     const session = storage.getItem('session');
     if (!session) {
-      Taro.reLaunch({url: '/pages/login/index'})
+      Taro.reLaunch({url: '/pages/login/index'});
     };
   },
 });

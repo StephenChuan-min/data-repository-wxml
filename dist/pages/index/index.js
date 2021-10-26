@@ -80,7 +80,8 @@ if (false) {}
         username: '',
         role: 1,
         functions: '',
-        isEnabledUser: true
+        isEnabledUser: true,
+        page: 1
       },
       userEditParams: {
         id: '',
@@ -131,7 +132,7 @@ if (false) {}
       }).label;
     });
 
-    var getList = function getList() {
+    var getList = function getList(toLower) {
       state.loading = true;
       Object(_server_api_index__WEBPACK_IMPORTED_MODULE_4__[/* userView */ "b"])(Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* clearEmpty */ "a"])(state.params)).then(function (res) {
         var data = res.data;
@@ -153,6 +154,7 @@ if (false) {}
     var tabClick = function tabClick(key) {
       if (state.params.role === key) return;
       state.params.role = key;
+      state.params.page = 1;
       state.params.functions = '';
       state.visible = false;
       getList();
@@ -162,6 +164,7 @@ if (false) {}
       state.visible = false;
       if (state.params.functions === key) return;
       state.params.functions = key;
+      state.params.page = 1;
       getList();
     };
 
@@ -253,18 +256,25 @@ if (false) {}
       state.refreshPull.refreshLoading = false;
     };
 
+    var scrollToLower = function scrollToLower() {
+      console.log('到底啦.....'); // state.params.page++;
+      // getList(true);
+    };
+
     var handlePicker = function handlePicker(key) {
       var _state$userEditParams = state.userEditParams,
           id = _state$userEditParams.id,
           data = _state$userEditParams.userEdit;
+      state.pickerVisible = false;
 
       if (state.pickerOptions.length === 3) {
+        if (state.userEditParams.userEdit.auctionDataType === key) return;
         state.userEditParams.userEdit.auctionDataType = key;
       } else {
+        if (state.userEditParams.userEdit.creditorDataType === key) return;
         state.userEditParams.userEdit.creditorDataType = key;
       }
 
-      state.pickerVisible = false;
       Object(_server_api_index__WEBPACK_IMPORTED_MODULE_4__[/* userEdit */ "a"])(id, Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* clearEmpty */ "a"])(data)).then(function (res) {
         var data = res.data;
         getList();
@@ -296,6 +306,7 @@ if (false) {}
       refresherPulling: refresherPulling,
       refresherRefresh: refresherRefresh,
       refresherAbort: refresherAbort,
+      scrollToLower: scrollToLower,
       handlePicker: handlePicker
     };
   }
@@ -619,6 +630,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     onRefresherabort: _cache[7] || (_cache[7] = function () {
       return $setup.refresherAbort && $setup.refresherAbort.apply($setup, arguments);
+    }),
+    onScrolltolower: _cache[8] || (_cache[8] = function () {
+      return $setup.scrollToLower && $setup.scrollToLower.apply($setup, arguments);
     })
   }, [$setup.state.refreshPull.refreshLoading ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_20, [_hoisted_21, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_22, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.refreshPull.label), 1
   /* TEXT */
