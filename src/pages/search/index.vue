@@ -112,6 +112,7 @@ export default {
       },
       params: {
         username: '',
+        isEnabledUser: true,
       },
       structuredObject: [
         { label: '全部', key: '' },
@@ -170,7 +171,7 @@ export default {
       const username = state.params.username.replace(/\s/g, '');
       if (username) {
         state.flag = false;
-        userView({ username }).then((res) => {
+        userView({ username, ...state.params }).then((res) => {
           const { data } = res;
           if (data.code === 200) {
             if ((data.data || []).length === 0) {

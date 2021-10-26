@@ -133,6 +133,7 @@ export default {
         username: '',
         role: 1,
         functions: '',
+        isEnabledUser: true,
       },
       userEditParams: {
         id: '',

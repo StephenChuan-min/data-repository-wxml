@@ -79,7 +79,8 @@ if (false) {}
       params: {
         username: '',
         role: 1,
-        functions: ''
+        functions: '',
+        isEnabledUser: true
       },
       userEditParams: {
         id: '',

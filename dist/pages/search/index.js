@@ -40,13 +40,15 @@ if (false) {}
 
 "use strict";
 /* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/toConsumableArray */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/toConsumableArray.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_reactivity@3.2.20@@vue/reactivity/dist/reactivity.esm-bundler.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-core@3.2.20@@vue/runtime-core/dist/runtime-core.esm-bundler.js");
-/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @tarojs/taro */ "./node_modules/_@tarojs_taro@3.3.9@@tarojs/taro/index.js");
-/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_tarojs_taro__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils */ "./src/utils/index.js");
-/* harmony import */ var _server_api_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../server/api/index */ "./src/server/api/index.js");
-/* harmony import */ var _index_source__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../index/source */ "./src/pages/index/source.js");
+/* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/objectSpread2 */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/objectSpread2.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_reactivity@3.2.20@@vue/reactivity/dist/reactivity.esm-bundler.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-core@3.2.20@@vue/runtime-core/dist/runtime-core.esm-bundler.js");
+/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @tarojs/taro */ "./node_modules/_@tarojs_taro@3.3.9@@tarojs/taro/index.js");
+/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_tarojs_taro__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils */ "./src/utils/index.js");
+/* harmony import */ var _server_api_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../server/api/index */ "./src/server/api/index.js");
+/* harmony import */ var _index_source__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../index/source */ "./src/pages/index/source.js");
+
 
 
 
@@ -56,9 +58,9 @@ if (false) {}
 /* harmony default export */ __webpack_exports__["a"] = ({
   name: 'Search',
   setup: function setup() {
-    var state = Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* reactive */ "k"])({
-      auctionDataType: _index_source__WEBPACK_IMPORTED_MODULE_6__[/* auctionDataType */ "a"],
-      creditorDataType: _index_source__WEBPACK_IMPORTED_MODULE_6__[/* creditorDataType */ "b"],
+    var state = Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* reactive */ "k"])({
+      auctionDataType: _index_source__WEBPACK_IMPORTED_MODULE_7__[/* auctionDataType */ "a"],
+      creditorDataType: _index_source__WEBPACK_IMPORTED_MODULE_7__[/* creditorDataType */ "b"],
       loading: false,
       pickerVisible: false,
       modalVisible: false,
@@ -68,7 +70,8 @@ if (false) {}
         lineHeight: ''
       },
       params: {
-        username: ''
+        username: '',
+        isEnabledUser: true
       },
       structuredObject: [{
         label: '全部',
@@ -114,7 +117,7 @@ if (false) {}
     var getList = function getList() {
       state.loading = true;
       state.flag = true;
-      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_5__[/* userView */ "b"])(state.params).then(function (res) {
+      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_6__[/* userView */ "b"])(state.params).then(function (res) {
         var data = res.data;
 
         if (data.code === 200) {
@@ -126,7 +129,7 @@ if (false) {}
     };
 
     var goBack = function goBack() {
-      _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default.a.navigateBack({
+      _tarojs_taro__WEBPACK_IMPORTED_MODULE_4___default.a.navigateBack({
         delta: 1
       });
     };
@@ -137,15 +140,15 @@ if (false) {}
       state.flag = false;
     };
 
-    var handleChange = Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* debounce */ "b"])(function (e) {
+    var handleChange = Object(_utils__WEBPACK_IMPORTED_MODULE_5__[/* debounce */ "b"])(function (e) {
       state.params.username = e.detail;
       var username = state.params.username.replace(/\s/g, '');
 
       if (username) {
         state.flag = false;
-        Object(_server_api_index__WEBPACK_IMPORTED_MODULE_5__[/* userView */ "b"])({
+        Object(_server_api_index__WEBPACK_IMPORTED_MODULE_6__[/* userView */ "b"])(Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])({
           username: username
-        }).then(function (res) {
+        }, state.params)).then(function (res) {
           var data = res.data;
 
           if (data.code === 200) {
@@ -164,7 +167,7 @@ if (false) {}
     }, 300);
 
     var delRecords = function delRecords() {
-      _utils__WEBPACK_IMPORTED_MODULE_4__[/* storage */ "c"].removeItem('records');
+      _utils__WEBPACK_IMPORTED_MODULE_5__[/* storage */ "c"].removeItem('records');
       state.records = [];
       state.modalVisible = false;
     };
@@ -175,12 +178,12 @@ if (false) {}
       } else {
         if (item) state.params.username = item;
         var username = state.params.username = state.params.username.replace(/\s/g, '');
-        if (!username) return Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('请输入用户名或账号');
+        if (!username) return Object(_utils__WEBPACK_IMPORTED_MODULE_5__[/* toast */ "d"])('请输入用户名或账号');
         state.records.unshift(state.params.username);
 
         var records = state.records = Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(new Set(state.records)).splice(0, 10);
 
-        _utils__WEBPACK_IMPORTED_MODULE_4__[/* storage */ "c"].setItem('records', records);
+        _utils__WEBPACK_IMPORTED_MODULE_5__[/* storage */ "c"].setItem('records', records);
         getList();
       }
     };
@@ -234,7 +237,7 @@ if (false) {}
       }
 
       state.pickerVisible = false;
-      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_5__[/* userEdit */ "a"])(id, Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* clearEmpty */ "a"])(data)).then(function (res) {
+      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_6__[/* userEdit */ "a"])(id, Object(_utils__WEBPACK_IMPORTED_MODULE_5__[/* clearEmpty */ "a"])(data)).then(function (res) {
         // const { data } = res;
         getList(); // if (data.code === 200) {
         //   toast('操作成功');
@@ -261,14 +264,14 @@ if (false) {}
       }
     };
 
-    Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* onMounted */ "s"])(function () {
-      var _Taro$getMenuButtonBo = _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default.a.getMenuButtonBoundingClientRect(),
+    Object(vue__WEBPACK_IMPORTED_MODULE_3__[/* onMounted */ "s"])(function () {
+      var _Taro$getMenuButtonBo = _tarojs_taro__WEBPACK_IMPORTED_MODULE_4___default.a.getMenuButtonBoundingClientRect(),
           height = _Taro$getMenuButtonBo.height,
           top = _Taro$getMenuButtonBo.top;
 
       state.style.marginTop = top + 'px';
       state.style.lineHeight = height + 'px';
-      state.records = _utils__WEBPACK_IMPORTED_MODULE_4__[/* storage */ "c"].getItem('records') || [];
+      state.records = _utils__WEBPACK_IMPORTED_MODULE_5__[/* storage */ "c"].getItem('records') || [];
     });
     return {
       state: state,
