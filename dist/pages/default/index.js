@@ -46,7 +46,7 @@ if (false) {}
 /* harmony default export */ __webpack_exports__["a"] = ({
   name: 'Default',
   setup: function setup() {
-    Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* onMounted */ "t"])(function () {
+    Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* onMounted */ "s"])(function () {
       var session = _utils__WEBPACK_IMPORTED_MODULE_2__[/* storage */ "c"].getItem('session');
 
       if (session) {
@@ -77,7 +77,7 @@ if (false) {}
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-core@3.2.20@@vue/runtime-core/dist/runtime-core.esm-bundler.js");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "w"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view");
+  return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view");
 }
 
 /***/ }),

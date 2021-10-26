@@ -1,1 +1,8 @@
-<input focus />
+<input
+    class="native-input"
+    bindconfirm="doConfirm"
+    bindinput="handleInput"
+    placeholder="请输入账号或姓名"
+    focus="{{autoFocus}}"
+    value="{{value}}"
+/>

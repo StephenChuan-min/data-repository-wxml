@@ -120,7 +120,6 @@ var request = function request(options) {
       }, options.header),
       success: function success(res) {
         if (res.data.code === 401) {
-          _utils__WEBPACK_IMPORTED_MODULE_2__[/* storage */ "c"].removeItem('session');
           _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default.a.reLaunch({
             url: '/pages/login/index'
           });

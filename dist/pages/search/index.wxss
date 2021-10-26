@@ -63,7 +63,7 @@
   -webkit-box-shadow: 0 4rpx 20rpx 0 rgba(26, 64, 156, 0.12);
           box-shadow: 0 4rpx 20rpx 0 rgba(26, 64, 156, 0.12);
 }
-.index-wrapper .fixed .search-block .search-input .h5-input {
+.index-wrapper .fixed .search-block .search-input .native-input {
   height: 80rpx;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -293,6 +293,10 @@
   border-radius: 24rpx;
   padding: 0 20rpx;
   margin: 0 20rpx 20rpx 0;
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .index-wrapper .username-list-item {
   height: 80rpx;

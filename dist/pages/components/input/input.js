@@ -8,7 +8,38 @@
 /*! all exports used */
 /***/ (function(module, exports) {
 
-Component({});
+Component({
+  properties: {
+    autoFocus: {
+      type: Boolean
+    },
+    value: {
+      type: String
+    }
+  },
+  options: {
+    addGlobalClass: true
+  },
+  data: {
+    value: 123
+  },
+  lifetimes: {
+    attached: function attached() {// 在组件实例进入页面节点树时执行
+    },
+    detached: function detached() {// 在组件实例被从页面节点树移除时执行
+    }
+  },
+  methods: {
+    handleInput: function handleInput(e) {
+      var value = e.detail.value;
+      this.triggerEvent('change', value);
+    },
+    doConfirm: function doConfirm(e) {
+      var value = e.detail.value;
+      this.triggerEvent('confirm', value);
+    }
+  }
+});
 
 /***/ })
 

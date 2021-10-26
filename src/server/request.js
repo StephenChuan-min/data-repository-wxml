@@ -16,7 +16,6 @@ const request = (options) => {
             },
             success: (res) => {
                 if (res.data.code === 401) {
-                    storage.removeItem('session');
                     Taro.reLaunch({
                         url: '/pages/login/index',
                     });

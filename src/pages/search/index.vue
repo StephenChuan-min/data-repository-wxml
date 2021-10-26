@@ -30,7 +30,7 @@
       <view class="block search-block">
         <view class="search-input">
           <text class="iconfont icon-xiaochengxu-sousuo"></text>
-          <input placeholder="请输入账号或姓名" v-on="{confirm: () => doSearch(), change: handleChange}" v-model="state.params.username" :focus="true" />
+          <native-input @change="handleChange" @confirm="({detail}) => doSearch(detail)" :value="state.params.username" :auto-focus="true" />
           <view :class="['suffix', state.flag ? 'suffix-cancel' : 'suffix-search']" @click="() => doSearch()">{{ state.flag ? '取消' : '搜索' }}</view>
           <view v-if="state.params.username" @click="clear" class="suffix suffix-iconfont">
             <text class="iconfont icon-xiaochengxu-shanchu" />
@@ -162,18 +162,24 @@ export default {
     const clear = () => {
       state.params.username = '';
       state.usernameList = [];
+      state.flag = false;
     };
 
-    const handleChange = debounce(() => {
+    const handleChange = debounce((e) => {
+      state.params.username = e.detail;
       const username = state.params.username.replace(/\s/g, '');
       if (username) {
         state.flag = false;
         userView({ username }).then((res) => {
           const { data } = res;
           if (data.code === 200) {
-            (data.data || []).forEach((item) => {
-              state.usernameList.push(item.name);
-            });
+            if ((data.data || []).length === 0) {
+              state.usernameList = [];
+            } else {
+              (data.data || []).forEach((item) => {
+                state.usernameList.push(item.name);
+              });
+            }
           }
         });
       } else {
@@ -327,7 +333,7 @@ export default {
         background-color: #fff;
         border-radius: 20px;
         box-shadow: 0px 2px 10px 0px rgba(26, 64, 156, 0.12);
-        input{
+        .native-input{
           height: 40px;
           box-sizing: border-box;
           padding: 0 110px 0 45px;
@@ -538,6 +544,9 @@ export default {
         border-radius: 12px;
         padding: 0 10px;
         margin: 0 10px 10px 0;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
     }
   }
