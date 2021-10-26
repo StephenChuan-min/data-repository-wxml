@@ -152,13 +152,10 @@ if (false) {}
           var data = res.data;
 
           if (data.code === 200) {
-            if ((data.data || []).length === 0) {
-              state.usernameList = [];
-            } else {
-              (data.data || []).forEach(function (item) {
-                state.usernameList.push(item.name);
-              });
-            }
+            state.usernameList = [];
+            (data.data || []).forEach(function (item) {
+              state.usernameList.push(item.name);
+            });
           }
         });
       } else {

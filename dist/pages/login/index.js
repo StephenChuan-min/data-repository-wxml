@@ -2083,7 +2083,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
       var value = e.target.value;
       var reg = {
         username: /\D/g,
-        password: /\W/g,
+        password: /\W|_/g,
         imageVerifyCode: /\W/g
       };
       proxy.$refs[prop].value = params[prop] = value.replace(reg[prop], '');

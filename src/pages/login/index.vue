@@ -104,7 +104,7 @@ export default {
 
     const handleChange = (e, prop) => {
       const { value } = e.target;
-      const reg = { username: /\D/g, password: /\W/g, imageVerifyCode: /\W/g };
+      const reg = { username: /\D/g, password: /\W|_/g, imageVerifyCode: /\W/g };
       proxy.$refs[prop].value = params[prop] = value.replace(reg[prop], '');
       rules[prop].forEach((item) => {
         if (item.required) {

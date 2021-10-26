@@ -271,24 +271,17 @@ var inst = Page(Object(_tarojs_runtime__WEBPACK_IMPORTED_MODULE_0__["createPageC
 /*!**********************************!*\
   !*** ./src/server/api/logout.js ***!
   \**********************************/
-/*! exports provided: logout, userToken */
+/*! exports provided: logout */
 /*! exports used: logout */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return logout; });
-/* unused harmony export userToken */
 /* harmony import */ var _request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../request */ "./src/server/request.js");
 
 var logout = function logout() {
   return Object(_request__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({
     url: '/api/logout',
-    method: 'get'
-  });
-};
-var userToken = function userToken() {
-  return Object(_request__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({
-    url: '/api/userToken',
     method: 'get'
   });
 };

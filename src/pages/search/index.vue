@@ -174,13 +174,10 @@ export default {
         userView({ username, ...state.params }).then((res) => {
           const { data } = res;
           if (data.code === 200) {
-            if ((data.data || []).length === 0) {
-              state.usernameList = [];
-            } else {
-              (data.data || []).forEach((item) => {
-                state.usernameList.push(item.name);
-              });
-            }
+            state.usernameList = [];
+            (data.data || []).forEach((item) => {
+              state.usernameList.push(item.name);
+            });
           }
         });
       } else {

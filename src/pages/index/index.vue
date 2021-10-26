@@ -32,10 +32,10 @@
         <view class="navigationBar-title" :style="state.style">源诚数据资产平台</view>
       </view>
       <view class="block search-block">
-        <view class="search-input">
+        <view class="search-input" @click="doSearch">
           <text class="iconfont icon-xiaochengxu-sousuo"></text>
-          <input placeholder="请输入账号或姓名" @focus="doSearch" />
-          <view class="suffix suffix-search" @click="doSearch">搜索</view>
+          <input disabled="true" placeholder="请输入账号或姓名" />
+          <view class="suffix suffix-search">搜索</view>
         </view>
         <view class="tab-block">
           <view class="tab-content">
@@ -264,6 +264,8 @@ export default {
         username: '',
         role: 1,
         functions: '',
+        isEnabledUser: true,
+        page: 1,
       };
       userView(clearEmpty(state.params)).then((res) => {
         const { data } = res;
