@@ -37,6 +37,12 @@ Component({
     doConfirm: function doConfirm(e) {
       var value = e.detail.value;
       this.triggerEvent('confirm', value);
+    },
+    handleFocus: function handleFocus() {
+      this.triggerEvent('focus');
+    },
+    handleBlur: function handleBlur() {
+      this.triggerEvent('blur');
     }
   }
 });

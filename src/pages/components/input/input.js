@@ -29,6 +29,12 @@ Component({
         doConfirm(e) {
             const { value } = e.detail
             this.triggerEvent('confirm', value);
-        }
+        },
+        handleFocus() {
+            this.triggerEvent('focus');
+        },
+        handleBlur() {
+            this.triggerEvent('blur');
+        },
     }
 });

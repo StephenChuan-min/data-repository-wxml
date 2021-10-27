@@ -67,7 +67,7 @@
   height: 80rpx;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  padding: 0 220rpx 0 90rpx;
+  padding: 0 240rpx 0 90rpx;
   border: none;
 }
 .index-wrapper .fixed .search-block .search-input .input-placeholder {
@@ -77,8 +77,8 @@
 .index-wrapper .fixed .search-block .search-input .iconfont {
   position: absolute;
   left: 34rpx;
-  color: #7D8699;
-  font-size: 34rpx;
+  color: #20242E;
+  font-size: 40rpx;
   line-height: 84rpx;
 }
 .index-wrapper .fixed .search-block .search-input .suffix {
@@ -103,10 +103,23 @@
 }
 .index-wrapper .fixed .search-block .search-input .suffix-iconfont {
   width: 40rpx;
-  right: 200rpx;
+  right: 220rpx;
+}
+.index-wrapper .fixed .search-block .search-input .suffix-iconfont::after {
+  content: "";
+  display: inline-block;
+  width: 2rpx;
+  height: 40rpx;
+  background-color: #D7D9DF;
+  vertical-align: middle;
+  position: absolute;
+  right: -50rpx;
+  bottom: 10rpx;
 }
 .index-wrapper .fixed .search-block .search-input .suffix-iconfont .iconfont {
   line-height: 60rpx;
+  color: #B2B8C9;
+  font-size: 34rpx;
 }
 .index-wrapper-content .user-list-container .block {
   padding: 30rpx;
@@ -320,6 +333,6 @@
 }
 .empty image {
   margin-top: 198rpx;
-  width: 288rpx;
+  width: 280rpx;
   height: 240rpx;
 }

@@ -467,8 +467,8 @@ var _hoisted_34 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* create
 
 var _hoisted_35 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
   style: {
-    "color": "rgba(0, 0, 0, 0.87)",
-    "font-size": "14px"
+    "color": "#7D8699",
+    "font-size": "15px"
   }
 }, "搜索无内容", -1
 /* HOISTED */
@@ -619,6 +619,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, _hoisted_12), _hoisted_13], 4
   /* STYLE */
   )]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_14, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_15, [_hoisted_16, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createVNode */ "l"])(_component_native_input, {
+    ref: "searchInput",
     onChange: $setup.handleChange,
     onConfirm: _cache[4] || (_cache[4] = function (_ref) {
       var detail = _ref.detail;

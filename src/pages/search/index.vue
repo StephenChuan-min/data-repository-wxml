@@ -31,7 +31,13 @@
       <view class="block search-block">
         <view class="search-input">
           <text class="iconfont icon-xiaochengxu-sousuo"></text>
-          <native-input @change="handleChange" @confirm="({detail}) => doSearch(detail)" :value="state.params.username" :auto-focus="!state.flag && !state.modalVisible" />
+          <native-input
+              ref="searchInput"
+              @change="handleChange"
+              @confirm="({detail}) => doSearch(detail)"
+              :value="state.params.username"
+              :auto-focus="!state.flag && !state.modalVisible"
+          />
           <view :class="['suffix', state.flag ? 'suffix-cancel' : 'suffix-search']" @click="() => doSearch()">{{ state.flag ? '取消' : '搜索' }}</view>
           <view v-if="state.params.username" @click="clear" class="suffix suffix-iconfont">
             <text class="iconfont icon-xiaochengxu-shanchu" />
@@ -62,7 +68,7 @@
       <view class="index-wrapper-content" v-if="!state.loading && state.flag">
         <view class="empty" v-if="state.userList.length === 0">
           <image src="../../assets/img/search-empty.png" />
-          <view style="color: rgba(0, 0, 0, 0.87);font-size: 14px">搜索无内容</view>
+          <view style="color: #7D8699;font-size: 15px">搜索无内容</view>
         </view>
         <view class="user-list-container" v-for="item in state.userList" :key="item.id">
           <view class="block">
@@ -388,7 +394,7 @@ export default {
         .native-input{
           height: 40px;
           box-sizing: border-box;
-          padding: 0 110px 0 45px;
+          padding: 0 120px 0 45px;
           border: none;
         }
         .input-placeholder{
@@ -398,8 +404,8 @@ export default {
         .iconfont{
           position: absolute;
           left: 17px;
-          color: #7D8699;
-          font-size: 17px;
+          color: #20242E;
+          font-size: 20px;
           line-height: 42px;
         }
         .suffix{
@@ -423,9 +429,22 @@ export default {
           }
           &-iconfont{
             width: 20px;
-            right: 100px;
+            right: 110px;
+            &::after{
+              content: '';
+              display: inline-block;
+              width: 1px;
+              height: 20px;
+              background-color: #D7D9DF;
+              vertical-align: middle;
+              position: absolute;
+              right: -25px;
+              bottom: 5px;
+            }
             .iconfont{
               line-height: 30px;
+              color: #B2B8C9;
+              font-size: 17px;
             }
           }
         }
@@ -626,7 +645,7 @@ export default {
   background-color: #fff;
   image{
     margin-top: 99px;
-    width: 144px;
+    width: 140px;
     height: 120px;
   }
 }
