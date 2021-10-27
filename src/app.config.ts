@@ -14,6 +14,7 @@ export default {
     navigationStyle: 'custom',
   },
   tabBar: {
+    borderStyle: 'white',
     color: '#7D8699',
     selectedColor: '#397AE7',
     list: [{

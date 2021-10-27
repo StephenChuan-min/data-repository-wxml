@@ -79,7 +79,7 @@
             </view>
             <view class="operate-block">
               <view v-if="item.auctionDataType !== -1" class="operate-card" @click="openMask('auctionDataType', item)">
-                <view class="title"><text class="iconfont icon-xiaochengxu-zichanpaimai" />资产拍卖数据</view>
+                <view class="title"><image src="../../assets/img/zcpm.png" />资产拍卖数据</view>
                 <view class="select">{{ state.auctionDataType[item.auctionDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
               </view>
               <view v-if="item.structuredObject.includes('破产重组数据')" class="operate-card">
@@ -87,7 +87,7 @@
                 <view class="select">-</view>
               </view>
               <view v-if="item.creditorDataType !== -1" class="operate-card" @click="openMask('creditorDataType', item)">
-                <view class="title"><text class="iconfont icon-xiaochengxu-paimaizhaiquanshuju" />拍卖债权数据</view>
+                <view class="title"><image src="../../assets/img/pmzq.png" />拍卖债权数据</view>
                 <view class="select">{{ state.creditorDataType[item.creditorDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
               </view>
               <view v-if="item.structuredObject.includes('招商债权数据')" class="operate-card">
@@ -97,6 +97,7 @@
             </view>
           </view>
         </view>
+        <view class="lower-loading" v-if="state.toLowerLoading">加载中...</view>
         <nut-divider v-if="state.dividerVisible">我是有底线的</nut-divider>
       </view>
     </scroll-view>
@@ -170,6 +171,7 @@ export default {
         { label: '相似数据', key: 2 },
         { label: '非初标数据', key: 3 },
       ],
+      toLowerLoading: false,
     });
 
     watch(() => state.pickerVisible, (newVal) => {
@@ -301,16 +303,16 @@ export default {
 
     const scrollToLower = () => {
       if (!state.dividerVisible) {
-        toast('加载中...');
+        state.toLowerLoading = true;
         state.params.page++;
         userView(clearEmpty(state.params)).then((res) => {
           const { data } = res;
           if (data.code === 200) {
             (data.data || []).length === 0 ? state.dividerVisible = true :
-                state.userList = [...state.userList, ...(data.data || [])];
+              state.userList = [...state.userList, ...(data.data || [])];
           }
         }).finally(() => {
-          hideToast();
+          state.toLowerLoading = false;
         });
       }
     };
@@ -452,11 +454,12 @@ export default {
       .tab-block{
         display: flex;
         justify-content: space-between;
+        transform: translateY(-7px);
         .tab-content{
           display: flex;
           .tabpane-item{
             box-sizing: border-box;
-            padding-top: 5px;
+            padding-top: 2px;
             font-size: 16px;
             color: #4E5566;
             margin-right: 40px;
@@ -531,6 +534,12 @@ export default {
             .title{
               font-size: 14px;
               color: #20242E;
+              image{
+                width: 15px;
+                height: 15px;
+                margin-right: 6px;
+                vertical-align: -2px;
+              }
               .iconfont{
                 color: #397AE7;
                 margin-right: 6px;
@@ -551,6 +560,12 @@ export default {
         }
       }
     }
+    .lower-loading{
+      text-align: center;
+      font-size: 12px;
+      color: #7D8699;
+      padding-bottom: 10px;
+    }
     .nut-divider{
       width: 275px;
       margin: 0 auto;
@@ -559,7 +574,9 @@ export default {
       padding-bottom: 10px;
       &::before,
       &::after{
+        border: none;
         background-color: #D7D9DF;
+        height: 1px;
       }
     }
   }
@@ -579,7 +596,9 @@ export default {
       .select-item{
         font-size: 14px;
         color: #4E5566;
-        margin-top: 10px;
+        &~.select-item{
+          margin-top: 10px;
+        }
         &.is-selected{
           color: #397AE7;
         }
@@ -594,7 +613,7 @@ export default {
     z-index: 999;
     height: 100vh;
     .picker-content{
-      padding: 15px 0;
+      padding: 15px 0 49px 0;
       text-align: center;
       margin-top: 100vh;
       transform: translateY(-100%);

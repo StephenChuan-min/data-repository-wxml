@@ -68,7 +68,7 @@
       <view class="index-wrapper-content" v-if="!state.loading && state.flag">
         <view class="empty" v-if="state.userList.length === 0">
           <image src="../../assets/img/search-empty.png" />
-          <view style="color: #7D8699;font-size: 15px">搜索无内容</view>
+          <view>搜索无内容</view>
         </view>
         <view class="user-list-container" v-for="item in state.userList" :key="item.id">
           <view class="block">
@@ -97,6 +97,7 @@
             </view>
           </view>
         </view>
+        <view class="lower-loading" v-if="state.toLowerLoading">加载中...</view>
         <nut-divider v-if="state.dividerVisible">我是有底线的</nut-divider>
       </view>
     </scroll-view>
@@ -104,7 +105,7 @@
 </template>
 
 <script>
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, getCurrentInstance } from 'vue';
 import Taro from "@tarojs/taro";
 import {clearEmpty, debounce, storage} from "../../utils";
 import {userEdit, userView} from '../../server/api/index';
@@ -159,6 +160,7 @@ export default {
         { label: '非初标数据', key: 3 },
       ],
       flag: false,
+      toLowerLoading: false,
     });
 
     const toast = (title) => {
@@ -193,7 +195,7 @@ export default {
       });
     };
 
-    const clear = () => {
+    const clear = (e) => {
       state.params.username = '';
       state.usernameList = [];
       state.flag = false;
@@ -286,7 +288,7 @@ export default {
 
     const scrollToLower = () => {
       if (!state.dividerVisible) {
-        toast('加载中...');
+        state.toLowerLoading = true;
         state.params.page++;
         userView(clearEmpty(state.params)).then((res) => {
           const { data } = res;
@@ -295,7 +297,7 @@ export default {
                 state.userList = [...state.userList, ...(data.data || [])];
           }
         }).finally(() => {
-          hideToast();
+          state.toLowerLoading = false;
         });
       }
     };
@@ -465,6 +467,7 @@ export default {
             padding: 0 8px;
             font-weight: normal;
             margin-left: 10px;
+            border-radius: 2px;
           }
           &.formal::after{
             content: '正式';
@@ -520,12 +523,24 @@ export default {
         }
       }
     }
+    .lower-loading{
+      text-align: center;
+      font-size: 12px;
+      color: #7D8699;
+      padding-bottom: 10px;
+    }
     .nut-divider{
       width: 275px;
       margin: 0 auto;
       font-size: 12px;
       color: #7D8699;
       padding-bottom: 10px;
+      &::before,
+      &::after{
+        border: none;
+        background-color: #D7D9DF;
+        height: 1px;
+      }
     }
   }
   &-modal{
@@ -577,7 +592,7 @@ export default {
     z-index: 999;
     height: 100vh;
     .picker-content{
-      padding: 15px 0;
+      padding: 15px 0 49px 0;
       text-align: center;
       margin-top: 100vh;
       transform: translateY(-100%);
@@ -643,10 +658,14 @@ export default {
   height: calc(100vh - 138px);
   text-align: center;
   background-color: #fff;
+  view{
+    color: #7D8699;
+    font-size: 15px
+  }
   image{
     margin-top: 99px;
-    width: 140px;
-    height: 120px;
+    width: 144px;
+    height: 127px;
   }
 }
 </style>

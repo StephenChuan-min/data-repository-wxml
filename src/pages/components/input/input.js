@@ -30,11 +30,11 @@ Component({
             const { value } = e.detail
             this.triggerEvent('confirm', value);
         },
-        handleFocus() {
-            this.triggerEvent('focus');
+        handleFocus(e) {
+            this.triggerEvent('focus', true);
         },
-        handleBlur() {
-            this.triggerEvent('blur');
+        handleBlur(e) {
+            this.triggerEvent('blur', false);
         },
     }
 });

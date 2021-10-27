@@ -194,7 +194,7 @@
 </template>
 
 <template name="tmpl_0_native-input">
-  <native-input bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}" bindfocus="eh" bindblur="eh" ref="{{i.ref}}"  id="{{i.uid}}">
+  <native-input ref="{{i.ref}}" bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}"  id="{{i.uid}}">
     <block wx:for="{{i.cn}}" wx:key="uid">
       <template is="{{xs.e(cid+1)}}" data="{{i:item,l:l}}" />
     </block>
@@ -278,7 +278,7 @@
 </template>
 
 <template name="tmpl_1_native-input">
-  <native-input bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}" bindfocus="eh" bindblur="eh" ref="{{i.ref}}"  id="{{i.uid}}">
+  <native-input ref="{{i.ref}}" bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}"  id="{{i.uid}}">
     <block wx:for="{{i.cn}}" wx:key="uid">
       <template is="{{xs.e(cid+1)}}" data="{{i:item,l:l}}" />
     </block>
@@ -362,7 +362,7 @@
 </template>
 
 <template name="tmpl_2_native-input">
-  <native-input bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}" bindfocus="eh" bindblur="eh" ref="{{i.ref}}"  id="{{i.uid}}">
+  <native-input ref="{{i.ref}}" bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}"  id="{{i.uid}}">
     <block wx:for="{{i.cn}}" wx:key="uid">
       <template is="{{xs.e(cid+1)}}" data="{{i:item,l:l}}" />
     </block>
@@ -446,7 +446,7 @@
 </template>
 
 <template name="tmpl_3_native-input">
-  <native-input bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}" bindfocus="eh" bindblur="eh" ref="{{i.ref}}"  id="{{i.uid}}">
+  <native-input ref="{{i.ref}}" bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}"  id="{{i.uid}}">
     <block wx:for="{{i.cn}}" wx:key="uid">
       <template is="{{xs.e(cid+1)}}" data="{{i:item,l:l}}" />
     </block>
@@ -514,7 +514,7 @@
 </template>
 
 <template name="tmpl_4_native-input">
-  <native-input bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}" bindfocus="eh" bindblur="eh" ref="{{i.ref}}"  id="{{i.uid}}">
+  <native-input ref="{{i.ref}}" bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}"  id="{{i.uid}}">
     <block wx:for="{{i.cn}}" wx:key="uid">
       <template is="{{xs.e(cid+1)}}" data="{{i:item,l:l}}" />
     </block>
@@ -582,7 +582,7 @@
 </template>
 
 <template name="tmpl_5_native-input">
-  <native-input bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}" bindfocus="eh" bindblur="eh" ref="{{i.ref}}"  id="{{i.uid}}">
+  <native-input ref="{{i.ref}}" bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}"  id="{{i.uid}}">
     <block wx:for="{{i.cn}}" wx:key="uid">
       <template is="{{xs.e(cid+1)}}" data="{{i:item,l:l}}" />
     </block>
@@ -634,7 +634,7 @@
 </template>
 
 <template name="tmpl_6_native-input">
-  <native-input bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}" bindfocus="eh" bindblur="eh" ref="{{i.ref}}"  id="{{i.uid}}">
+  <native-input ref="{{i.ref}}" bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}"  id="{{i.uid}}">
     <block wx:for="{{i.cn}}" wx:key="uid">
       <template is="{{xs.e(cid+1)}}" data="{{i:item,l:l}}" />
     </block>
@@ -686,7 +686,7 @@
 </template>
 
 <template name="tmpl_7_native-input">
-  <native-input bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}" bindfocus="eh" bindblur="eh" ref="{{i.ref}}"  id="{{i.uid}}">
+  <native-input ref="{{i.ref}}" bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}"  id="{{i.uid}}">
     <block wx:for="{{i.cn}}" wx:key="uid">
       <template is="{{xs.e(cid+1)}}" data="{{i:item,l:l}}" />
     </block>
@@ -738,7 +738,7 @@
 </template>
 
 <template name="tmpl_8_native-input">
-  <native-input bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}" bindfocus="eh" bindblur="eh" ref="{{i.ref}}"  id="{{i.uid}}">
+  <native-input ref="{{i.ref}}" bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}"  id="{{i.uid}}">
     <block wx:for="{{i.cn}}" wx:key="uid">
       <template is="{{xs.e(cid+1)}}" data="{{i:item,l:l}}" />
     </block>
@@ -790,7 +790,7 @@
 </template>
 
 <template name="tmpl_9_native-input">
-  <native-input bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}" bindfocus="eh" bindblur="eh" ref="{{i.ref}}"  id="{{i.uid}}">
+  <native-input ref="{{i.ref}}" bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}"  id="{{i.uid}}">
     <block wx:for="{{i.cn}}" wx:key="uid">
       <template is="{{xs.e(cid+1)}}" data="{{i:item,l:l}}" />
     </block>
@@ -842,7 +842,7 @@
 </template>
 
 <template name="tmpl_10_native-input">
-  <native-input bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}" bindfocus="eh" bindblur="eh" ref="{{i.ref}}"  id="{{i.uid}}">
+  <native-input ref="{{i.ref}}" bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}"  id="{{i.uid}}">
     <block wx:for="{{i.cn}}" wx:key="uid">
       <template is="{{xs.e(cid+1)}}" data="{{i:item,l:l}}" />
     </block>
@@ -894,7 +894,7 @@
 </template>
 
 <template name="tmpl_11_native-input">
-  <native-input bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}" bindfocus="eh" bindblur="eh" ref="{{i.ref}}"  id="{{i.uid}}">
+  <native-input ref="{{i.ref}}" bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}"  id="{{i.uid}}">
     <block wx:for="{{i.cn}}" wx:key="uid">
       <template is="{{xs.e(cid+1)}}" data="{{i:item,l:l}}" />
     </block>
@@ -946,7 +946,7 @@
 </template>
 
 <template name="tmpl_12_native-input">
-  <native-input bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}" bindfocus="eh" bindblur="eh" ref="{{i.ref}}"  id="{{i.uid}}">
+  <native-input ref="{{i.ref}}" bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}"  id="{{i.uid}}">
     <block wx:for="{{i.cn}}" wx:key="uid">
       <template is="{{xs.e(cid+1)}}" data="{{i:item,l:l}}" />
     </block>
@@ -998,7 +998,7 @@
 </template>
 
 <template name="tmpl_13_native-input">
-  <native-input bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}" bindfocus="eh" bindblur="eh" ref="{{i.ref}}"  id="{{i.uid}}">
+  <native-input ref="{{i.ref}}" bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}"  id="{{i.uid}}">
     <block wx:for="{{i.cn}}" wx:key="uid">
       <template is="{{xs.e(cid+1)}}" data="{{i:item,l:l}}" />
     </block>
@@ -1050,7 +1050,7 @@
 </template>
 
 <template name="tmpl_14_native-input">
-  <native-input bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}" bindfocus="eh" bindblur="eh" ref="{{i.ref}}"  id="{{i.uid}}">
+  <native-input ref="{{i.ref}}" bindchange="eh" bindconfirm="eh" value="{{i.value}}" auto-focus="{{i.autoFocus}}"  id="{{i.uid}}">
     <block wx:for="{{i.cn}}" wx:key="uid">
       <template is="{{xs.e(cid+1)}}" data="{{i:item,l:l}}" />
     </block>
