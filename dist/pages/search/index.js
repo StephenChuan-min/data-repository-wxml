@@ -625,7 +625,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $setup.doSearch(detail);
     }),
     value: $setup.state.params.username,
-    "auto-focus": !$setup.state.flag
+    "auto-focus": !$setup.state.flag && !$setup.state.modalVisible
   }, null, 8
   /* PROPS */
   , ["onChange", "value", "auto-focus"]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {

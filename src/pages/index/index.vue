@@ -43,7 +43,7 @@
             <view v-for="item in state.tabs" :key="item.key" :class="['tabpane-item', state.params.role === item.key ? 'is-active' : '']" @click="tabClick(item.key)">{{item.label}}</view>
           </view>
           <view :class="['select-structured', state.visible ? 'is-active' : '']" @click="state.visible = !state.visible">
-            {{ structuredType }}</view>
+            {{ structuredType }}<text :class="['iconfont', state.visible ? 'icon-xiaochengxu-jiantoushang' : 'icon-xiaochengxu-jiantouxia']" /></view>
         </view>
       </view>
     </view>
@@ -424,8 +424,8 @@ export default {
         .iconfont{
           position: absolute;
           left: 17px;
-          color: #7D8699;
-          font-size: 17px;
+          color: #20242E;
+          font-size: 20px;
           line-height: 42px;
         }
         .suffix{
@@ -471,42 +471,28 @@ export default {
                 width: 40px;
                 height: 5px;
                 background: linear-gradient(90deg, #27CAFF 0%, #2F7AF9 100%);
-                margin-top: -5px;
+                margin-top: -6px;
               }
             }
           }
         }
         .select-structured{
           box-sizing: border-box;
-          padding: 0 25px 0 10px;
+          padding: 0 10px 0 10px;
           height: 39px;
           position: relative;
           font-size: 14px;
           color: #7D8699;
           line-height: 30px;
-          &::after{
-            position: absolute;
-            right: 10px;
-            top: 12px;
-            content: '';
-            display: block;
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 5px solid #7D8699;
-            border-bottom: 5px solid transparent;
+          .iconfont{
+            font-size: 7px;
+            color: #7D8699;
+            margin-left: 6px;
+            vertical-align: 3px;
           }
           &.is-active{
             background-color: #F4F5F7;
             border-radius: 16px 16px 0 0;
-            &::after{
-              top: 8px;
-              border-left: 5px solid transparent;
-              border-right: 5px solid transparent;
-              border-top: 5px solid transparent;
-              border-bottom: 5px solid #7D8699;
-            }
           }
         }
       }
