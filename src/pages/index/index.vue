@@ -265,13 +265,7 @@ export default {
       state.refreshPull.triggered = true;
       state.refreshPull.label = '刷新中';
       state.dividerVisible = false;
-      state.params = {
-        username: '',
-        role: 1,
-        functions: '',
-        isEnabledUser: true,
-        page: 1,
-      };
+      state.params.page = 1;
       userView(clearEmpty(state.params)).then((res) => {
         const { data } = res;
         if (data.code === 200) {

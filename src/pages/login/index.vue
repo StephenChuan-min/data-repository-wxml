@@ -276,7 +276,7 @@ export default {
       position: absolute;
       left: 17px;
       color: #7D8699;
-      font-size: 17px;
+      font-size: 20px;
       line-height: 42px;
     }
     .suffix{

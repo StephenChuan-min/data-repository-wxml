@@ -1,10 +1,9 @@
 {
-  "miniprogramRoot": "./",
   "projectname": "data-repository-wxml",
   "description": "数据资产平台小程序端",
   "appid": "wx015f7726e56322e6",
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": false,
     "enhance": true,
     "postcss": false,
@@ -21,7 +20,6 @@
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
     "compileHotReLoad": false,
-    "lazyloadPlaceholderEnable": false,
     "useMultiFrameRuntime": true,
     "useApiHook": true,
     "useApiHostProcess": true,
@@ -36,7 +34,9 @@
     "packNpmManually": false,
     "packNpmRelationList": [],
     "minifyWXSS": true,
-    "showES6CompileOption": false
+    "disableUseStrict": false,
+    "showES6CompileOption": false,
+    "useCompilerPlugins": false
   },
   "compileType": "miniprogram",
   "condition": {}

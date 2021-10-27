@@ -94,7 +94,7 @@
   position: absolute;
   left: 34rpx;
   color: #7D8699;
-  font-size: 34rpx;
+  font-size: 40rpx;
   line-height: 84rpx;
 }
 .login-wrapper .form-content .suffix {

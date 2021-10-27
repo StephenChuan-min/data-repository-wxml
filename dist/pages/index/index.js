@@ -244,13 +244,7 @@ if (false) {}
       state.refreshPull.triggered = true;
       state.refreshPull.label = '刷新中';
       state.dividerVisible = false;
-      state.params = {
-        username: '',
-        role: 1,
-        functions: '',
-        isEnabledUser: true,
-        page: 1
-      };
+      state.params.page = 1;
       Object(_server_api_index__WEBPACK_IMPORTED_MODULE_5__[/* userView */ "b"])(Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* clearEmpty */ "a"])(state.params)).then(function (res) {
         var data = res.data;
 
