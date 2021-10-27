@@ -1,5 +1,6 @@
 <template>
   <view class="index-wrapper">
+    <view class="toast" v-if="state.toast.show">{{state.toast.title}}</view>
     <view class="index-wrapper-dialog" data-id="index-wrapper-dialog" v-if="state.visible" @click="close">
       <view class="select-block">
         <view
@@ -105,7 +106,7 @@
 <script>
 import { onMounted, reactive, watch, computed } from 'vue';
 import Taro from "@tarojs/taro";
-import { clearEmpty, toast  } from "../../utils";
+import { clearEmpty } from "../../utils";
 import { userView, userEdit } from '../../server/api/index';
 import { auctionDataType, creditorDataType } from './source';
 
@@ -119,6 +120,10 @@ export default {
       auctionDataType,
       creditorDataType,
       loading: false,
+      toast: {
+        show: false,
+        title: '',
+      },
       refreshPull: {
         triggered: false,
         refreshLoading: false,
@@ -172,6 +177,19 @@ export default {
     });
 
     const structuredType = computed(() => state.structuredObject.find((item) => item.key === state.params.functions).label);
+
+    const toast = (title) => {
+      state.toast.show = true;
+      state.toast.title = title;
+      const timer = setTimeout(() => {
+        state.toast.show = false;
+        clearTimeout(timer);
+      }, 1500);
+    };
+
+    const hideToast = () => {
+      state.toast.show = false;
+    };
 
     const getList = () => {
       state.loading = true;
@@ -292,7 +310,7 @@ export default {
                 state.userList = [...state.userList, ...(data.data || [])];
           }
         }).finally(() => {
-          Taro.hideToast();
+          hideToast();
         });
       }
     };
@@ -553,6 +571,10 @@ export default {
       font-size: 12px;
       color: #7D8699;
       padding-bottom: 10px;
+      &::before,
+      &::after{
+        background-color: #D7D9DF;
+      }
     }
   }
   &-dialog{

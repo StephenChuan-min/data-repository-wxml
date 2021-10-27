@@ -1,5 +1,6 @@
 <template>
   <view class="login-wrapper">
+    <view class="toast" v-if="state.toast.show">{{state.toast.title}}</view>
     <view class="loading" v-if="state.loading"><image src="../../assets/img/logo_loading1.gif" /></view>
     <view class="navigationBar">
       <view class="navigationBar-title" :style="state.style">源诚数据资产平台</view>
@@ -49,7 +50,7 @@
 import { reactive, onMounted, computed, getCurrentInstance } from 'vue';
 import { login, imgCode } from '../../server/api/login';
 import { encryptInfo } from '../../utils/encrypt';
-import { clearEmpty, storage, toast } from '../../utils';
+import { clearEmpty, storage } from '../../utils';
 import Taro from '@tarojs/taro';
 
 export default {
@@ -61,9 +62,12 @@ export default {
       password: '',
       imageVerifyCode: '',
     });
-
     const state = reactive({
       loading: false,
+      toast: {
+        show: false,
+        title: '',
+      },
       style: {
         marginTop: '',
         lineHeight: '',
@@ -100,6 +104,15 @@ export default {
       imageVerifyCode: [
         { required: true, message: '请输入图片验证码' },
       ]
+    };
+
+    const toast = (title) => {
+      state.toast.show = true;
+      state.toast.title = title;
+      const timer = setTimeout(() => {
+        state.toast.show = false;
+        clearTimeout(timer);
+      }, 1500);
     };
 
     const handleChange = (e, prop) => {
@@ -147,19 +160,13 @@ export default {
         }
         if (data.code === 200) {
           if (data.data.ROLE === '管理员') {
-            let session = '';
-            // const session = `SESSION=${data.data.session}`;
-            res.cookies.forEach((item) => {
-              if (/^SESSION=/g.test(item.split(';')[0])) {
-                session = item.split(';')[0];
-              }
-            });
+            const session = `SESSION=${data.data.session}`;
             storage.setItem('session', session);
             storage.setItem('userInfo', {username: params.username, name: data.data.NAME});
+            toast('登录成功');
             Taro.switchTab({
               url: '/pages/index/index',
             });
-            toast('登录成功');
           } else {
             toast('请登录管理员账号');
           }
@@ -280,12 +287,14 @@ export default {
       line-height: 42px;
     }
     .suffix{
+      box-sizing: border-box;
       width: 109px;
       height: 42px;
       position: absolute;
       right: 0;
       bottom: 82px;
       border-radius: 21px;
+      border: 1px solid #C5C7CE;
       z-index: 9;
       image{
         width: 100%;
@@ -304,6 +313,9 @@ export default {
       background-color:  #397AE7;
       &[aria-disabled=true]{
         background-color: rgba(57, 122, 231, 0.4);
+      }
+      &::after{
+        border: none;
       }
     }
   }

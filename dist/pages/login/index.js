@@ -2031,6 +2031,10 @@ PEMEncoder.prototype.encode = function encode(data, options) {
     });
     var state = Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* reactive */ "k"])({
       loading: false,
+      toast: {
+        show: false,
+        title: ''
+      },
       style: {
         marginTop: '',
         lineHeight: ''
@@ -2077,6 +2081,15 @@ PEMEncoder.prototype.encode = function encode(data, options) {
         required: true,
         message: '请输入图片验证码'
       }]
+    };
+
+    var toast = function toast(title) {
+      state.toast.show = true;
+      state.toast.title = title;
+      var timer = setTimeout(function () {
+        state.toast.show = false;
+        clearTimeout(timer);
+      }, 1500);
     };
 
     var handleChange = function handleChange(e, prop) {
@@ -2134,32 +2147,26 @@ PEMEncoder.prototype.encode = function encode(data, options) {
 
         if (data.code === 200) {
           if (data.data.ROLE === '管理员') {
-            var session = ''; // const session = `SESSION=${data.data.session}`;
-
-            res.cookies.forEach(function (item) {
-              if (/^SESSION=/g.test(item.split(';')[0])) {
-                session = item.split(';')[0];
-              }
-            });
+            var session = "SESSION=".concat(data.data.session);
             _utils__WEBPACK_IMPORTED_MODULE_4__[/* storage */ "c"].setItem('session', session);
             _utils__WEBPACK_IMPORTED_MODULE_4__[/* storage */ "c"].setItem('userInfo', {
               username: params.username,
               name: data.data.NAME
             });
+            toast('登录成功');
             _tarojs_taro__WEBPACK_IMPORTED_MODULE_5___default.a.switchTab({
               url: '/pages/index/index'
             });
-            Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('登录成功');
           } else {
-            Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('请登录管理员账号');
+            toast('请登录管理员账号');
           }
         }
 
         if (data.code === 9001) {
           if (data.message === '验证码输入错误') {
-            Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('验证码错误');
+            toast('验证码错误');
           } else {
-            Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('账号或密码错误');
+            toast('账号或密码错误');
           }
         }
       }).finally(function () {
@@ -2211,21 +2218,25 @@ var _hoisted_1 = {
 };
 var _hoisted_2 = {
   key: 0,
+  class: "toast"
+};
+var _hoisted_3 = {
+  key: 1,
   class: "loading"
 };
 
-var _hoisted_3 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
+var _hoisted_4 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
   src: _assets_img_logo_loading1_gif__WEBPACK_IMPORTED_MODULE_2___default.a
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_4 = [_hoisted_3];
-var _hoisted_5 = {
+var _hoisted_5 = [_hoisted_4];
+var _hoisted_6 = {
   class: "navigationBar"
 };
 
-var _hoisted_6 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+var _hoisted_7 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
   class: "logo"
 }, [/*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("image", {
   src: _assets_img_sign_logo_png__WEBPACK_IMPORTED_MODULE_3___default.a
@@ -2233,57 +2244,59 @@ var _hoisted_6 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createE
 /* HOISTED */
 );
 
-var _hoisted_7 = {
+var _hoisted_8 = {
   class: "form-content"
 };
-var _hoisted_8 = {
+var _hoisted_9 = {
   class: "form-item"
 };
 
-var _hoisted_9 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+var _hoisted_10 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
   class: "iconfont icon-xiaochengxu-zhanghao"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_10 = {
+var _hoisted_11 = {
   key: 0,
   class: "is-error-msg"
 };
-var _hoisted_11 = {
+var _hoisted_12 = {
   class: "form-item"
 };
 
-var _hoisted_12 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+var _hoisted_13 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
   class: "iconfont icon-xiaochengxu-mima"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_13 = {
+var _hoisted_14 = {
   key: 0,
   class: "is-error-msg"
 };
-var _hoisted_14 = {
+var _hoisted_15 = {
   key: 0,
   class: "form-item"
 };
 
-var _hoisted_15 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
+var _hoisted_16 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("text", {
   class: "iconfont icon-xiaochengxu-yanzhengma"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_16 = ["src"];
-var _hoisted_17 = ["disabled"];
+var _hoisted_17 = ["src"];
+var _hoisted_18 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [$setup.state.loading ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_2, _hoisted_4)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_5, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
+  return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [$setup.state.toast.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_2, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.toast.title), 1
+  /* TEXT */
+  )) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), $setup.state.loading ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_3, _hoisted_5)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_6, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
     class: "navigationBar-title",
     style: Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* normalizeStyle */ "J"])($setup.state.style)
   }, "源诚数据资产平台", 4
   /* STYLE */
-  ), _hoisted_6]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_7, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_8, [_hoisted_9, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
+  ), _hoisted_7]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_8, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_9, [_hoisted_10, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
     ref: "username",
     placeholder: "请输入11位账号",
     maxlength: "11",
@@ -2293,9 +2306,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 34
   /* CLASS, HYDRATE_EVENTS */
-  ), $setup.state.errorField.username.isError && $setup.state.errorField.username.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_10, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.username.message), 1
+  ), $setup.state.errorField.username.isError && $setup.state.errorField.username.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_11, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.username.message), 1
   /* TEXT */
-  )) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_11, [_hoisted_12, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
+  )) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_12, [_hoisted_13, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
     ref: "password",
     type: "password",
     placeholder: "请输入密码",
@@ -2309,9 +2322,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 34
   /* CLASS, HYDRATE_EVENTS */
-  ), $setup.state.errorField.password.isError && $setup.state.errorField.password.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_13, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.password.message), 1
+  ), $setup.state.errorField.password.isError && $setup.state.errorField.password.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_14, Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.errorField.password.message), 1
   /* TEXT */
-  )) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)]), $setup.state.code.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_14, [_hoisted_15, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
+  )) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)]), $setup.state.code.show ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_15, [_hoisted_16, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("input", {
     ref: "imageVerifyCode",
     placeholder: "请输入图片验证码",
     maxlength: "4",
@@ -2329,7 +2342,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     src: $setup.state.code.imgUrl
   }, null, 8
   /* PROPS */
-  , _hoisted_16)])])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("button", {
+  , _hoisted_17)])])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("button", {
     class: "login-btn",
     type: "primary",
     disabled: $setup.state.disabled,
@@ -2338,7 +2351,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, "登录", 8
   /* PROPS */
-  , _hoisted_17)])]);
+  , _hoisted_18)])]);
 }
 
 /***/ }),

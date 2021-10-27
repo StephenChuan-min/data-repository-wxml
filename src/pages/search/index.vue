@@ -1,5 +1,6 @@
 <template>
   <view class="index-wrapper">
+    <view class="toast" v-if="state.toast.show">{{state.toast.title}}</view>
     <view class="index-wrapper-modal" v-if="state.modalVisible">
       <view class="modal-content">
         <view class="body">确认删除全部历史记录？</view>
@@ -99,7 +100,7 @@
 <script>
 import { onMounted, reactive } from 'vue';
 import Taro from "@tarojs/taro";
-import {clearEmpty, debounce, storage, toast} from "../../utils";
+import {clearEmpty, debounce, storage} from "../../utils";
 import {userEdit, userView} from '../../server/api/index';
 import { auctionDataType, creditorDataType } from '../index/source';
 
@@ -114,6 +115,10 @@ export default {
       modalVisible: false,
       dividerVisible: false,
       records: [],
+      toast: {
+        show: false,
+        title: '',
+      },
       style: {
         marginTop: '',
         lineHeight: '',
@@ -149,6 +154,19 @@ export default {
       ],
       flag: false,
     });
+
+    const toast = (title) => {
+      state.toast.show = true;
+      state.toast.title = title;
+      const timer = setTimeout(() => {
+        state.toast.show = false;
+        clearTimeout(timer);
+      }, 1500);
+    };
+
+    const hideToast = () => {
+      state.toast.show = false;
+    };
 
     const getList = () => {
       state.loading = true;
@@ -271,7 +289,7 @@ export default {
                 state.userList = [...state.userList, ...(data.data || [])];
           }
         }).finally(() => {
-          Taro.hideToast();
+          hideToast();
         });
       }
     };

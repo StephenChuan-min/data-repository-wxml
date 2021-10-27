@@ -26,14 +26,6 @@ export const storage = {
     setItem: (name, data) => Taro.setStorageSync(name, data),
 }
 
-export const toast = (msg, icon = 'none') => {
-    Taro.showToast({
-        title: msg,
-        icon,
-    });
-}
-
-
 /**
  * 函数防抖 created by wchuan  date:2021-10-22
  * @param func

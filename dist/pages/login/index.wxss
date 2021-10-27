@@ -98,12 +98,15 @@
   line-height: 84rpx;
 }
 .login-wrapper .form-content .suffix {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   width: 218rpx;
   height: 84rpx;
   position: absolute;
   right: 0;
   bottom: 164rpx;
   border-radius: 42rpx;
+  border: 2rpx solid #C5C7CE;
   z-index: 9;
 }
 .login-wrapper .form-content .suffix image {
@@ -123,4 +126,7 @@
 }
 .login-wrapper .form-content .login-btn[aria-disabled=true] {
   background-color: rgba(57, 122, 231, 0.4);
+}
+.login-wrapper .form-content .login-btn::after {
+  border: none;
 }

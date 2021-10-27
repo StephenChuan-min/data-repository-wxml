@@ -152,14 +152,13 @@ var request = function request(options) {
 /*!****************************!*\
   !*** ./src/utils/index.js ***!
   \****************************/
-/*! exports provided: clearEmpty, storage, toast, debounce */
-/*! exports used: clearEmpty, debounce, storage, toast */
+/*! exports provided: clearEmpty, storage, debounce */
+/*! exports used: clearEmpty, debounce, storage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return clearEmpty; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return storage; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return toast; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return debounce; });
 /* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/objectSpread2 */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/objectSpread2.js");
 /* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/typeof */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/typeof.js");
@@ -198,13 +197,6 @@ var storage = {
   setItem: function setItem(name, data) {
     return _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.setStorageSync(name, data);
   }
-};
-var toast = function toast(msg) {
-  var icon = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'none';
-  _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.showToast({
-    title: msg,
-    icon: icon
-  });
 };
 /**
  * 函数防抖 created by wchuan  date:2021-10-22

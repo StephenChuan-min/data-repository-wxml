@@ -235,6 +235,9 @@
   color: #7D8699;
   padding-bottom: 20rpx;
 }
+.index-wrapper-content .nut-divider::before, .index-wrapper-content .nut-divider::after {
+  background-color: #D7D9DF;
+}
 .index-wrapper-dialog {
   position: fixed;
   top: 398rpx;

@@ -3,3 +3,19 @@ page{
   height: 100vh;
   background-color: #f0f0f1;
 }
+.toast{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 37px;
+  box-sizing: border-box;
+  font-size: 15px;
+  color: #FFFFFF;
+  padding: 8px 30px;
+  background: rgba(0, 0, 0, 0.6);
+  line-height: 21px;
+  border-radius: 18.5px;
+  z-index: 999;
+  white-space:nowrap;
+}
