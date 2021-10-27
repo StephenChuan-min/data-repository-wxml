@@ -81,7 +81,7 @@
                 <view class="title"><text class="iconfont icon-xiaochengxu-zichanpaimai" />资产拍卖数据</view>
                 <view class="select">{{ state.auctionDataType[item.auctionDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
               </view>
-              <view v-if="item.structuredObject.match(new RegExp('破产重组数据', 'g'))" class="operate-card">
+              <view v-if="item.structuredObject.includes('破产重组数据')" class="operate-card">
                 <view class="title"><text class="iconfont icon-xiaochengxu-pochanzhongzu" />破产重组数据</view>
                 <view class="select">-</view>
               </view>
@@ -89,13 +89,14 @@
                 <view class="title"><text class="iconfont icon-xiaochengxu-paimaizhaiquanshuju" />拍卖债权数据</view>
                 <view class="select">{{ state.creditorDataType[item.creditorDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
               </view>
-              <view v-if="item.structuredObject.match(new RegExp('招商债权数据', 'g'))" class="operate-card">
+              <view v-if="item.structuredObject.includes('招商债权数据')" class="operate-card">
                 <view class="title"><text class="iconfont icon-xiaochengxu-zhaoshangzhaiquanshuju" />招商债权数据</view>
                 <view class="select">-</view>
               </view>
             </view>
           </view>
         </view>
+        <nut-divider v-if="state.dividerVisible">我是有底线的</nut-divider>
       </view>
     </scroll-view>
   </view>
@@ -110,6 +111,9 @@ import { auctionDataType, creditorDataType } from './source';
 
 export default {
   name: 'Index',
+  onHide() {
+    this.state.visible = false;
+  },
   setup() {
     const state = reactive({
       auctionDataType,
@@ -122,6 +126,7 @@ export default {
       },
       visible: false,
       pickerVisible: false,
+      dividerVisible: false,
       style: {
         marginTop: '',
         lineHeight: '',
@@ -168,7 +173,7 @@ export default {
 
     const structuredType = computed(() => state.structuredObject.find((item) => item.key === state.params.functions).label);
 
-    const getList = (toLower) => {
+    const getList = () => {
       state.loading = true;
       userView(clearEmpty(state.params)).then((res) => {
         const { data } = res;
@@ -183,14 +188,12 @@ export default {
     const doSearch = () => {
       Taro.navigateTo({
         url: '/pages/search/index',
-        success: () => {
-          state.visible = false;
-        },
       });
     };
 
     const tabClick = (key) => {
       if (state.params.role === key) return;
+      state.dividerVisible = false;
       state.params.role = key;
       state.params.page = 1;
       state.params.functions = '';
@@ -201,6 +204,7 @@ export default {
     const handleSelect = (key) => {
       state.visible = false;
       if (state.params.functions === key) return;
+      state.dividerVisible = false;
       state.params.functions = key;
       state.params.page = 1;
       getList();
@@ -260,6 +264,7 @@ export default {
     const refresherRefresh = () => {
       state.refreshPull.triggered = true;
       state.refreshPull.label = '刷新中';
+      state.dividerVisible = false;
       state.params = {
         username: '',
         role: 1,
@@ -283,9 +288,19 @@ export default {
     };
 
     const scrollToLower = () => {
-      console.log('到底啦.....');
-      // state.params.page++;
-      // getList(true);
+      if (!state.dividerVisible) {
+        toast('加载中...');
+        state.params.page++;
+        userView(clearEmpty(state.params)).then((res) => {
+          const { data } = res;
+          if (data.code === 200) {
+            (data.data || []).length === 0 ? state.dividerVisible = true :
+                state.userList = [...state.userList, ...(data.data || [])];
+          }
+        }).finally(() => {
+          Taro.hideToast();
+        });
+      }
     };
 
     const handlePicker = (key) => {
@@ -537,6 +552,13 @@ export default {
           }
         }
       }
+    }
+    .nut-divider{
+      width: 275px;
+      margin: 0 auto;
+      font-size: 12px;
+      color: #7D8699;
+      padding-bottom: 10px;
     }
   }
   &-dialog{

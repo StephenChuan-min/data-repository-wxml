@@ -148,6 +148,7 @@ export default {
         if (data.code === 200) {
           if (data.data.ROLE === '管理员') {
             let session = '';
+            // const session = `SESSION=${data.data.session}`;
             res.cookies.forEach((item) => {
               if (/^SESSION=/g.test(item.split(';')[0])) {
                 session = item.split(';')[0];

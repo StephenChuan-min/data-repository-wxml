@@ -53,39 +53,46 @@
         <view class="username-list-item" v-for="item in state.usernameList" @click="doSearch(item)">{{item}}</view>
       </view>
     </view>
-    <view class="index-wrapper-content" v-if="!state.loading && state.flag">
-      <view class="empty" v-if="state.userList.length === 0">
-        <image src="../../assets/img/search-empty.png" />
-        <view style="color: rgba(0, 0, 0, 0.87);font-size: 14px">搜索无内容</view>
-      </view>
-      <view class="user-list-container" v-for="item in state.userList" :key="item.id">
-        <view class="block">
-          <view :class="['name', item.role === '正式' ? 'formal' : 'try']">{{item.name || '-'}}</view>
-          <view class="info">
-            <view class="id">ID：{{item.id || '-'}}</view>
-            <view class="username">账号：{{item.username || '-'}}</view>
-          </view>
-          <view class="operate-block">
-            <view v-if="item.auctionDataType !== -1" class="operate-card" @click="openMask('auctionDataType', item)">
-              <view class="title"><text class="iconfont icon-xiaochengxu-zichanpaimai" />资产拍卖数据</view>
-              <view class="select">{{ state.auctionDataType[item.auctionDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
+    <scroll-view
+        style="height: calc(100vh - 138px)"
+        :scroll-y="true"
+        @scrolltolower="scrollToLower"
+    >
+      <view class="index-wrapper-content" v-if="!state.loading && state.flag">
+        <view class="empty" v-if="state.userList.length === 0">
+          <image src="../../assets/img/search-empty.png" />
+          <view style="color: rgba(0, 0, 0, 0.87);font-size: 14px">搜索无内容</view>
+        </view>
+        <view class="user-list-container" v-for="item in state.userList" :key="item.id">
+          <view class="block">
+            <view :class="['name', item.role === '正式' ? 'formal' : 'try']">{{item.name || '-'}}</view>
+            <view class="info">
+              <view class="id">ID：{{item.id || '-'}}</view>
+              <view class="username">账号：{{item.username || '-'}}</view>
             </view>
-            <view v-if="item.structuredObject.match(new RegExp('破产重组数据', 'g'))" class="operate-card">
-              <view class="title"><text class="iconfont icon-xiaochengxu-pochanzhongzu" />破产重组数据</view>
-              <view class="select">-</view>
-            </view>
-            <view v-if="item.creditorDataType !== -1" class="operate-card" @click="openMask('creditorDataType', item)">
-              <view class="title"><text class="iconfont icon-xiaochengxu-paimaizhaiquanshuju" />拍卖债权数据</view>
-              <view class="select">{{ state.creditorDataType[item.creditorDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
-            </view>
-            <view v-if="item.structuredObject.match(new RegExp('招商债权数据', 'g'))" class="operate-card">
-              <view class="title"><text class="iconfont icon-xiaochengxu-zhaoshangzhaiquanshuju" />招商债权数据</view>
-              <view class="select">-</view>
+            <view class="operate-block">
+              <view v-if="item.auctionDataType !== -1" class="operate-card" @click="openMask('auctionDataType', item)">
+                <view class="title"><text class="iconfont icon-xiaochengxu-zichanpaimai" />资产拍卖数据</view>
+                <view class="select">{{ state.auctionDataType[item.auctionDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
+              </view>
+              <view v-if="item.structuredObject.match(new RegExp('破产重组数据', 'g'))" class="operate-card">
+                <view class="title"><text class="iconfont icon-xiaochengxu-pochanzhongzu" />破产重组数据</view>
+                <view class="select">-</view>
+              </view>
+              <view v-if="item.creditorDataType !== -1" class="operate-card" @click="openMask('creditorDataType', item)">
+                <view class="title"><text class="iconfont icon-xiaochengxu-paimaizhaiquanshuju" />拍卖债权数据</view>
+                <view class="select">{{ state.creditorDataType[item.creditorDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
+              </view>
+              <view v-if="item.structuredObject.match(new RegExp('招商债权数据', 'g'))" class="operate-card">
+                <view class="title"><text class="iconfont icon-xiaochengxu-zhaoshangzhaiquanshuju" />招商债权数据</view>
+                <view class="select">-</view>
+              </view>
             </view>
           </view>
         </view>
+        <nut-divider v-if="state.dividerVisible">我是有底线的</nut-divider>
       </view>
-    </view>
+    </scroll-view>
   </view>
 </template>
 
@@ -105,6 +112,7 @@ export default {
       loading: false,
       pickerVisible: false,
       modalVisible: false,
+      dividerVisible: false,
       records: [],
       style: {
         marginTop: '',
@@ -113,6 +121,7 @@ export default {
       params: {
         username: '',
         isEnabledUser: true,
+        page: 1,
       },
       structuredObject: [
         { label: '全部', key: '' },
@@ -251,6 +260,22 @@ export default {
       });
     };
 
+    const scrollToLower = () => {
+      if (!state.dividerVisible) {
+        toast('加载中...');
+        state.params.page++;
+        userView(clearEmpty(state.params)).then((res) => {
+          const { data } = res;
+          if (data.code === 200) {
+            (data.data || []).length === 0 ? state.dividerVisible = true :
+                state.userList = [...state.userList, ...(data.data || [])];
+          }
+        }).finally(() => {
+          Taro.hideToast();
+        });
+      }
+    };
+
     const close = (e) => {
       const { id } = e.target.dataset;
       switch (id) {
@@ -271,7 +296,18 @@ export default {
       state.style.lineHeight = height + 'px';
       state.records = storage.getItem('records') || [];
     });
-    return { state, doSearch, openMask, close, handleChange, delRecords, clear, handlePicker, goBack };
+    return {
+      state,
+      doSearch,
+      openMask,
+      close,
+      handleChange,
+      delRecords,
+      clear,
+      handlePicker,
+      goBack,
+      scrollToLower,
+    };
   },
 };
 </script>
@@ -446,6 +482,13 @@ export default {
           }
         }
       }
+    }
+    .nut-divider{
+      width: 275px;
+      margin: 0 auto;
+      font-size: 12px;
+      color: #7D8699;
+      padding-bottom: 10px;
     }
   }
   &-modal{

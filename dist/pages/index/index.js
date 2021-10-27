@@ -39,13 +39,15 @@ if (false) {}
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_reactivity@3.2.20@@vue/reactivity/dist/reactivity.esm-bundler.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-core@3.2.20@@vue/runtime-core/dist/runtime-core.esm-bundler.js");
-/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @tarojs/taro */ "./node_modules/_@tarojs_taro@3.3.9@@tarojs/taro/index.js");
-/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_tarojs_taro__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils */ "./src/utils/index.js");
-/* harmony import */ var _server_api_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../server/api/index */ "./src/server/api/index.js");
-/* harmony import */ var _source__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./source */ "./src/pages/index/source.js");
+/* harmony import */ var E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/toConsumableArray */ "./node_modules/_@babel_runtime@7.15.4@@babel/runtime/helpers/esm/toConsumableArray.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_reactivity@3.2.20@@vue/reactivity/dist/reactivity.esm-bundler.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/_@vue_runtime-core@3.2.20@@vue/runtime-core/dist/runtime-core.esm-bundler.js");
+/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @tarojs/taro */ "./node_modules/_@tarojs_taro@3.3.9@@tarojs/taro/index.js");
+/* harmony import */ var _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_tarojs_taro__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils */ "./src/utils/index.js");
+/* harmony import */ var _server_api_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../server/api/index */ "./src/server/api/index.js");
+/* harmony import */ var _source__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./source */ "./src/pages/index/source.js");
+
 
 
 
@@ -53,10 +55,13 @@ if (false) {}
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   name: 'Index',
+  onHide: function onHide() {
+    this.state.visible = false;
+  },
   setup: function setup() {
-    var state = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* reactive */ "k"])({
-      auctionDataType: _source__WEBPACK_IMPORTED_MODULE_5__[/* auctionDataType */ "a"],
-      creditorDataType: _source__WEBPACK_IMPORTED_MODULE_5__[/* creditorDataType */ "b"],
+    var state = Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* reactive */ "k"])({
+      auctionDataType: _source__WEBPACK_IMPORTED_MODULE_6__[/* auctionDataType */ "a"],
+      creditorDataType: _source__WEBPACK_IMPORTED_MODULE_6__[/* creditorDataType */ "b"],
       loading: false,
       refreshPull: {
         triggered: false,
@@ -65,6 +70,7 @@ if (false) {}
       },
       visible: false,
       pickerVisible: false,
+      dividerVisible: false,
       style: {
         marginTop: '',
         lineHeight: ''
@@ -121,20 +127,20 @@ if (false) {}
         key: 3
       }]
     });
-    Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* watch */ "D"])(function () {
+    Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* watch */ "D"])(function () {
       return state.pickerVisible;
     }, function (newVal) {
-      if (!newVal) _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.showTabBar();
+      if (!newVal) _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default.a.showTabBar();
     });
-    var structuredType = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* computed */ "c"])(function () {
+    var structuredType = Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* computed */ "c"])(function () {
       return state.structuredObject.find(function (item) {
         return item.key === state.params.functions;
       }).label;
     });
 
-    var getList = function getList(toLower) {
+    var getList = function getList() {
       state.loading = true;
-      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_4__[/* userView */ "b"])(Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* clearEmpty */ "a"])(state.params)).then(function (res) {
+      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_5__[/* userView */ "b"])(Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* clearEmpty */ "a"])(state.params)).then(function (res) {
         var data = res.data;
 
         if (data.code === 200) {
@@ -146,16 +152,14 @@ if (false) {}
     };
 
     var doSearch = function doSearch() {
-      _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.navigateTo({
-        url: '/pages/search/index',
-        success: function success() {
-          state.visible = false;
-        }
+      _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default.a.navigateTo({
+        url: '/pages/search/index'
       });
     };
 
     var tabClick = function tabClick(key) {
       if (state.params.role === key) return;
+      state.dividerVisible = false;
       state.params.role = key;
       state.params.page = 1;
       state.params.functions = '';
@@ -166,13 +170,14 @@ if (false) {}
     var handleSelect = function handleSelect(key) {
       state.visible = false;
       if (state.params.functions === key) return;
+      state.dividerVisible = false;
       state.params.functions = key;
       state.params.page = 1;
       getList();
     };
 
     var openMask = function openMask(which, item) {
-      _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.hideTabBar({
+      _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default.a.hideTabBar({
         success: function success() {
           state.userEditParams.id = item.id;
           state.userEditParams.userEdit.name = item.name;
@@ -238,6 +243,7 @@ if (false) {}
     var refresherRefresh = function refresherRefresh() {
       state.refreshPull.triggered = true;
       state.refreshPull.label = '刷新中';
+      state.dividerVisible = false;
       state.params = {
         username: '',
         role: 1,
@@ -245,7 +251,7 @@ if (false) {}
         isEnabledUser: true,
         page: 1
       };
-      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_4__[/* userView */ "b"])(Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* clearEmpty */ "a"])(state.params)).then(function (res) {
+      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_5__[/* userView */ "b"])(Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* clearEmpty */ "a"])(state.params)).then(function (res) {
         var data = res.data;
 
         if (data.code === 200) {
@@ -262,8 +268,19 @@ if (false) {}
     };
 
     var scrollToLower = function scrollToLower() {
-      console.log('到底啦.....'); // state.params.page++;
-      // getList(true);
+      if (!state.dividerVisible) {
+        Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('加载中...');
+        state.params.page++;
+        Object(_server_api_index__WEBPACK_IMPORTED_MODULE_5__[/* userView */ "b"])(Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* clearEmpty */ "a"])(state.params)).then(function (res) {
+          var data = res.data;
+
+          if (data.code === 200) {
+            (data.data || []).length === 0 ? state.dividerVisible = true : state.userList = [].concat(Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(state.userList), Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(data.data || []));
+          }
+        }).finally(function () {
+          _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default.a.hideToast();
+        });
+      }
     };
 
     var handlePicker = function handlePicker(key) {
@@ -280,19 +297,19 @@ if (false) {}
         state.userEditParams.userEdit.creditorDataType = key;
       }
 
-      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_4__[/* userEdit */ "a"])(id, Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* clearEmpty */ "a"])(data)).then(function (res) {
+      Object(_server_api_index__WEBPACK_IMPORTED_MODULE_5__[/* userEdit */ "a"])(id, Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* clearEmpty */ "a"])(data)).then(function (res) {
         var data = res.data;
         getList();
 
         if (data.code === 200) {// toast('操作成功');
         } else {
-          Object(_utils__WEBPACK_IMPORTED_MODULE_3__[/* toast */ "d"])('操作失败, 请重试');
+          Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* toast */ "d"])('操作失败, 请重试');
         }
       });
     };
 
-    Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* onMounted */ "s"])(function () {
-      var _Taro$getMenuButtonBo = _tarojs_taro__WEBPACK_IMPORTED_MODULE_2___default.a.getMenuButtonBoundingClientRect(),
+    Object(vue__WEBPACK_IMPORTED_MODULE_2__[/* onMounted */ "s"])(function () {
+      var _Taro$getMenuButtonBo = _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default.a.getMenuButtonBoundingClientRect(),
           height = _Taro$getMenuButtonBo.height,
           top = _Taro$getMenuButtonBo.top;
 
@@ -551,7 +568,12 @@ var _hoisted_50 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* create
 );
 
 var _hoisted_51 = [_hoisted_49, _hoisted_50];
+
+var _hoisted_52 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])("我是有底线的");
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_nut_divider = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* resolveComponent */ "y"])("nut-divider");
+
   return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [$setup.state.visible ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
     key: 0,
     class: "index-wrapper-dialog",
@@ -665,7 +687,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     ), _hoisted_39])], 8
     /* PROPS */
-    , _hoisted_36)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), item.structuredObject.match(new RegExp('破产重组数据', 'g')) ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_40, _hoisted_43)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), item.creditorDataType !== -1 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
+    , _hoisted_36)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), item.structuredObject.includes('破产重组数据') ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_40, _hoisted_43)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), item.creditorDataType !== -1 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
       key: 2,
       class: "operate-card",
       onClick: function onClick($event) {
@@ -675,10 +697,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     ), _hoisted_47])], 8
     /* PROPS */
-    , _hoisted_44)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), item.structuredObject.match(new RegExp('招商债权数据', 'g')) ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_48, _hoisted_51)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)])])]);
+    , _hoisted_44)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), item.structuredObject.includes('招商债权数据') ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_48, _hoisted_51)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)], 40
+  )), $setup.state.dividerVisible ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createBlock */ "e"])(_component_nut_divider, {
+    key: 1
+  }, {
+    default: Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* withCtx */ "G"])(function () {
+      return [_hoisted_52];
+    }),
+    _: 1
+    /* STABLE */
+
+  })) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)], 40
   /* PROPS, HYDRATE_EVENTS */
   , _hoisted_21)]);
 }

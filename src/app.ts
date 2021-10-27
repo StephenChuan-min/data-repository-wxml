@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import {
-  Button, Toast, Pagination, Icon, Tab, InputNumber, Input, Avatar,
+  Button, Toast, Pagination, Icon, Tab, InputNumber, Input, Avatar, Divider
 } from '@nutui/nutui-taro';
 import { storage } from './utils';
 import Taro from '@tarojs/taro';
@@ -15,7 +15,7 @@ const App = createApp({
     };
   },
 });
-const Components = [Button, Toast, Pagination, Icon, Tab, InputNumber, Input, Avatar];
+const Components = [Button, Toast, Pagination, Icon, Tab, InputNumber, Input, Avatar, Divider];
 
 Components.forEach((i) => App.use(i));
 

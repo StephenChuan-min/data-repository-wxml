@@ -2134,7 +2134,8 @@ PEMEncoder.prototype.encode = function encode(data, options) {
 
         if (data.code === 200) {
           if (data.data.ROLE === '管理员') {
-            var session = '';
+            var session = ''; // const session = `SESSION=${data.data.session}`;
+
             res.cookies.forEach(function (item) {
               if (/^SESSION=/g.test(item.split(';')[0])) {
                 session = item.split(';')[0];

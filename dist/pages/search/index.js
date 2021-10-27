@@ -64,6 +64,7 @@ if (false) {}
       loading: false,
       pickerVisible: false,
       modalVisible: false,
+      dividerVisible: false,
       records: [],
       style: {
         marginTop: '',
@@ -71,7 +72,8 @@ if (false) {}
       },
       params: {
         username: '',
-        isEnabledUser: true
+        isEnabledUser: true,
+        page: 1
       },
       structuredObject: [{
         label: '全部',
@@ -244,6 +246,22 @@ if (false) {}
       });
     };
 
+    var scrollToLower = function scrollToLower() {
+      if (!state.dividerVisible) {
+        Object(_utils__WEBPACK_IMPORTED_MODULE_5__[/* toast */ "d"])('加载中...');
+        state.params.page++;
+        Object(_server_api_index__WEBPACK_IMPORTED_MODULE_6__[/* userView */ "b"])(Object(_utils__WEBPACK_IMPORTED_MODULE_5__[/* clearEmpty */ "a"])(state.params)).then(function (res) {
+          var data = res.data;
+
+          if (data.code === 200) {
+            (data.data || []).length === 0 ? state.dividerVisible = true : state.userList = [].concat(Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(state.userList), Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(data.data || []));
+          }
+        }).finally(function () {
+          _tarojs_taro__WEBPACK_IMPORTED_MODULE_4___default.a.hideToast();
+        });
+      }
+    };
+
     var close = function close(e) {
       var id = e.target.dataset.id;
 
@@ -279,7 +297,8 @@ if (false) {}
       delRecords: delRecords,
       clear: clear,
       handlePicker: handlePicker,
-      goBack: goBack
+      goBack: goBack,
+      scrollToLower: scrollToLower
     };
   }
 });
@@ -411,7 +430,7 @@ var _hoisted_29 = {
 };
 var _hoisted_30 = ["onClick"];
 var _hoisted_31 = {
-  key: 4,
+  key: 0,
   class: "index-wrapper-content"
 };
 var _hoisted_32 = {
@@ -530,8 +549,13 @@ var _hoisted_55 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* create
 );
 
 var _hoisted_56 = [_hoisted_54, _hoisted_55];
+
+var _hoisted_57 = /*#__PURE__*/Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])("我是有底线的");
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_native_input = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* resolveComponent */ "y"])("native-input");
+
+  var _component_nut_divider = Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* resolveComponent */ "y"])("nut-divider");
 
   return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_1, [$setup.state.modalVisible ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_2, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_3, [_hoisted_4, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_5, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", {
     class: "cancel",
@@ -620,7 +644,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , _hoisted_30);
   }), 256
   /* UNKEYED_FRAGMENT */
-  ))])])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), !$setup.state.loading && $setup.state.flag ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_31, [$setup.state.userList.length === 0 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_32, _hoisted_35)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_0__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* renderList */ "w"])($setup.state.userList, function (item) {
+  ))])])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("scroll-view", {
+    style: {
+      "height": "calc(100vh - 138px)"
+    },
+    "scroll-y": true,
+    onScrolltolower: _cache[8] || (_cache[8] = function () {
+      return $setup.scrollToLower && $setup.scrollToLower.apply($setup, arguments);
+    })
+  }, [!$setup.state.loading && $setup.state.flag ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_31, [$setup.state.userList.length === 0 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_32, _hoisted_35)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(true), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])(vue__WEBPACK_IMPORTED_MODULE_0__[/* Fragment */ "b"], null, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* renderList */ "w"])($setup.state.userList, function (item) {
     return Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
       class: "user-list-container",
       key: item.id
@@ -655,7 +687,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , _hoisted_49)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true), item.structuredObject.match(new RegExp('招商债权数据', 'g')) ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", _hoisted_53, _hoisted_56)) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)]);
+  )), $setup.state.dividerVisible ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createBlock */ "e"])(_component_nut_divider, {
+    key: 1
+  }, {
+    default: Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* withCtx */ "G"])(function () {
+      return [_hoisted_57];
+    }),
+    _: 1
+    /* STABLE */
+
+  })) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)])) : Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createCommentVNode */ "f"])("v-if", true)], 32
+  /* HYDRATE_EVENTS */
+  )]);
 }
 
 /***/ }),

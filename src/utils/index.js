@@ -30,7 +30,7 @@ export const toast = (msg, icon = 'none') => {
     Taro.showToast({
         title: msg,
         icon,
-    })
+    });
 }
 
 
