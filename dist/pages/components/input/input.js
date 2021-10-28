@@ -1,1 +1,51 @@
-(wx["webpackJsonp"]=wx["webpackJsonp"]||[]).push([[8],{283:function(t,e){Component({properties:{autoFocus:{type:Boolean},value:{type:String}},options:{addGlobalClass:!0},data:{value:123},lifetimes:{attached:function(){},detached:function(){}},methods:{handleInput:function(t){var e=t.detail.value;this.triggerEvent("change",e)},doConfirm:function(t){var e=t.detail.value;this.triggerEvent("confirm",e)},handleFocus:function(t){this.triggerEvent("focus",!0)},handleBlur:function(t){this.triggerEvent("blur",!1)}}})}},[[283,0]]]);
+(wx["webpackJsonp"] = wx["webpackJsonp"] || []).push([["pages/components/input/input"],{
+
+/***/ "./src/pages/components/input/input.js":
+/*!*********************************************!*\
+  !*** ./src/pages/components/input/input.js ***!
+  \*********************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+Component({
+  properties: {
+    autoFocus: {
+      type: Boolean
+    },
+    value: {
+      type: String
+    }
+  },
+  options: {
+    addGlobalClass: true
+  },
+  data: {},
+  lifetimes: {
+    attached: function attached() {// 在组件实例进入页面节点树时执行
+    },
+    detached: function detached() {// 在组件实例被从页面节点树移除时执行
+    }
+  },
+  methods: {
+    handleInput: function handleInput(e) {
+      var value = e.detail.value;
+      this.triggerEvent('change', value);
+    },
+    doConfirm: function doConfirm(e) {
+      var value = e.detail.value;
+      this.triggerEvent('confirm', value);
+    },
+    handleFocus: function handleFocus(e) {
+      this.triggerEvent('focus');
+    },
+    handleBlur: function handleBlur(e) {
+      this.triggerEvent('blur');
+    }
+  }
+});
+
+/***/ })
+
+},[["./src/pages/components/input/input.js","runtime"]]]);
+//# sourceMappingURL=input.js.map

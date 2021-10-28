@@ -1,5 +1,5 @@
 <template>
-  <view class="index-wrapper">
+  <view class="index-wrapper" @click="state.focus = false">
     <view class="toast" v-if="state.toast.show">{{state.toast.title}}</view>
     <view class="index-wrapper-modal" v-if="state.modalVisible">
       <view class="modal-content">
@@ -29,42 +29,41 @@
         <view class="navigationBar-title" :style="state.style"><view @click="goBack"><text class="iconfont icon-xiaochengxu-fanhui" /></view>源诚数据资产平台</view>
       </view>
       <view class="block search-block">
-        <view class="search-input">
-          <text class="iconfont icon-xiaochengxu-sousuo"></text>
+        <view class="search-input" @click.stop="state.focus = true">
+          <text class="iconfont icon-xiaochengxu-sousuo prefix"></text>
           <native-input
-              ref="searchInput"
-              @change="handleChange"
-              @confirm="({detail}) => doSearch(detail)"
-              :value="state.params.username"
-              :auto-focus="!state.flag && !state.modalVisible"
+            @change="(e) => {state.params.username = e.detail;handleChange()}"
+            @confirm="({detail}) => doSearch(detail)"
+            :value="state.params.username"
+            :auto-focus="!state.flag && !state.modalVisible"
           />
           <view :class="['suffix', state.flag ? 'suffix-cancel' : 'suffix-search']" @click="() => doSearch()">{{ state.flag ? '取消' : '搜索' }}</view>
-          <view v-if="state.params.username" @click="clear" class="suffix suffix-iconfont">
-            <text class="iconfont icon-xiaochengxu-shanchu" />
+          <view @click.stop="clear" class="suffix suffix-iconfont">
+            <text :class="state.params.username && state.focus ? 'iconfont icon-xiaochengxu-shanchu' : ''" />
           </view>
         </view>
       </view>
     </view>
     <view class="loading" v-if="state.loading"><image src="../../assets/img/logo_loading2.gif" /></view>
-    <view class="search-record" v-if="!state.loading && !state.flag">
-      <view v-if="state.records.length !== 0 && state.usernameList.length === 0">
-        <view class="record-head">
-          <view class="title">搜索记录</view>
-          <view @click="state.modalVisible = true"><text class="iconfont icon-xiaochengxu-lajixiang" /></view>
-        </view>
-        <view class="record-content">
-          <view class="record-content-item" v-for="item in state.records" @click="doSearch(item)">{{item}}</view>
-        </view>
-      </view>
-      <view class="username-list">
-        <view class="username-list-item" v-for="item in state.usernameList" @click="doSearch(item)">{{item}}</view>
-      </view>
-    </view>
     <scroll-view
-        style="height: calc(100vh - 138px)"
-        :scroll-y="true"
-        @scrolltolower="scrollToLower"
+      style="height: calc(100vh - 138px)"
+      :scroll-y="true"
+      @scrolltolower="scrollToLower"
     >
+      <view class="search-record" v-if="!state.loading && !state.flag">
+        <view v-if="state.records.length !== 0 && state.usernameList.length === 0">
+          <view class="record-head">
+            <view class="title">搜索记录</view>
+            <view @click="state.modalVisible = true"><text class="iconfont icon-xiaochengxu-lajixiang" /></view>
+          </view>
+          <view class="record-content">
+            <view class="record-content-item" v-for="item in state.records" @click="doSearch(item)">{{item}}</view>
+          </view>
+        </view>
+        <view class="username-list">
+          <view class="username-list-item" v-for="item in state.usernameList" @click="doSearch(item)">{{item}}</view>
+        </view>
+      </view>
       <view class="index-wrapper-content" v-if="!state.loading && state.flag">
         <view class="empty" v-if="state.userList.length === 0">
           <image src="../../assets/img/search-empty.png" />
@@ -82,7 +81,7 @@
                 <view class="title"><text class="iconfont icon-xiaochengxu-zichanpaimai" />资产拍卖数据</view>
                 <view class="select">{{ state.auctionDataType[item.auctionDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
               </view>
-              <view v-if="item.structuredObject.match(new RegExp('破产重组数据', 'g'))" class="operate-card">
+              <view v-if="item.structuredObject.includes('破产重组数据')" class="operate-card">
                 <view class="title"><text class="iconfont icon-xiaochengxu-pochanzhongzu" />破产重组数据</view>
                 <view class="select">-</view>
               </view>
@@ -90,7 +89,7 @@
                 <view class="title"><text class="iconfont icon-xiaochengxu-paimaizhaiquanshuju" />拍卖债权数据</view>
                 <view class="select">{{ state.creditorDataType[item.creditorDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
               </view>
-              <view v-if="item.structuredObject.match(new RegExp('招商债权数据', 'g'))" class="operate-card">
+              <view v-if="item.structuredObject.includes('招商债权数据')" class="operate-card">
                 <view class="title"><text class="iconfont icon-xiaochengxu-zhaoshangzhaiquanshuju" />招商债权数据</view>
                 <view class="select">-</view>
               </view>
@@ -105,7 +104,7 @@
 </template>
 
 <script>
-import { onMounted, reactive, getCurrentInstance } from 'vue';
+import { onMounted, reactive } from 'vue';
 import Taro from "@tarojs/taro";
 import {clearEmpty, debounce, storage} from "../../utils";
 import {userEdit, userView} from '../../server/api/index';
@@ -161,6 +160,7 @@ export default {
       ],
       flag: false,
       toLowerLoading: false,
+      focus: true,
     });
 
     const toast = (title) => {
@@ -195,18 +195,18 @@ export default {
       });
     };
 
-    const clear = (e) => {
+    const clear = () => {
+      if (!state.focus) return state.focus = false;
       state.params.username = '';
       state.usernameList = [];
       state.flag = false;
     };
 
-    const handleChange = debounce((e) => {
-      state.params.username = e.detail;
+    const handleChange = debounce(() => {
       const username = state.params.username.replace(/\s/g, '');
       if (username) {
         state.flag = false;
-        userView({ username, ...state.params }).then((res) => {
+        userView({ ...state.params, username }).then((res) => {
           const { data } = res;
           if (data.code === 200) {
             state.usernameList = [];
@@ -396,14 +396,14 @@ export default {
         .native-input{
           height: 40px;
           box-sizing: border-box;
-          padding: 0 120px 0 45px;
+          padding: 0 110px 0 45px;
           border: none;
         }
         .input-placeholder{
           font-size: 15px;
           color: #B2B8C9;
         }
-        .iconfont{
+        .iconfont.prefix{
           position: absolute;
           left: 17px;
           color: #20242E;
@@ -430,23 +430,36 @@ export default {
             color: #4E5566;
           }
           &-iconfont{
-            width: 20px;
-            right: 110px;
-            &::after{
-              content: '';
-              display: inline-block;
-              width: 1px;
-              height: 20px;
-              background-color: #D7D9DF;
-              vertical-align: middle;
-              position: absolute;
-              right: -25px;
-              bottom: 5px;
-            }
+            width: 30px;
+            right: 85px;
+            //background: url("../../assets/img/icon-del.png") no-repeat center;
+            //background-size: contain;
+            //&::after{
+            //  content: '';
+            //  display: inline-block;
+            //  width: 1px;
+            //  height: 20px;
+            //  background-color: #D7D9DF;
+            //  vertical-align: middle;
+            //  position: absolute;
+            //  right: -10px;
+            //  bottom: 5px;
+            //}
             .iconfont{
               line-height: 30px;
               color: #B2B8C9;
               font-size: 17px;
+              &::after{
+                content: '';
+                display: inline-block;
+                width: 1px;
+                height: 20px;
+                background-color: #D7D9DF;
+                vertical-align: middle;
+                position: absolute;
+                right: 0px;
+                bottom: 5px;
+              }
             }
           }
         }

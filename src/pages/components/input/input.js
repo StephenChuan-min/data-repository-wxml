@@ -11,7 +11,6 @@ Component({
         addGlobalClass: true,
     },
     data: {
-        value: 123,
     },
     lifetimes: {
         attached: function() {
@@ -31,10 +30,10 @@ Component({
             this.triggerEvent('confirm', value);
         },
         handleFocus(e) {
-            this.triggerEvent('focus', true);
+            this.triggerEvent('focus');
         },
         handleBlur(e) {
-            this.triggerEvent('blur', false);
+            this.triggerEvent('blur');
         },
     }
 });

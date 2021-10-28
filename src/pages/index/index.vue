@@ -481,8 +481,8 @@ export default {
         }
         .select-structured{
           box-sizing: border-box;
-          padding: 0 10px 0 10px;
-          height: 39px;
+          padding: 3px 10px 0 10px;
+          height: 46px;
           position: relative;
           font-size: 14px;
           color: #7D8699;
