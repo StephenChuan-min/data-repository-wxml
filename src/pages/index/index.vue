@@ -231,6 +231,13 @@ export default {
     };
 
     const openMask = (which, item) => {
+      console.log(item);
+      let functionId = [];
+      state.structuredObject.forEach((i) => {
+        if (item.structuredObject.includes(i.label)) {
+          functionId.push(i.key);
+        }
+      });
       Taro.hideTabBar({
         success: () => {
           state.userEditParams.id = item.id;
@@ -239,7 +246,7 @@ export default {
           state.userEditParams.userEdit.creditorDataType = item.creditorDataType === -1 ? '' : item.creditorDataType;
           state.userEditParams.userEdit.auctionDataType = [0 , 1].includes(item.auctionDataType)
               ? 0 : item.auctionDataType === -1 ? '' : item.auctionDataType;
-          state.userEditParams.userEdit.functionId = state.params.functions ? [state.params.functions] : [8, 11, 26, 29];
+          state.userEditParams.userEdit.functionId = functionId;
           state.pickerVisible = true;
           switch (which) {
             case 'auctionDataType':
@@ -329,7 +336,7 @@ export default {
       }
       userEdit(id, clearEmpty(data)).then((res) => {
         const { data } = res;
-        getList();
+        // getList();
         if (data.code === 200) {
           // toast('操作成功');
         } else {

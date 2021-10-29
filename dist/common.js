@@ -84,8 +84,8 @@ var userEdit = function userEdit(id, data) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return baseUrl; });
 // export const baseUrl = 'https://wechat-data.yczcjk.com'; // 线上
 // export const baseUrl = 'http://172.18.255.8:38510';
-// export const baseUrl = 'https://wechat-predata.yczcjk.com' // 预发
-var baseUrl = 'https://wechat-test.yczcjk.com'; // 测试环境
+var baseUrl = 'https://wechat-predata.yczcjk.com'; // 预发
+// export const baseUrl = 'https://wechat-test.yczcjk.com'; // 测试环境
 
 /***/ }),
 

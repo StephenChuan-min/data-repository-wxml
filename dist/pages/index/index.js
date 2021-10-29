@@ -195,6 +195,13 @@ if (false) {}
     };
 
     var openMask = function openMask(which, item) {
+      console.log(item);
+      var functionId = [];
+      state.structuredObject.forEach(function (i) {
+        if (item.structuredObject.includes(i.label)) {
+          functionId.push(i.key);
+        }
+      });
       _tarojs_taro__WEBPACK_IMPORTED_MODULE_3___default.a.hideTabBar({
         success: function success() {
           state.userEditParams.id = item.id;
@@ -202,7 +209,7 @@ if (false) {}
           state.userEditParams.userEdit.roleId = state.params.role;
           state.userEditParams.userEdit.creditorDataType = item.creditorDataType === -1 ? '' : item.creditorDataType;
           state.userEditParams.userEdit.auctionDataType = [0, 1].includes(item.auctionDataType) ? 0 : item.auctionDataType === -1 ? '' : item.auctionDataType;
-          state.userEditParams.userEdit.functionId = state.params.functions ? [state.params.functions] : [8, 11, 26, 29];
+          state.userEditParams.userEdit.functionId = functionId;
           state.pickerVisible = true;
 
           switch (which) {
@@ -310,8 +317,7 @@ if (false) {}
       }
 
       Object(_server_api_index__WEBPACK_IMPORTED_MODULE_5__[/* userEdit */ "a"])(id, Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* clearEmpty */ "a"])(data)).then(function (res) {
-        var data = res.data;
-        getList();
+        var data = res.data; // getList();
 
         if (data.code === 200) {// toast('操作成功');
         } else {
