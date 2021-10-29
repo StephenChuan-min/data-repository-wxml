@@ -231,7 +231,6 @@ export default {
     };
 
     const openMask = (which, item) => {
-      console.log(item);
       let functionId = [];
       state.structuredObject.forEach((i) => {
         if (item.structuredObject.includes(i.label)) {
@@ -326,19 +325,22 @@ export default {
 
     const handlePicker = (key) => {
       const { id, userEdit: data } = state.userEditParams;
+      const temp = state.userList.find((item) => item.id === id);
       state.pickerVisible = false;
       if (state.pickerOptions.length === 3) {
         if (state.userEditParams.userEdit.auctionDataType === key) return;
         state.userEditParams.userEdit.auctionDataType = key;
+        temp.auctionDataType = key;
       } else {
         if (state.userEditParams.userEdit.creditorDataType === key) return;
         state.userEditParams.userEdit.creditorDataType = key;
+        temp.creditorDataType = key;
       }
       userEdit(id, clearEmpty(data)).then((res) => {
         const { data } = res;
         // getList();
         if (data.code === 200) {
-          // toast('操作成功');
+          toast('操作成功');
         } else {
           toast('操作失败, 请重试');
         }

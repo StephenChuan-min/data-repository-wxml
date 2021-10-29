@@ -102,7 +102,7 @@ if (false) {}
         userEdit: {
           auctionDataType: 0,
           creditorDataType: 0,
-          functionId: [8, 11, 26, 29],
+          functionId: [],
           name: "",
           roleId: ''
         }
@@ -206,12 +206,20 @@ if (false) {}
       }
     };
 
-    var openMask = function openMask(which, item) {
+    var openMask = function openMask(which, item, e) {
+      console.log(e);
+      var functionId = [];
+      state.structuredObject.forEach(function (i) {
+        if (item.structuredObject.includes(i.label)) {
+          functionId.push(i.key);
+        }
+      });
       state.userEditParams.id = item.id;
       state.userEditParams.userEdit.name = item.name;
       state.userEditParams.userEdit.roleId = item.role === '正式' ? 1 : 0;
       state.userEditParams.userEdit.creditorDataType = item.creditorDataType === -1 ? '' : item.creditorDataType;
       state.userEditParams.userEdit.auctionDataType = [0, 1].includes(item.auctionDataType) ? 0 : item.auctionDataType === -1 ? '' : item.auctionDataType;
+      state.userEditParams.userEdit.functionId = functionId;
       state.pickerVisible = true;
 
       switch (which) {
@@ -247,21 +255,29 @@ if (false) {}
       var _state$userEditParams = state.userEditParams,
           id = _state$userEditParams.id,
           data = _state$userEditParams.userEdit;
+      var temp = state.userList.find(function (item) {
+        return item.id === id;
+      });
 
       if (state.pickerOptions.length === 3) {
+        if (state.userEditParams.userEdit.auctionDataType === key) return;
         state.userEditParams.userEdit.auctionDataType = key;
+        temp.auctionDataType = key;
       } else {
+        if (state.userEditParams.userEdit.creditorDataType === key) return;
         state.userEditParams.userEdit.creditorDataType = key;
+        temp.creditorDataType = key;
       }
 
       state.pickerVisible = false;
       Object(_server_api_index__WEBPACK_IMPORTED_MODULE_6__[/* userEdit */ "a"])(id, Object(_utils__WEBPACK_IMPORTED_MODULE_5__[/* clearEmpty */ "a"])(data)).then(function (res) {
-        // const { data } = res;
-        getList(); // if (data.code === 200) {
-        //   toast('操作成功');
-        // } else {
-        //   toast('操作失败, 请重试');
-        // }
+        var data = res.data; // getList();
+
+        if (data.code === 200) {
+          toast('操作成功');
+        } else {
+          toast('操作失败, 请重试');
+        }
       });
     };
 
@@ -695,8 +711,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     )]), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_37, [item.auctionDataType !== -1 ? (Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* openBlock */ "v"])(), Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementBlock */ "g"])("view", {
       key: 0,
       class: "operate-card",
-      onClick: function onClick($event) {
-        return $setup.openMask('auctionDataType', item);
+      onClick: function onClick(e) {
+        return $setup.openMask('auctionDataType', item, e);
       }
     }, [_hoisted_39, Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createElementVNode */ "h"])("view", _hoisted_40, [Object(vue__WEBPACK_IMPORTED_MODULE_0__[/* createTextVNode */ "k"])(Object(vue__WEBPACK_IMPORTED_MODULE_1__[/* toDisplayString */ "L"])($setup.state.auctionDataType[item.auctionDataType]), 1
     /* TEXT */

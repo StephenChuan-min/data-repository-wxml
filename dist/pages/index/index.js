@@ -195,7 +195,6 @@ if (false) {}
     };
 
     var openMask = function openMask(which, item) {
-      console.log(item);
       var functionId = [];
       state.structuredObject.forEach(function (i) {
         if (item.structuredObject.includes(i.label)) {
@@ -306,20 +305,26 @@ if (false) {}
       var _state$userEditParams = state.userEditParams,
           id = _state$userEditParams.id,
           data = _state$userEditParams.userEdit;
+      var temp = state.userList.find(function (item) {
+        return item.id === id;
+      });
       state.pickerVisible = false;
 
       if (state.pickerOptions.length === 3) {
         if (state.userEditParams.userEdit.auctionDataType === key) return;
         state.userEditParams.userEdit.auctionDataType = key;
+        temp.auctionDataType = key;
       } else {
         if (state.userEditParams.userEdit.creditorDataType === key) return;
         state.userEditParams.userEdit.creditorDataType = key;
+        temp.creditorDataType = key;
       }
 
       Object(_server_api_index__WEBPACK_IMPORTED_MODULE_5__[/* userEdit */ "a"])(id, Object(_utils__WEBPACK_IMPORTED_MODULE_4__[/* clearEmpty */ "a"])(data)).then(function (res) {
         var data = res.data; // getList();
 
-        if (data.code === 200) {// toast('操作成功');
+        if (data.code === 200) {
+          toast('操作成功');
         } else {
           toast('操作失败, 请重试');
         }

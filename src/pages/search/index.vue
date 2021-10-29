@@ -77,7 +77,7 @@
               <view class="username">账号：{{item.username || '-'}}</view>
             </view>
             <view class="operate-block">
-              <view v-if="item.auctionDataType !== -1" class="operate-card" @click="openMask('auctionDataType', item)">
+              <view v-if="item.auctionDataType !== -1" class="operate-card" @click="(e) => openMask('auctionDataType', item, e)">
                 <view class="title"><text class="iconfont icon-xiaochengxu-zichanpaimai" />资产拍卖数据</view>
                 <view class="select">{{ state.auctionDataType[item.auctionDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
               </view>
@@ -148,7 +148,7 @@ export default {
         userEdit: {
           auctionDataType: 0,
           creditorDataType: 0,
-          functionId: [8, 11, 26, 29],
+          functionId: [],
           name: "",
           roleId: '',
         },
@@ -240,13 +240,21 @@ export default {
       }
     };
 
-    const openMask = (which, item) => {
+    const openMask = (which, item, e) => {
+      console.log(e);
+      let functionId = [];
+      state.structuredObject.forEach((i) => {
+        if (item.structuredObject.includes(i.label)) {
+          functionId.push(i.key);
+        }
+      });
       state.userEditParams.id = item.id;
       state.userEditParams.userEdit.name = item.name;
       state.userEditParams.userEdit.roleId = item.role === '正式' ? 1 : 0;
       state.userEditParams.userEdit.creditorDataType = item.creditorDataType === -1 ? '' : item.creditorDataType;
       state.userEditParams.userEdit.auctionDataType = [0 , 1].includes(item.auctionDataType)
           ? 0 : item.auctionDataType === -1 ? '' : item.auctionDataType;
+      state.userEditParams.userEdit.functionId = functionId;
       state.pickerVisible = true;
       switch (which) {
         case 'auctionDataType':
@@ -269,20 +277,25 @@ export default {
 
     const handlePicker = (key) => {
       const { id, userEdit: data } = state.userEditParams;
+      const temp = state.userList.find((item) => item.id === id);
       if (state.pickerOptions.length === 3) {
+        if (state.userEditParams.userEdit.auctionDataType === key) return;
         state.userEditParams.userEdit.auctionDataType = key;
+        temp.auctionDataType = key;
       } else {
+        if (state.userEditParams.userEdit.creditorDataType === key) return;
         state.userEditParams.userEdit.creditorDataType = key;
+        temp.creditorDataType = key;
       }
       state.pickerVisible = false;
       userEdit(id, clearEmpty(data)).then((res) => {
-        // const { data } = res;
-        getList();
-        // if (data.code === 200) {
-        //   toast('操作成功');
-        // } else {
-        //   toast('操作失败, 请重试');
-        // }
+        const { data } = res;
+        // getList();
+        if (data.code === 200) {
+          toast('操作成功');
+        } else {
+          toast('操作失败, 请重试');
+        }
       });
     };
 
