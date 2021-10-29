@@ -1,7 +1,7 @@
 <template>
   <view class="index-wrapper">
-    <view class="toast" v-if="state.toast.show">{{state.toast.title}}</view>
-    <view class="index-wrapper-dialog" data-id="index-wrapper-dialog" v-if="state.visible" @click="close">
+    <view class="toast" v-show="state.toast.show">{{state.toast.title}}</view>
+    <view class="index-wrapper-dialog" data-id="index-wrapper-dialog" v-show="state.visible" @click="close">
       <view class="select-block">
         <view
             :class="['select-item', item.key === state.params.functions ? 'is-selected' : '']"
@@ -14,14 +14,14 @@
         </view>
       </view>
     </view >
-    <view class="index-wrapper-picker" data-id="index-wrapper-picker" v-if="state.pickerVisible" @click="close">
+    <view class="index-wrapper-picker" data-id="index-wrapper-picker" v-show="state.pickerVisible" @click="close">
       <view class="picker-content">
         <view
             v-for="item in state.pickerOptions"
             :key="item.key"
             :class="['picker-option', state.pickerOptions.length === 3 ?
-            (item.key === state.userEditParams.userEdit.auctionDataType ? 'pickered' : '') :
-            (item.key === state.userEditParams.userEdit.creditorDataType ? 'pickered' : '')]"
+            (item.key == state.userEditParams.userEdit.auctionDataType ? 'pickered' : '') :
+            (item.key == state.userEditParams.userEdit.creditorDataType ? 'pickered' : '')]"
             @click="handlePicker(item.key)"
         >
           {{item.label}}
@@ -68,7 +68,7 @@
       <view class="index-wrapper-content" v-if="!state.loading">
         <view class="empty" v-if="!state.loading && state.userList.length === 0">
           <image src="../../assets/img/empty.png" />
-          <view style="color: rgba(0, 0, 0, 0.87);font-size: 14px">暂无数据</view>
+          <view style="color: #7D8699;font-size: 15px">暂无数据</view>
         </view>
         <view class="user-list-container" v-for="item in state.userList" :key="item.id">
           <view class="block">
@@ -78,7 +78,7 @@
               <view class="username">账号：{{item.username || '-'}}</view>
             </view>
             <view class="operate-block">
-              <view v-if="item.auctionDataType !== -1" class="operate-card" @click="openMask('auctionDataType', item)">
+              <view v-if="item.structuredObject.includes('资产拍卖数据')" class="operate-card" @click="openMask('auctionDataType', item)">
                 <view class="title"><image src="../../assets/img/zcpm.png" />资产拍卖数据</view>
                 <view class="select">{{ state.auctionDataType[item.auctionDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
               </view>
@@ -86,7 +86,7 @@
                 <view class="title"><text class="iconfont icon-xiaochengxu-pochanzhongzu" />破产重组数据</view>
                 <view class="select">-</view>
               </view>
-              <view v-if="item.creditorDataType !== -1" class="operate-card" @click="openMask('creditorDataType', item)">
+              <view v-if="item.structuredObject.includes('拍卖债权数据')" class="operate-card" @click="openMask('creditorDataType', item)">
                 <view class="title"><image src="../../assets/img/pmzq.png" />拍卖债权数据</view>
                 <view class="select">{{ state.creditorDataType[item.creditorDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
               </view>
@@ -105,16 +105,17 @@
 </template>
 
 <script>
-import { onMounted, reactive, watch, computed } from 'vue';
+import { onMounted, reactive, computed } from 'vue';
 import Taro from "@tarojs/taro";
 import { clearEmpty } from "../../utils";
 import { userView, userEdit } from '../../server/api/index';
-import { auctionDataType, creditorDataType } from './source';
+import { auctionDataType, auctionDataTypeA,  creditorDataType, creditorDataTypeA } from './source';
 
 export default {
   name: 'Index',
   onHide() {
     this.state.visible = false;
+    this.state.pickerVisible = false;
   },
   setup() {
     const state = reactive({
@@ -174,10 +175,6 @@ export default {
       toLowerLoading: false,
     });
 
-    watch(() => state.pickerVisible, (newVal) => {
-      if (!newVal) Taro.showTabBar();
-    });
-
     const structuredType = computed(() => state.structuredObject.find((item) => item.key === state.params.functions).label);
 
     const toast = (title) => {
@@ -195,11 +192,27 @@ export default {
 
     const getList = () => {
       state.loading = true;
+      state.dividerVisible = false;
+      state.toLowerLoading = false;
       userView(clearEmpty(state.params)).then((res) => {
         const { data } = res;
         if (data.code === 200) {
           state.userList = data.data || [];
+          state.userList.forEach((item) => {
+            Object.keys(auctionDataTypeA).forEach((i) => {
+              if (item.structuredObject.includes(auctionDataTypeA[i])) {
+                item.auctionDataType = i;
+              }
+            });
+            Object.keys(creditorDataTypeA).forEach((j) => {
+              if (item.structuredObject.includes(creditorDataTypeA[j])) {
+                item.creditorDataType = j;
+              }
+            });
+          });
         }
+      }).catch((res) => {
+        toast('网络异常...');
       }).finally(() => {
         state.loading = false;
       });
@@ -237,35 +250,30 @@ export default {
           functionId.push(i.key);
         }
       });
-      Taro.hideTabBar({
-        success: () => {
-          state.userEditParams.id = item.id;
-          state.userEditParams.userEdit.name = item.name;
-          state.userEditParams.userEdit.roleId = state.params.role;
-          state.userEditParams.userEdit.creditorDataType = item.creditorDataType === -1 ? '' : item.creditorDataType;
-          state.userEditParams.userEdit.auctionDataType = [0 , 1].includes(item.auctionDataType)
-              ? 0 : item.auctionDataType === -1 ? '' : item.auctionDataType;
-          state.userEditParams.userEdit.functionId = functionId;
-          state.pickerVisible = true;
-          switch (which) {
-            case 'auctionDataType':
-              state.pickerOptions = [
-                { label: '普通数据', key: 0 },
-                { label: '相似数据', key: 2 },
-                { label: '非初标数据', key: 3 },
-              ];
-              break;
-            case 'creditorDataType':
-              state.pickerOptions = [
-                { label: '普通数据', key: 0 },
-                { label: '非初标数据', key: 1 },
-              ];
-              break;
-            default:
-              break;
-          }
-        },
-      });
+      state.userEditParams.id = item.id;
+      state.userEditParams.userEdit.name = item.name;
+      state.userEditParams.userEdit.roleId = state.params.role;
+      state.userEditParams.userEdit.creditorDataType = item.creditorDataType == -1 ? '' : item.creditorDataType;
+      state.userEditParams.userEdit.auctionDataType = item.auctionDataType == -1 ? '' : item.auctionDataType;
+      state.userEditParams.userEdit.functionId = functionId;
+      state.pickerVisible = true;
+      switch (which) {
+        case 'auctionDataType':
+          state.pickerOptions = [
+            { label: '普通数据', key: 0 },
+            { label: '相似数据', key: 2 },
+            { label: '非初标数据', key: 3 },
+          ];
+          break;
+        case 'creditorDataType':
+          state.pickerOptions = [
+            { label: '普通数据', key: 0 },
+            { label: '非初标数据', key: 1 },
+          ];
+          break;
+        default:
+          break;
+      };
     };
 
     const close = (e) => {
@@ -291,6 +299,8 @@ export default {
       state.refreshPull.triggered = true;
       state.refreshPull.label = '刷新中';
       state.dividerVisible = false;
+      state.dividerVisible = false;
+      state.toLowerLoading = false;
       state.params.page = 1;
       userView(clearEmpty(state.params)).then((res) => {
         const { data } = res;
@@ -314,8 +324,24 @@ export default {
         userView(clearEmpty(state.params)).then((res) => {
           const { data } = res;
           if (data.code === 200) {
-            (data.data || []).length === 0 ? state.dividerVisible = true :
-              state.userList = [...state.userList, ...(data.data || [])];
+            const list = data.data || [];
+            if (list.length === 0) {
+              state.dividerVisible = true;
+            } else {
+              list.forEach((item) => {
+                Object.keys(auctionDataTypeA).forEach((i) => {
+                  if (item.structuredObject.includes(auctionDataTypeA[i])) {
+                    item.auctionDataType = i;
+                  }
+                });
+                Object.keys(creditorDataTypeA).forEach((j) => {
+                  if (item.structuredObject.includes(creditorDataTypeA[j])) {
+                    item.creditorDataType = j;
+                  }
+                });
+              });
+            }
+            state.userList = [...state.userList, ...list];
           }
         }).finally(() => {
           state.toLowerLoading = false;
@@ -328,11 +354,11 @@ export default {
       const temp = state.userList.find((item) => item.id === id);
       state.pickerVisible = false;
       if (state.pickerOptions.length === 3) {
-        if (state.userEditParams.userEdit.auctionDataType === key) return;
+        if (state.userEditParams.userEdit.auctionDataType == key) return;
         state.userEditParams.userEdit.auctionDataType = key;
         temp.auctionDataType = key;
       } else {
-        if (state.userEditParams.userEdit.creditorDataType === key) return;
+        if (state.userEditParams.userEdit.creditorDataType == key) return;
         state.userEditParams.userEdit.creditorDataType = key;
         temp.creditorDataType = key;
       }
@@ -468,7 +494,7 @@ export default {
           display: flex;
           .tabpane-item{
             box-sizing: border-box;
-            padding-top: 2px;
+            padding-top: 4px;
             font-size: 16px;
             color: #4E5566;
             margin-right: 40px;
@@ -622,7 +648,8 @@ export default {
     z-index: 999;
     height: 100vh;
     .picker-content{
-      padding: 15px 0 49px 0;
+      border-bottom: 1px solid #D7D9DF;
+      padding: 15px 0 30px 0;
       text-align: center;
       margin-top: 100vh;
       transform: translateY(-100%);

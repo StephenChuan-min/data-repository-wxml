@@ -2169,6 +2169,8 @@ PEMEncoder.prototype.encode = function encode(data, options) {
             toast('账号或密码错误');
           }
         }
+      }).catch(function (res) {
+        toast('网络异常...');
       }).finally(function () {
         state.loading = false;
       });

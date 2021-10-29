@@ -178,6 +178,8 @@ export default {
             toast('账号或密码错误');
           }
         }
+      }).catch((res) => {
+        toast('网络异常...');
       }).finally(() => {
         state.loading = false;
       });

@@ -9,7 +9,7 @@ const request = (options) => {
             url: baseUrl + options.url,
             data: options.data,
             method: options.method.toUpperCase() || 'GET',
-            timeout: 1000 * 30,
+            timeout: 1000 * 10,
             header: {
                 Cookie: session,
                 ...options.header
@@ -28,6 +28,9 @@ const request = (options) => {
                 }
                 resolve(res);
             },
+            fail: (res) => {
+                reject(res);
+            }
         }
         if (options.header) {
             setting.header = Object.assign(setting.header, options.header);

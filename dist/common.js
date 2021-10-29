@@ -16,13 +16,15 @@ module.exports = __webpack_require__.p + "assets/img/logo_loading2.gif";
 /*!***********************************!*\
   !*** ./src/pages/index/source.js ***!
   \***********************************/
-/*! exports provided: auctionDataType, creditorDataType */
-/*! exports used: auctionDataType, creditorDataType */
+/*! exports provided: auctionDataType, creditorDataType, auctionDataTypeA, creditorDataTypeA */
+/*! exports used: auctionDataType, auctionDataTypeA, creditorDataType, creditorDataTypeA */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return auctionDataType; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return creditorDataType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return creditorDataType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return auctionDataTypeA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return creditorDataTypeA; });
 var auctionDataType = {
   '0': '普通数据',
   '1': '普通数据',
@@ -32,6 +34,15 @@ var auctionDataType = {
 var creditorDataType = {
   '0': '普通数据',
   '1': '非初标数据'
+};
+var auctionDataTypeA = {
+  '0': '资产拍卖数据(普通数据)',
+  '2': '资产拍卖数据(相似数据)',
+  '3': '资产拍卖数据(非初标数据)'
+};
+var creditorDataTypeA = {
+  '0': '拍卖债权数据(普通数据)',
+  '1': '拍卖债权数据(非初标数据)'
 };
 
 /***/ }),
@@ -82,9 +93,9 @@ var userEdit = function userEdit(id, data) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return baseUrl; });
-// export const baseUrl = 'https://wechat-data.yczcjk.com'; // 线上
+var baseUrl = 'https://data.yczcjk.com'; // 线上
 // export const baseUrl = 'http://172.18.255.8:38510';
-var baseUrl = 'https://wechat-predata.yczcjk.com'; // 预发
+// export const baseUrl = 'https://wechat-predata.yczcjk.com' // 预发
 // export const baseUrl = 'https://wechat-test.yczcjk.com'; // 测试环境
 
 /***/ }),
@@ -115,7 +126,7 @@ var request = function request(options) {
       url: _base__WEBPACK_IMPORTED_MODULE_1__[/* baseUrl */ "a"] + options.url,
       data: options.data,
       method: options.method.toUpperCase() || 'GET',
-      timeout: 1000 * 30,
+      timeout: 1000 * 10,
       header: Object(E_wangchuan_work_projects_data_repository_wxml_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({
         Cookie: session
       }, options.header),
@@ -134,6 +145,9 @@ var request = function request(options) {
         }
 
         resolve(res);
+      },
+      fail: function fail(res) {
+        reject(res);
       }
     };
 

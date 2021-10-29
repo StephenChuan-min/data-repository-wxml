@@ -1,5 +1,6 @@
 <input
     class="native-input"
+    confirm-type="{{confirmType}}"
     bindconfirm="doConfirm"
     bindinput="handleInput"
     bindfocus="handleFocus"

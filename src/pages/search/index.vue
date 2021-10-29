@@ -1,7 +1,7 @@
 <template>
   <view class="index-wrapper" @click="state.focus = false">
-    <view class="toast" v-if="state.toast.show">{{state.toast.title}}</view>
-    <view class="index-wrapper-modal" v-if="state.modalVisible">
+    <view class="toast" v-show="state.toast.show">{{state.toast.title}}</view>
+    <view class="index-wrapper-modal" v-show="state.modalVisible">
       <view class="modal-content">
         <view class="body">确认删除全部历史记录？</view>
         <view class="footer">
@@ -10,14 +10,14 @@
         </view>
       </view>
     </view>
-    <view class="index-wrapper-picker" data-id="index-wrapper-picker" v-if="state.pickerVisible" @click="close">
+    <view class="index-wrapper-picker" data-id="index-wrapper-picker" v-show="state.pickerVisible" @click="close">
       <view class="picker-content">
         <view
             v-for="item in state.pickerOptions"
             :key="item.key"
             :class="['picker-option', state.pickerOptions.length === 3 ?
-            (item.key === state.userEditParams.userEdit.auctionDataType ? 'pickered' : '') :
-            (item.key === state.userEditParams.userEdit.creditorDataType ? 'pickered' : '')]"
+            (item.key == state.userEditParams.userEdit.auctionDataType ? 'pickered' : '') :
+            (item.key == state.userEditParams.userEdit.creditorDataType ? 'pickered' : '')]"
             @click="handlePicker(item.key)"
         >
           {{item.label}}
@@ -32,8 +32,9 @@
         <view class="search-input" @click.stop="state.focus = true">
           <text class="iconfont icon-xiaochengxu-sousuo prefix"></text>
           <native-input
+            confirm-type="search"
             @change="(e) => {state.params.username = e.detail;handleChange()}"
-            @confirm="({detail}) => doSearch(detail)"
+            @confirm="({detail}) => doConfirm(detail)"
             :value="state.params.username"
             :auto-focus="!state.flag && !state.modalVisible"
           />
@@ -49,6 +50,7 @@
       style="height: calc(100vh - 138px)"
       :scroll-y="true"
       @scrolltolower="scrollToLower"
+      @scroll="handleScroll"
     >
       <view class="search-record" v-if="!state.loading && !state.flag">
         <view v-if="state.records.length !== 0 && state.usernameList.length === 0">
@@ -77,7 +79,7 @@
               <view class="username">账号：{{item.username || '-'}}</view>
             </view>
             <view class="operate-block">
-              <view v-if="item.auctionDataType !== -1" class="operate-card" @click="(e) => openMask('auctionDataType', item, e)">
+              <view v-if="item.structuredObject.includes('资产拍卖数据')" class="operate-card" @click="openMask('auctionDataType', item)">
                 <view class="title"><text class="iconfont icon-xiaochengxu-zichanpaimai" />资产拍卖数据</view>
                 <view class="select">{{ state.auctionDataType[item.auctionDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
               </view>
@@ -85,7 +87,7 @@
                 <view class="title"><text class="iconfont icon-xiaochengxu-pochanzhongzu" />破产重组数据</view>
                 <view class="select">-</view>
               </view>
-              <view v-if="item.creditorDataType !== -1" class="operate-card" @click="openMask('creditorDataType', item)">
+              <view v-if="item.structuredObject.includes('拍卖债权数据')" class="operate-card" @click="openMask('creditorDataType', item)">
                 <view class="title"><text class="iconfont icon-xiaochengxu-paimaizhaiquanshuju" />拍卖债权数据</view>
                 <view class="select">{{ state.creditorDataType[item.creditorDataType] }}<text class="iconfont icon-xiaochengxu-jiantouxia" /></view>
               </view>
@@ -108,7 +110,7 @@ import { onMounted, reactive } from 'vue';
 import Taro from "@tarojs/taro";
 import {clearEmpty, debounce, storage} from "../../utils";
 import {userEdit, userView} from '../../server/api/index';
-import { auctionDataType, creditorDataType } from '../index/source';
+import { auctionDataType, auctionDataTypeA, creditorDataType, creditorDataTypeA } from '../index/source';
 
 export default {
   name: 'Search',
@@ -183,7 +185,21 @@ export default {
         const { data } = res;
         if (data.code === 200) {
           state.userList = data.data || [];
+          state.userList.forEach((item) => {
+            Object.keys(auctionDataTypeA).forEach((i) => {
+              if (item.structuredObject.includes(auctionDataTypeA[i])) {
+                item.auctionDataType = i;
+              }
+            });
+            Object.keys(creditorDataTypeA).forEach((j) => {
+              if (item.structuredObject.includes(creditorDataTypeA[j])) {
+                item.creditorDataType = j;
+              }
+            });
+          });
         }
+      }).catch(() => {
+        toast('网络异常...');
       }).finally(() => {
         state.loading = false;
       });
@@ -206,7 +222,7 @@ export default {
       const username = state.params.username.replace(/\s/g, '');
       if (username) {
         state.flag = false;
-        userView({ ...state.params, username }).then((res) => {
+        userView({ isEnabledUser: true, username, page: 1 }).then((res) => {
           const { data } = res;
           if (data.code === 200) {
             state.usernameList = [];
@@ -226,22 +242,32 @@ export default {
       state.modalVisible = false;
     };
 
+    const search = (val) => {
+      state.dividerVisible = false;
+      state.toLowerLoading = false;
+      if (val) state.params.username = val;
+      const username = state.params.username = state.params.username.replace(/\s/g, '');
+      state.params.page = 1;
+      if (!username) return toast('请输入账号或姓名');
+      state.records.unshift(state.params.username);
+      const records = state.records = [...new Set(state.records)].splice(0, 10);
+      storage.setItem('records', records);
+      getList();
+    };
+
     const doSearch = (item) => {
       if (state.flag) {
         goBack();
       } else {
-        if (item) state.params.username = item;
-        const username = state.params.username = state.params.username.replace(/\s/g, '');
-        if (!username) return toast('请输入用户名或账号');
-        state.records.unshift(state.params.username);
-        const records = state.records = [...new Set(state.records)].splice(0, 10);
-        storage.setItem('records', records);
-        getList();
+        search(item);
       }
     };
 
-    const openMask = (which, item, e) => {
-      console.log(e);
+    const doConfirm = (item) => {
+      search(item);
+    };
+
+    const openMask = (which, item) => {
       let functionId = [];
       state.structuredObject.forEach((i) => {
         if (item.structuredObject.includes(i.label)) {
@@ -251,9 +277,8 @@ export default {
       state.userEditParams.id = item.id;
       state.userEditParams.userEdit.name = item.name;
       state.userEditParams.userEdit.roleId = item.role === '正式' ? 1 : 0;
-      state.userEditParams.userEdit.creditorDataType = item.creditorDataType === -1 ? '' : item.creditorDataType;
-      state.userEditParams.userEdit.auctionDataType = [0 , 1].includes(item.auctionDataType)
-          ? 0 : item.auctionDataType === -1 ? '' : item.auctionDataType;
+      state.userEditParams.userEdit.creditorDataType = item.creditorDataType == -1 ? '' : item.creditorDataType;
+      state.userEditParams.userEdit.auctionDataType = item.auctionDataType == -1 ? '' : item.auctionDataType;
       state.userEditParams.userEdit.functionId = functionId;
       state.pickerVisible = true;
       switch (which) {
@@ -278,12 +303,13 @@ export default {
     const handlePicker = (key) => {
       const { id, userEdit: data } = state.userEditParams;
       const temp = state.userList.find((item) => item.id === id);
+      state.pickerVisible = false;
       if (state.pickerOptions.length === 3) {
-        if (state.userEditParams.userEdit.auctionDataType === key) return;
+        if (state.userEditParams.userEdit.auctionDataType == key) return;
         state.userEditParams.userEdit.auctionDataType = key;
         temp.auctionDataType = key;
       } else {
-        if (state.userEditParams.userEdit.creditorDataType === key) return;
+        if (state.userEditParams.userEdit.creditorDataType == key) return;
         state.userEditParams.userEdit.creditorDataType = key;
         temp.creditorDataType = key;
       }
@@ -306,13 +332,36 @@ export default {
         userView(clearEmpty(state.params)).then((res) => {
           const { data } = res;
           if (data.code === 200) {
-            (data.data || []).length === 0 ? state.dividerVisible = true :
-                state.userList = [...state.userList, ...(data.data || [])];
+            const list = data.data || [];
+            if (list.length === 0) {
+              state.dividerVisible = true;
+            } else {
+              list.forEach((item) => {
+                Object.keys(auctionDataTypeA).forEach((i) => {
+                  if (item.structuredObject.includes(auctionDataTypeA[i])) {
+                    item.auctionDataType = i;
+                  }
+                });
+                Object.keys(creditorDataTypeA).forEach((j) => {
+                  if (item.structuredObject.includes(creditorDataTypeA[j])) {
+                    item.creditorDataType = j;
+                  }
+                });
+              });
+            }
+            state.userList = [...state.userList, ...list];
           }
         }).finally(() => {
           state.toLowerLoading = false;
         });
       }
+    };
+
+    const handleScroll = (e) => {
+      if (state.pickerVisible) {
+        console.log('scroll....', e);
+        e.target.scrollTop = e.target.scrollHeight;
+      };
     };
 
     const close = (e) => {
@@ -338,6 +387,7 @@ export default {
     return {
       state,
       doSearch,
+      doConfirm,
       openMask,
       close,
       handleChange,
@@ -346,6 +396,7 @@ export default {
       handlePicker,
       goBack,
       scrollToLower,
+      handleScroll,
     };
   },
 };

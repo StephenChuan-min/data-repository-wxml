@@ -5,6 +5,9 @@ Component({
         },
         value: {
             type: String,
+        },
+        confirmType: {
+            type: String,
         }
     },
     options: {

@@ -116,7 +116,7 @@
 .index-wrapper .fixed .search-block .tab-block .tab-content .tabpane-item {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  padding-top: 4rpx;
+  padding-top: 8rpx;
   font-size: 32rpx;
   color: #4E5566;
   margin-right: 80rpx;
@@ -276,7 +276,8 @@
   height: 100vh;
 }
 .index-wrapper-picker .picker-content {
-  padding: 30rpx 0 98rpx 0;
+  border-bottom: 2rpx solid #D7D9DF;
+  padding: 30rpx 0 60rpx 0;
   text-align: center;
   margin-top: 100vh;
   -webkit-transform: translateY(-100%);
